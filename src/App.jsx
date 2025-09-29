@@ -7,6 +7,7 @@ import Contact from "./contact/Contact"
 import { Routes, Route } from "react-router-dom"
 import { MenuContext } from "./utils/MenuContext"
 import Loader from "./components/Loader"
+import TryOn3D from "./TryOn/TryOn3D"
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
       <Route path="/wardrobe" element={<WardrobePage />} />
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/try-on" element={<TryOn3D />} />
     </Routes>
   )
 }

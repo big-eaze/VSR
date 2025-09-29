@@ -1,10 +1,11 @@
 import React from 'react'
-import { ArrowRight } from "lucide-react";
+import { ArrowRight} from "lucide-react";
 import Header from '../components/Header'
 import Footer from '../components/Footer';
 import { Wand2, Camera, Sparkles } from "lucide-react";
 import AuthModal from '../Auth/AuthModal';
 import { MenuContext } from '../utils/MenuContext';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
 
@@ -24,7 +25,7 @@ const HomePage = () => {
               seconds — powered by AI.
             </p>
             <button className="mt-8 px-8 py-3 bg-[#f04e23] hover:bg-[#d13d18] text-white font-semibold rounded-full shadow-lg transition">
-              Try It Now
+              <Link to="/try-on">Try It Now</Link>
             </button>
           </div>
         </section>
