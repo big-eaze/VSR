@@ -115,10 +115,10 @@ const HomePage = () => {
 
         {/* CTA */}
         <section className="py-20 bg-[#A0552D] text-white text-center">
-          <h2 className="text-4xl font-bold">
+          <h2 className="text-3xl sm:text-4xl font-bold">
             Ready to find your next outfit?
           </h2>
-          <p className="mt-4 text-lg">
+          <p className="mt-4 text-md sm:text-lg">
             Start matching your wardrobe with AI-powered suggestions today.
           </p>
           <button className="mt-8 px-8 py-3 bg-white text-[#A0552D] hover:bg-gray-100 font-semibold rounded-full shadow-lg transition">

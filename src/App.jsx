@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import HomePage from "./Home/HomePage"
 import WardrobePage from "./wardrobe/WardrobePage"
 import Services from "./Services/Services"
@@ -6,11 +6,13 @@ import Contact from "./contact/Contact"
 
 import { Routes, Route } from "react-router-dom"
 import { MenuContext } from "./utils/MenuContext"
+import Loader from "./components/Loader"
 
 
 function App() {
 
   const { authOpen } = React.useContext(MenuContext);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
 
@@ -20,6 +22,21 @@ function App() {
       document.body.style.overflow = 'auto';
     }
   }, [authOpen]);
+
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000)
+    return () => clearTimeout(timer);
+  })
+
+  if (loading) {
+    return (
+      <Loader />
+    );
+  }
 
   return (
     <Routes>

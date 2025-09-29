@@ -9,6 +9,8 @@ export default function Services() {
   const { authOpen } = React.useContext(MenuContext);
 
 
+  
+
   const services = [
     {
       title: "Smart Outfit Matching",
@@ -63,7 +65,7 @@ export default function Services() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Intro */}
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-extrabold mb-6 tracking-wide">
+            <h2 className="text-2xl sm:text-5xl font-extrabold mb-6 tracking-wide">
               Discover What We Offer
             </h2>
             <p className="text-gray-400 max-w-3xl mx-auto text-lg">
@@ -109,7 +111,7 @@ export default function Services() {
 
           {/* CTA Section */}
           <div className="mt-24 text-center">
-            <h3 className="text-3xl font-bold mb-4">Ready to Elevate Your Style?</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Elevate Your Style?</h3>
             <p className="text-gray-400 max-w-2xl mx-auto mb-8">
               Join thousands of users already redefining their wardrobe. Start matching outfits, organizing your closet, and styling smarter with just a few taps.
             </p>

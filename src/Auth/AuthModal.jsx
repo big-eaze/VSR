@@ -102,15 +102,18 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
               />
+              <div className="flex items-center text-sm text-white ">
+                <input type="checkbox" className=" accent-[#A0552D] w-4 h-4 mr-2" />
+                <p>Remember me </p>
+              </div>
             </>
           )}
-
 
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg bg-gradient-to-r from-gray-900 to-[#A0552D] hover:from-[#f04e23] hover:to-[#f04e23] transition text-white font-semibold disabled:opacity-50"
+            className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg bg-gradient-to-r from-gray-900 to-[#A0552D] hover:from-[#A0552D] hover:to-gray-900 transition text-white font-semibold disabled:opacity-50"
           >
             {loading && <Loader2 className="w-5 h-5 animate-spin" />}
             <span>{isSignUp ? "Sign Up" : "Sign In"}</span>
@@ -119,7 +122,7 @@ export default function AuthModal() {
 
         {/* Feedback */}
         {message && (
-          <p className="mt-4 text-center text-sm text-[#f04e23]-300">{message}</p>
+          <p className="mt-4 text-center text-sm text-[#f04e23]">{message}</p>
         )}
 
         {/* Toggle */}

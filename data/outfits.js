@@ -1,64 +1,28 @@
-const matchingOutfits = [
-
-  {
-    id: 1,
-    title: "Casual Streetwear",
-    category: "Casual",
-    description: "Relaxed and stylish everyday look with comfy sneakers.",
-    items: [
-      { type: "Top", name: "Oversized Graphic Tee", color: "White" },
-      { type: "Bottom", name: "Distressed Jeans", color: "Light Blue" },
-      { type: "Footwear", name: "Chunky Sneakers", color: "White/Gray" },
-      { type: "Accessory", name: "Baseball Cap", color: "Black" },
-    ],
-    image: "/matching2.jpg",
-  },
-
-
-  {
-    id: 2,
-    title: "Smart Office Look",
-    category: "Formal",
-    description: "Professional outfit suitable for work or meetings.",
-    items: [
-      { type: "Top", name: "Button-up Shirt", color: "Light Blue" },
-      { type: "Bottom", name: "Tailored Trousers", color: "Navy" },
-      { type: "Footwear", name: "Leather Loafers", color: "Brown" },
-      { type: "Accessory", name: "Classic Watch", color: "Silver" },
-    ],
-    image: "/matching1.jpg"
-  },
-
-
-  {
-    id: 3,
-    title: "Date Night Chic",
-    category: "Evening",
-    description: "Elegant and trendy for a night out or dinner date.",
-    items: [
-      { type: "Top", name: "Silk Blouse", color: "Black" },
-      { type: "Bottom", name: "Midi Skirt", color: "Burgundy" },
-      { type: "Footwear", name: "Heeled Sandals", color: "Gold" },
-      { type: "Accessory", name: "Clutch Bag", color: "Beige" },
-    ],
-    image: "/matching4.jpg",
-  },
-
-
-  {
-    id: 4,
-    title: "Weekend Adventure",
-    category: "Outdoor",
-    description: "Comfortable yet stylish look for outings and travel.",
-    items: [
-      { type: "Top", name: "Hoodie", color: "Olive Green" },
-      { type: "Bottom", name: "Cargo Pants", color: "Khaki" },
-      { type: "Footwear", name: "Hiking Boots", color: "Brown" },
-      { type: "Accessory", name: "Backpack", color: "Tan" },
-    ],
-    image: "/matching3.jpg"
-  }
-];
-
-
-export default matchingOutfits;
+const wardrobe = [
+  { id: 1, name: "Classic White T-Shirt", category: "Top", color: "White", image: "/wardrobe/t-shirt1.jpg" },
+  { id: 2, name: "Leather Strap Watch", category: "Accessory", color: "Brown", image: "/wardrobe/watch5.jpg" },
+  { id: 3, name: "Black Graphic Tee", category: "Top", color: "Black", image: "/wardrobe/t-shirt2.jpg" },
+  { id: 4, name: "Denim Baseball Cap", category: "Accessory", color: "Blue", image: "/wardrobe/cap1.jpg" },
+  { id: 5, name: "Red Casual Cap", category: "Accessory", color: "Red", image: "/wardrobe/cap5.jpg" },
+  { id: 6, name: "Aviator Sunglasses", category: "Accessory", color: "Black", image: "/wardrobe/glasses1.jpg" },
+  { id: 7, name: "Slim Fit Trousers", category: "Bottom", color: "Beige", image: "/wardrobe/jeans1.jpg" },
+  { id: 8, name: "Striped Canvas Sneakers", category: "Footwear", color: "White/Blue", image: "/wardrobe/sneaker1.jpg" },
+  { id: 9, name: "Formal Leather Shoes", category: "Footwear", color: "Black", image: "/wardrobe/corporate-shoe1.jpg" },
+  { id: 10, name: "White Sneakers", category: "Footwear", color: "White", image: "/wardrobe/sneaker6.jpg" },
+  { id: 11, name: "Brown Leather Loafers", category: "Footwear", color: "Brown", image: "/wardrobe/long-sleeve1.jpg" },
+  { id: 12, name: "Casual Long-Sleeve Shirt", category: "Top", color: "Gray", image: "/wardrobe/long-sleeve2.jpg" },
+  { id: 13, name: "Chunky Street Sneakers", category: "Footwear", color: "White", image: "/wardrobe/sneaker3.jpg" },
+  { id: 14, name: "White Office Shirt", category: "Top", color: "White", image: "/wardrobe/sneaker4.jpg" },
+  { id: 15, name: "Olive Cargo Trousers", category: "Bottom", color: "Green", image: "/wardrobe/cap2.jpg" },
+  { id: 16, name: "Slim Denim Trousers", category: "Bottom", color: "Blue", image: "/wardrobe/jeans2.jpg" },
+  { id: 17, name: "Black Slim Trousers", category: "Bottom", color: "Black", image: "/wardrobe/jeans3.jpg" },
+  { id: 18, name: "Blue Polo Sneakers", category: "Footwear", color: "Blue", image: "/wardrobe/sneaker5.jpg" },
+  { id: 19, name: "Gray Knit Sneakers", category: "Footwear", color: "Gray", image: "/wardrobe/sneaker6.jpg" },
+  { id: 20, name: "White Low-Top Sneakers", category: "Footwear", color: "White", image: "/wardrobe/sneaker7.jpg" },
+  { id: 21, name: "Classic Black Beanie", category: "Accessory", color: "Black", image: "/wardrobe/sneaker8.jpg" },
+  { id: 22, name: "Tan Leather Wallet", category: "Accessory", color: "Brown", image: "/wardrobe/wallet1.jpg" },
+  { id: 23, name: "Silver Wrist Watch", category: "Accessory", color: "Silver", image: "/wardrobe/watch1.jpg" },
+  { id: 24, name: "Luxury Chronograph Watch", category: "Accessory", color: "Silver", image: "/wardrobe/watch2.jpg" },
+  { id: 25, name: "Golden Chain Watch", category: "Accessory", color: "Gold", image: "/wardrobe/watch3.jpg" },
+]
+export default wardrobe;

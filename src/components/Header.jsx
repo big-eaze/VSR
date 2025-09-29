@@ -54,10 +54,10 @@ const Header = () => {
 
 
       {/* RIGHT: Auth */}
-      <div className='flex space-x-4 items-center'>
+      <div className='flex space-x-3 sm:space-x-4 items-center'>
         <div className="flex items-center space-x-3">
           <User className="w-6 h-6 text-[#f04e23]" />
-          <button onClick={() => setAuthOpen(true)} className="px-4 py-2 rounded-full bg-[#f04e23] hover:bg-[#f04e23]/80 transition font-semibold text-sm">
+          <button onClick={() => setAuthOpen(true)} className="sm:px-4 px-3 py-2 sm:py-2 rounded-full bg-[#f04e23] hover:bg-[#f04e23]/80 transition font-semibold text-sm">
             Log in
           </button>
         </div>
@@ -91,7 +91,7 @@ const Header = () => {
               <NavLink
                 key={item.to}
                 to={item.to}
-                onClick={() => setIsOpen(false)} // close on click
+                onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
                   `text-lg transition duration-300 ${isActive ? "text-[#f04e23] font-semibold" : "hover:text-[#f04e23]"
                   }`
