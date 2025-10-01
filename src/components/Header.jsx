@@ -81,10 +81,11 @@ const Header = () => {
           ></span>
         </button>
 
+
         {/* Mobile Menu */}
         <div
           className={`md:hidden absolute top-20 w-full right-0 bg-black/75 backdrop-blur-md transform transition-transform duration-500 ${isOpen ? "translate-y-0" : "-translate-y-[200%]"
-            }`}
+            } `} 
         >
           <nav className="flex flex-col items-center space-y-6 py-10">
             {navItems.map((item) => (
@@ -93,7 +94,9 @@ const Header = () => {
                 to={item.to}
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  `text-lg transition duration-300 ${isActive ? "text-[#f04e23] font-semibold" : "hover:text-[#f04e23]"
+                  `text-lg transition duration-300 ${isActive
+                    ? "text-[#f04e23] font-semibold"
+                    : "hover:text-[#f04e23]"
                   }`
                 }
               >
@@ -102,6 +105,7 @@ const Header = () => {
             ))}
           </nav>
         </div>
+
       </div>
     </header>
 

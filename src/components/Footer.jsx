@@ -9,10 +9,10 @@ const Footer = () => {
         <div>
           <h3 className="text-[#A0552D] font-bold text-lg mb-4">VS!A</h3>
           <div className="space-y-2 flex flex-col">
-            <NavLink><a href="/" className="hover:text-white">Home</a></NavLink>
-            <NavLink><a href="/wardrobe" className="hover:text-white">Wardrobe</a></NavLink>
-            <NavLink><a href="/about" className="hover:text-white">About</a></NavLink>
-            <NavLink><a href="/contact" className="hover:text-white">Contact</a></NavLink>
+            <NavLink to="/" className="hover:text-white">Home</NavLink>
+            <NavLink to="/wardrobe" className="hover:text-white">Wardrobe</NavLink>
+            <NavLink to="/about" className="hover:text-white">About</NavLink>
+            <NavLink to="/contact" className="hover:text-white">Contact</NavLink>
           </div>
         </div>
 
@@ -20,10 +20,10 @@ const Footer = () => {
         <div>
           <h3 className="text-[#A0552D] font-bold text-lg mb-4">EXPERIENCE</h3>
           <div className="space-y-2 flex flex-col">
-            <NavLink><a href="#" className="hover:text-white">FAQ</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">Shipping & Returns</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">Store Policy</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">Payment Methods</a></NavLink>
+            <NavLink to="/" className="hover:text-white">FAQ</NavLink>
+            <NavLink to="/" className="hover:text-white">Shipping & Returns</NavLink>
+            <NavLink to="/" className="hover:text-white">Store Policy</NavLink>
+            <NavLink to="/" className="hover:text-white">Payment Methods</NavLink>
           </div >
         </div>
 
@@ -31,10 +31,10 @@ const Footer = () => {
         <div>
           <h3 className="text-[#A0552D] font-bold text-lg mb-4">FOLLOW US</h3>
           <div className="space-y-2 flex flex-col">
-            <NavLink><a href="#" className="hover:text-white">Facebook</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">X</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">Instagram</a></NavLink>
-            <NavLink><a href="#" className="hover:text-white">LinkedIn</a></NavLink>
+            <NavLink to={"/"} className="hover:text-white">Facebook</NavLink>
+            <NavLink to={"/"} className="hover:text-white">X</NavLink>
+            <NavLink to={"/"} className="hover:text-white">Instagram</NavLink>
+            <NavLink to={"/"} className="hover:text-white">LinkedIn</NavLink>
           </div >
         </div>
 
