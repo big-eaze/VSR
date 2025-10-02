@@ -5,6 +5,7 @@ import { Environment, OrbitControls } from "@react-three/drei";
 import { Menu, X, ArrowLeft } from "lucide-react"; // icons
 import Avatar from "../components/Avatar";
 import { Link } from "react-router-dom";
+import { MenuContext } from "../utils/MenuContext";
 
 export default function TryOnPage() {
   const wardrobe = {
@@ -24,7 +25,9 @@ export default function TryOnPage() {
     ],
     accessories: [
       { id: 1, name: "Cap", textureUrl: "/textures/accessories/cap4.jpg" },
-      { id: 2, name: "Watch", textureUrl: "/textures/accessories/watch6.jpg" },
+      { id: 2, name: "Cap", textureUrl: "/textures/accessories/cap2.jpg" },
+      { id: 3, name: "Cap", textureUrl: "/textures/accessories/cap3.jpg" },
+      { id: 4, name: "Watch", textureUrl: "/textures/accessories/watch6.jpg" },
     ],
   };
 
@@ -35,15 +38,10 @@ export default function TryOnPage() {
     accessories: "accessory",
   };
 
-  const [selectedCloth, setSelectedCloth] = useState({
-    shirt: null,
-    trouser: null,
-    shoe: null,
-    accessory: null,
-  });
+
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  const { selectedCloth, setSelectedCloth } = React.useContext(MenuContext);
   function handleSelect(category, item) {
     setSelectedCloth((prev) => ({ ...prev, [category]: item.textureUrl }));
   }
@@ -172,13 +170,13 @@ export default function TryOnPage() {
 
       {/* ========== 3D Canvas Area ========== */}
       <div className="flex-1 relative">
-        <Canvas camera={{ position: [0, 1.6, 3], fov: 35 }}>
-          <ambientLight intensity={0.4} />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} />
+        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 1.6, 3], fov: 35 }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[2, 5, 2]} intensity={0.8} />
           <Environment preset="studio" />
 
           <Suspense fallback={null}>
-            <Avatar />
+            <Avatar showCap={selectedCloth.accessory !== null} />
           </Suspense>
 
           <OrbitControls />
