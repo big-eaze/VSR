@@ -5,7 +5,7 @@ import { MenuContext } from "../utils/MenuContext";
 
 export default function Avatar({ showCap }) {
   const { scene, materials } = useGLTF(
-    "/models/avatar.glb"
+    "/models/avatar-clean.glb"
   );
   const capGLTF = useGLTF("/models/cap.glb");
   const avatarRef = useRef();
@@ -87,5 +87,5 @@ export default function Avatar({ showCap }) {
   );
 }
 
-useGLTF.preload("/models/avatar.glb");
+useGLTF.preload("/models/avatar-clean.glb");
 useGLTF.preload("/models/cap.glb");

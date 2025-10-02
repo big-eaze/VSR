@@ -25,7 +25,7 @@ const HomePage = () => {
               seconds — powered by AI.
             </p>
             <button className="mt-8 px-8 py-3 bg-[#f04e23] hover:bg-[#d13d18] text-white font-semibold rounded-full shadow-lg transition">
-              <Link to="/try-on">Try It Now</Link>
+              <Link to="/upload">Try It Now</Link>
             </button>
           </div>
         </section>

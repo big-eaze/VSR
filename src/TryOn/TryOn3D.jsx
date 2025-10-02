@@ -170,7 +170,11 @@ export default function TryOnPage() {
 
       {/* ========== 3D Canvas Area ========== */}
       <div className="flex-1 relative">
-        <Canvas dpr={[1, 1.5]} camera={{ position: [0, 1.6, 3], fov: 35 }}>
+        <Canvas
+          camera={{ position: [0, 1.6, 3], fov: 35 }}
+          gl={{ antialias: false, powerPreference: "low-power" }}
+
+        >
           <ambientLight intensity={0.6} />
           <directionalLight position={[2, 5, 2]} intensity={0.8} />
           <Environment preset="studio" />

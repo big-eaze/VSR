@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom"
 import { MenuContext } from "./utils/MenuContext"
 import Loader from "./components/Loader"
 import TryOn3D from "./TryOn/TryOn3D"
+import WardrobeUPL from "./wardrobe/WardrobeUPL"
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/try-on" element={<TryOn3D />} />
+      <Route path="/upload" element={<WardrobeUPL />} />
     </Routes>
   )
 }
