@@ -54,7 +54,7 @@ export default function AIScannerShowcase() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-lg hover:scale-105 transition"
+                className="bg-gray-900/60 backdrop-blur-xl p-6 rounded-2xl shadow-lg hover:scale-105 transition"
               >
                 <div className="flex justify-center mb-4">{step.icon}</div>
                 <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
@@ -72,7 +72,7 @@ export default function AIScannerShowcase() {
         >
           <button onClick={() => navigate("/generator")}
             className="relative group overflow-hidden px-10 py-3 rounded-full font-semibold text-white 
-               bg-white/10 backdrop-blur-xl border border-[#f04e23]/50
+               bg-gray-900/60 backdrop-blur-xl border border-[#f04e23]/50
                shadow-lg shadow-black/30 transition-all duration-300"
           >
             <span  className="relative z-10">🚀 Begin Styling</span>

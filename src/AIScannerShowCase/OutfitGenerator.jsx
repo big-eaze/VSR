@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Loader2, Shirt, ShoppingBag, Wand2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Loader2, Shirt, ShoppingBag, Wand2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function OutfitGenerator() {
@@ -13,34 +14,46 @@ export default function OutfitGenerator() {
     "Generating outfit magic..."
   ];
 
-  // Typing effect
   useEffect(() => {
+    if (!messages || messages.length === 0) return;
+
+    let isCancelled = false;
     let msgIndex = 0;
     let charIndex = 0;
-    let interval;
 
-    const type = () => {
-      if (charIndex < messages[msgIndex].length) {
-        setLoadingText((prev) => prev + messages[msgIndex][charIndex]);
+    const typeNext = () => {
+      if (isCancelled) return;
+
+      const current = messages[msgIndex] || "";
+
+      if (charIndex <= current.length) {
+        setLoadingText(current.slice(0, charIndex));
         charIndex++;
+        setTimeout(typeNext, 80);
       } else {
-        // pause before clearing
         setTimeout(() => {
+          if (isCancelled) return;
           setLoadingText("");
           charIndex = 0;
           msgIndex = (msgIndex + 1) % messages.length;
+          typeNext();
         }, 1200);
       }
     };
 
-    interval = setInterval(type, 80);
+    typeNext();
 
-    return () => clearInterval(interval);
+    return () => {
+      isCancelled = true;
+    };
   }, []);
+
+
+
 
   // Fake AI delay
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 4000);
+    const timer = setTimeout(() => setLoading(false), 11000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -75,6 +88,12 @@ export default function OutfitGenerator() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900  via-[#A0552D] to-black text-white px-6 py-12">
       {/* Header */}
+      {!loading
+        &&
+        <Link to="/" className="p-2 absolute top-4 left-4 rounded-full hover:bg-gray-700/50">
+          <ArrowLeft className="w-6 h-6 text-white" />
+        </Link>
+      }
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -124,7 +143,7 @@ export default function OutfitGenerator() {
                   onClick={() =>
                     setExpanded(expanded === outfit.id ? null : outfit.id)
                   }
-                  className="bg-white/10 backdrop-blur-xl p-6 rounded-2xl shadow-lg cursor-pointer"
+                  className="bg-gray-900/60 backdrop-blur-xl p-6 rounded-2xl shadow-lg cursor-pointer"
                 >
                   <img className="w-full max-h-[300px] object-cover" src={outfit.img} />
                   <div className="flex justify-center mb-4">{outfit.icon}</div>
