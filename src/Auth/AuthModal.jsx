@@ -30,7 +30,7 @@ export default function AuthModal() {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="relative w-full max-w-md bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-black rounded-2xl shadow-2xl border border-white/10 p-8 animate-fadeIn">
+      <div className="relative w-full max-w-md bg-gradient-to-br from-gray-950 via-[#A0552D] to-black rounded-2xl shadow-2xl border border-white/80 p-8 animate-fadeIn">
         {/* Close Button */}
         <button
           onClick={() => setAuthOpen(false)}
@@ -55,7 +55,7 @@ export default function AuthModal() {
                 value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
 
               <input
@@ -64,7 +64,7 @@ export default function AuthModal() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
               <input
                 type="password"
@@ -72,7 +72,7 @@ export default function AuthModal() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
               <input
                 type="confirm password"
@@ -80,7 +80,7 @@ export default function AuthModal() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
             </>
           ) : (
@@ -92,7 +92,7 @@ export default function AuthModal() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
               <input
                 type="password"
@@ -100,7 +100,7 @@ export default function AuthModal() {
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#f04e23]"
+                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
               <div className="flex items-center text-sm text-white ">
                 <input type="checkbox" className=" accent-[#A0552D] w-4 h-4 mr-2" />

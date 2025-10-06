@@ -1,15 +1,17 @@
 import React from "react";
 import { Sparkles, Shirt, Camera, Wand2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Header from "../components/Header";
 import { MenuContext } from "../utils/MenuContext";
 import Footer from "../components/Footer";
 import AuthModal from "../Auth/AuthModal";
+import { useNavigate } from "react-router-dom";
 
 export default function Services() {
   const { authOpen } = React.useContext(MenuContext);
 
+  const navigate = useNavigate();
 
-  
 
   const services = [
     {
@@ -65,20 +67,39 @@ export default function Services() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Intro */}
           <div className="text-center mb-20">
-            <h2 className="text-2xl sm:text-5xl font-extrabold mb-6 tracking-wide">
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-2xl sm:text-5xl text-center font-extrabold mb-6 tracking-wide">
               Discover What We Offer
-            </h2>
-            <p className="text-gray-400 max-w-3xl mx-auto text-lg">
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-gray-400 max-w-3xl mx-auto text-lg">
               Your wardrobe is more than just clothes—it’s your story. With{" "}
-              <span className="text-[#f04e23] font-semibold">Virtual Styling Assistant</span>,
+              <motion.span
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true }}
+                onClick={() => navigate("/more-abt")} className="text-[#f04e23] font-semibold cursor-pointer">Virtual Styling Assistant</motion.span>,
               you’ll unlock new ways to express yourself, save time, and look your best every single day.
-            </p>
+            </motion.p>
           </div>
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {services.map((service, index) => (
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 * index }}
+                viewport={{ once: true }}
                 key={index}
                 className="group bg-gray-900/60 backdrop-blur-md border border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
               >
@@ -105,20 +126,42 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           {/* CTA Section */}
-          <div className="mt-24 text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-4">Ready to Elevate Your Style?</h3>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.7 }}
+            viewport={{ once: true }}
+            className="mt-24 text-center">
+            <motion.h3
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.8 }}
+              viewport={{ once: true }}
+              className="text-2xl sm:text-3xl font-bold mb-4">
+              Ready to Elevate Your Style?
+            </motion.h3>
+            <motion.p
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.9 }}
+              viewport={{ once: true }}
+              className="text-gray-400 max-w-2xl mx-auto mb-8">
               Join thousands of users already redefining their wardrobe. Start matching outfits, organizing your closet, and styling smarter with just a few taps.
-            </p>
-            <button className="bg-[#f04e23] text-white px-10 py-4 rounded-full font-semibold hover:bg-[#f04e23]/50 transition shadow-lg">
+            </motion.p>
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1 }}
+              viewport={{ once: true }}
+              className="bg-[#f04e23] text-white px-10 py-4 rounded-full font-semibold hover:bg-[#f04e23]/50 transition shadow-lg">
               Start Matching Now
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </section>
       {authOpen && (<AuthModal />)}

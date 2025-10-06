@@ -1,11 +1,13 @@
 import { PlusCircle, Sparkles, Shirt, BarChart } from "lucide-react"
 import Header from "../components/Header"
+import { motion } from "framer-motion";
 import React from "react";
 import { MenuContext } from "../utils/MenuContext";
 import Footer from "../components/Footer";
 import AuthModal from "../Auth/AuthModal";
 import wardrobe from "../../data/outfits";
 import WRLoader from "../components/WRLoader";
+import { AnimatePresence, MotionConfig } from "framer-motion";
 
 export default function WardrobePage() {
 
@@ -126,20 +128,55 @@ export default function WardrobePage() {
             ) :
               (
                 <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6">
+                  <motion.div
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      show: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.08, // delay between each card
+                        },
+                      },
+                    }}
+                    initial="hidden"
+                    animate="show"
+                  >
                     {currentClothings.map((item) => (
-                      <div
+                      <motion.div
                         key={item.id}
-                        className="bg-gray-800/60 h-96 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition"
+                        variants={{
+                          hidden: { opacity: 0, y: 40, scale: 0.9 },
+                          show: {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            transition: { type: "spring", stiffness: 120, damping: 12 },
+                          },
+                        }}
+                        whileHover={{
+                          scale: 1.05,
+                          rotate: 1,
+                          transition: { type: "spring", stiffness: 200 },
+                        }}
+                        className="bg-gray-800/60 h-96 rounded-xl shadow-lg overflow-hidden cursor-pointer"
                       >
-                        <img src={item.image} alt={item.name} className="w-full h-72 object-cover" />
+                        <motion.img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-72 object-cover"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.4 }}
+                        />
                         <div className="p-3">
                           <h3 className="font-semibold">{item.name}</h3>
-                          <p className="text-sm text-gray-400">{item.category} • {item.color}</p>
+                          <p className="text-sm text-gray-400">
+                            {item.category} • {item.color}
+                          </p>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                   {/* Pagination */}
                   <div>
                     <div className="flex justify-center mt-8 space-x-2">
@@ -181,80 +218,84 @@ export default function WardrobePage() {
             Suggested Outfits
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Outfit Card */}
-            <div className="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
-              <span className="absolute top-4 right-4 bg-yellow-500/20 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full">
-                Casual
-              </span>
-              <p className="text-lg font-semibold mb-4 group-hover:text-yellow-400 transition">
-                Casual Fit
-              </p>
-              <div className="flex gap-3">
-                <img
-                  src="/matching1.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform"
-                />
-                <img
-                  src="/matching2.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-100"
-                />
-                <img
-                  src="/matching3.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-200"
-                />
-              </div>
-            </div>
+          {/* Parent container with stagger effect */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.25 } },
+            }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {[
+              {
+                tag: "Casual",
+                tagColor: "bg-yellow-500/20 text-yellow-400",
+                title: "Casual Fit",
+              },
+              {
+                tag: "Night Out",
+                tagColor: "bg-pink-500/20 text-pink-400",
+                title: "Night Out",
+              },
+              {
+                tag: "Formal",
+                tagColor: "bg-green-500/20 text-green-400",
+                title: "Formal Look",
+              },
+            ].map((outfit, i) => (
+              <motion.div
+                key={i}
+                variants={{
+                  hidden: { opacity: 0, y: 50, scale: 0.9 },
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.8, ease: "easeOut" },
+                  },
+                }}
+                whileHover={{ rotateX: 5, rotateY: -5, scale: 1.02 }}
+                className="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500"
+              >
+                {/* Category tag with glow pulse */}
+                <span
+                  className={`${outfit.tagColor} absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full animate-pulse`}
+                >
+                  {outfit.tag}
+                </span>
 
-            {/* Another Outfit */}
-            <div className="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
-              <span className="absolute top-4 right-4 bg-pink-500/20 text-pink-400 text-xs font-semibold px-3 py-1 rounded-full">
-                Night Out
-              </span>
-              <p className="text-lg font-semibold mb-4 group-hover:text-pink-400 transition">
-                Night Out
-              </p>
-              <div className="flex gap-3">
-                <img
-                  src="/matching1.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform"
-                />
-                <img
-                  src="/matching2.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-100"
-                />
-                <img
-                  src="/matching3.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-200"
-                />
-              </div>
-            </div>
+                {/* Title */}
+                <p className="text-lg font-semibold mb-4 group-hover:text-yellow-300 transition">
+                  {outfit.title}
+                </p>
 
-            {/* Example Third Outfit */}
-            <div className="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
-              <span className="absolute top-4 right-4 bg-green-500/20 text-green-400 text-xs font-semibold px-3 py-1 rounded-full">
-                Formal
-              </span>
-              <p className="text-lg font-semibold mb-4 group-hover:text-green-400 transition">
-                Formal Look
-              </p>
-              <div className="flex gap-3">
-                <img
-                  src="/matching1.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform"
-                />
-                <img
-                  src="/matching2.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-100"
-                />
-                <img
-                  src="/matching3.jpg"
-                  className="w-20 h-20 rounded-xl object-cover border border-gray-700 group-hover:scale-105 transition-transform delay-200"
-                />
-              </div>
-            </div>
-          </div>
+                {/* Outfit images with staggered zoom-in */}
+                <div className="flex gap-3">
+                  {["/matching1.jpg", "/matching2.jpg", "/matching3.jpg"].map(
+                    (src, idx) => (
+                      <motion.img
+                        key={idx}
+                        src={src}
+                        className="w-20 h-20 rounded-xl object-cover border border-gray-700"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{
+                          opacity: 1,
+                          scale: 1,
+                          transition: { delay: idx * 0.2, duration: 0.6 },
+                        }}
+                        whileHover={{ scale: 1.1 }}
+                      />
+                    )
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </section>
+
 
 
         {/* Wardrobe Insights */}
@@ -263,18 +304,44 @@ export default function WardrobePage() {
             <BarChart className="w-5 h-5 text-teal-400" />
             Wardrobe Insights
           </h2>
-          <div className="bg-gray-800/70 p-6 rounded-xl shadow-md">
-            <p className="text-gray-300 text-sm sm:text-base mb-2">👕 40% Tops • 👖 30% Bottoms • 👟 20% Shoes • 🎒 10% Accessories</p>
-            <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden">
-              <div className="bg-teal-500 h-3 w-[40%] float-left"></div>
-              <div className="bg-indigo-500 h-3 w-[30%] float-left"></div>
-              <div className="bg-pink-500 h-3 w-[20%] float-left"></div>
-              <div className="bg-yellow-500 h-3 w-[10%] float-left"></div>
+          <motion.div initial="hidden"
+            whileInView="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.3 } }, // bars animate one after another
+            }} className="flex flex-col space-y-2 sm:space-y-4 bg-black/50 sm:py-5 py-3 px-5 sm:px-8 rounded-lg">
+            <p className="text-[10px] sm:text-sm font-semibold text-white drop-shadow-md whitespace-nowrap">
+              👕40% Tops - 👖30% Bottoms - 👟20% Shoes - 🎒10% Others
+            </p>
+
+            <div
+              className="w-full bg-gray-700 h-3  rounded-full overflow-hidden flex"
+            >
+              {[
+                { w: "40%", color: "bg-teal-500" },
+                { w: "30%", color: "bg-indigo-500" },
+                { w: "20%", color: "bg-pink-500" },
+                { w: "10%", color: "bg-yellow-500" },
+              ].map((bar, i) => (
+                <motion.div
+                  key={i}
+                  className={`${bar.color} flex-none flex items-center justify-start overflow-ellipsis`}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: bar.w }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                >
+
+                </motion.div>
+              ))}
             </div>
-          </div>
-        </section>
-      </div>
-      {authOpen && (<AuthModal />)}
+          </motion.div>
+
+
+        </section >
+      </div >
+      {authOpen && (<AuthModal />)
+      }
+
 
     </>
   )

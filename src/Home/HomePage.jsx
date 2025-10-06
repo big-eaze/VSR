@@ -3,20 +3,26 @@ import { ArrowRight } from "lucide-react";
 import Header from '../components/Header'
 import Footer from '../components/Footer';
 import { Wand2, Camera, Sparkles } from "lucide-react";
+import { motion } from 'framer-motion';
 import AuthModal from '../Auth/AuthModal';
 import { MenuContext } from '../utils/MenuContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
 
+  const navigate = useNavigate()
   const { authOpen } = React.useContext(MenuContext);
   return (
     <div>
       <Header />
       <div className="w-full min-h-screen bg-gray-50 text-gray-900">
         {/* HERO SECTION */}
-        <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white overflow-hidden">
-          <div className="relative z-10 text-center max-w-3xl px-6">
+        <section
+          className="relative h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }} className="relative z-10 text-center max-w-3xl px-6">
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
               Your AI <span className="text-[#f04e23]">Stylist</span> at Home
             </h1>
@@ -27,7 +33,7 @@ const HomePage = () => {
             <button className="mt-8 px-8 py-3 bg-[#f04e23] hover:bg-[#d13d18] text-white font-semibold rounded-full shadow-lg transition">
               <Link to="/upload">Try It Now</Link>
             </button>
-          </div>
+          </motion.div>
         </section>
 
         {/* HOW IT WORKS */}
@@ -54,14 +60,18 @@ const HomePage = () => {
                   desc: "Get personalized recommendations that fit your vibe, occasion, and weather.",
                 },
               ].map((step, i) => (
-                <div
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 * i }}
+                  viewport={{ once: true }}
                   key={i}
                   className="bg-gray-50 p-8 rounded-2xl shadow hover:shadow-lg transition text-center"
                 >
                   <div className="flex justify-center mb-4">{step.icon}</div>
                   <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
                   <p className="text-gray-600">{step.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -91,8 +101,12 @@ const HomePage = () => {
                   items: ["Oversized Hoodie", "Cargo Pants", "Chunky Shoes"],
                 },
               ].map((outfit, i) => (
-                <div
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0, y: -50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.5 }}
+                  viewport={{ once: true }}
                   className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-2xl transition"
                 >
                   <img
@@ -108,23 +122,40 @@ const HomePage = () => {
                       ))}
                     </ul>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#A0552D] text-white text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold">
-            Ready to find your next outfit?
-          </h2>
-          <p className="mt-4 text-md sm:text-lg">
-            Start matching your wardrobe with AI-powered suggestions today.
-          </p>
-          <button className="mt-8 px-8 py-3 bg-white text-[#A0552D] hover:bg-gray-100 font-semibold rounded-full shadow-lg transition">
+        <section className="text-white  flex flex-col items-center justify-center py-20 bg-[#A0552D] ">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold">
+              Ready to find your next outfit?
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5 }}
+            viewport={{ once: true }}
+          >
+            <p className="mt-4 text-md sm:text-lg">
+              Start matching your wardrobe with AI-powered suggestions today.
+            </p>
+          </motion.div>
+          <button
+            onClick={() => navigate("/more-abt")}
+            className="mt-8 px-8 py-3 bg-white text-[#A0552D] hover:bg-gray-100 font-semibold rounded-full shadow-lg transition">
             Get Started Free
           </button>
+
         </section>
       </div>
       {authOpen && (<AuthModal />)}

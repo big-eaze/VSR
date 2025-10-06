@@ -1,5 +1,6 @@
 import React from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { MenuContext } from "../utils/MenuContext";
@@ -14,7 +15,12 @@ export default function Contact() {
       <section className="min-h-screen relative bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white pt-32 py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {/* Section Heading */}
-          <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-16">
             <h2 className="text-2xl sm:text-5xl font-extrabold mb-4 tracking-wide">
               Get in Touch
             </h2>
@@ -22,13 +28,18 @@ export default function Contact() {
               Have questions, feedback, or ideas? We’d love to hear from you.
               Reach out and let’s make your wardrobe smarter together.
             </p>
-          </div>
+          </motion.div>
 
           {/* Contact Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div className="space-y-8">
-              <div className="flex items-start space-x-4">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+                viewport={{ once: true }}
+                className="flex items-start space-x-4">
                 <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
                   <Mail className="w-6 h-6 text-[#f04e23]" />
                 </div>
@@ -36,9 +47,14 @@ export default function Contact() {
                   <h3 className="text-xl font-semibold">Email</h3>
                   <p className="text-gray-400">support@vsia.com</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start space-x-4">
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+                viewport={{ once: true }}
+                className="flex items-start space-x-4">
                 <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
                   <Phone className="w-6 h-6 text-rose-400" />
                 </div>
@@ -46,9 +62,14 @@ export default function Contact() {
                   <h3 className="text-xl font-semibold">Phone</h3>
                   <p className="text-gray-400">+1 (555) 234-5678</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex items-start space-x-4">
+              <motion.div
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.9 }}
+                viewport={{ once: true }}
+                className="flex items-start space-x-4">
                 <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
                   <MapPin className="w-6 h-6 text-indigo-400" />
                 </div>
@@ -56,11 +77,16 @@ export default function Contact() {
                   <h3 className="text-xl font-semibold">Address</h3>
                   <p className="text-gray-400">123 Fashion Street, Style City</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
             {/* Contact Form */}
-            <div className="bg-gray-900/50 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-800">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 3 }}
+              viewport={{ once: true }}
+              className="bg-gray-900/50 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-800">
               <form className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold mb-2">
@@ -106,7 +132,7 @@ export default function Contact() {
                   <span>Send Message</span>
                 </button>
               </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
