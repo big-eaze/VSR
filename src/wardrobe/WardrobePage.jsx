@@ -16,7 +16,13 @@ export default function WardrobePage() {
 
   const { authOpen } = React.useContext(MenuContext);
 
-  const [filteredCategory, setFilteredCategory] = React.useState(wardrobe);
+  const [filteredCategory, setFilteredCategory] = React.useState([
+    ...wardrobe.Tops,
+    ...wardrobe.Bottoms,
+    ...wardrobe.Footwears,
+    ...wardrobe.Accessories,
+  ]);
+  ;
 
 
   //Pagination logic
@@ -30,20 +36,24 @@ export default function WardrobePage() {
 
   // Filter logic
   const handleFilter = (category) => {
-    setFilteredCategory(() => {
-      if (category === "All") {
-        return wardrobe;
-      } else if (category === "Top") {
-        return wardrobe.filter(item => item.category === "Top");
-      } else if (category === "Bottom") {
-        return wardrobe.filter(item => item.category === "Bottom");
-      } else if (category === "Footwear") {
-        return wardrobe.filter(item => item.category === "Footwear");
-      } else if (category === "Accessories") {
-        return wardrobe.filter(item => item.category === "Accessory");
-      }
-    });
-  }
+    if (category === "All") {
+      // merge all categories
+      setFilteredCategory([
+        ...wardrobe.Tops,
+        ...wardrobe.Bottoms,
+        ...wardrobe.Footwear,
+        ...wardrobe.Accessories
+      ]);
+    } else if (category === "Top") {
+      setFilteredCategory(wardrobe.Tops);
+    } else if (category === "Bottom") {
+      setFilteredCategory(wardrobe.Bottoms);
+    } else if (category === "Footwear") {
+      setFilteredCategory(wardrobe.Footwear);
+    } else if (category === "Accessories") {
+      setFilteredCategory(wardrobe.Accessories);
+    }
+  };
 
   function handlePageClick(pageNumber) {
     // show loader
@@ -185,7 +195,10 @@ export default function WardrobePage() {
                           key={index + 1}
                           onClick={() => {
                             handlePageClick(index + 1);
-
+                            window.scrollTo({
+                              top: 0,
+                              behaviour: "smooth"
+                            })
                           }}
                           className={`px-3 py-1 rounded-full ${currentPage === index + 1
                             ? "bg-[#f04e23] text-white"

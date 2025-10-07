@@ -1,0 +1,227 @@
+[
+  {
+    "id": 1,
+    "name": "Classic White T-Shirt",
+    "category": "Top",
+    "style": "casual",
+    "season": "summer",
+    "color": "White",
+    "image": "/wardrobe/t-shirt1.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Leather Strap Watch",
+    "category": "Accessory",
+    "style": "classic",
+    "season": "all",
+    "color": "Brown",
+    "image": "/wardrobe/watch5.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Black Graphic Tee",
+    "category": "Top",
+    "style": "streetwear",
+    "season": "summer",
+    "color": "Black",
+    "image": "/wardrobe/t-shirt2.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Denim Baseball Cap",
+    "category": "Accessory",
+    "style": "casual",
+    "season": "summer",
+    "color": "Blue",
+    "image": "/wardrobe/cap1.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Red Casual Cap",
+    "category": "Accessory",
+    "style": "sporty",
+    "season": "summer",
+    "color": "Red",
+    "image": "/wardrobe/cap5.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Aviator Sunglasses",
+    "category": "Accessory",
+    "style": "casual",
+    "season": "summer",
+    "color": "Black",
+    "image": "/wardrobe/glasses1.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Slim Fit Trousers",
+    "category": "Bottom",
+    "style": "smart",
+    "season": "spring",
+    "color": "Beige",
+    "image": "/wardrobe/jeans1.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Striped Canvas Sneakers",
+    "category": "Footwear",
+    "style": "casual",
+    "season": "summer",
+    "color": "White/Blue",
+    "image": "/wardrobe/sneaker1.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Formal Leather Shoes",
+    "category": "Footwear",
+    "style": "formal",
+    "season": "all",
+    "color": "Black",
+    "image": "/wardrobe/corporate-shoe1.jpg"
+  },
+  {
+    "id": 10,
+    "name": "White Sneakers",
+    "category": "Footwear",
+    "style": "casual",
+    "season": "summer",
+    "color": "White",
+    "image": "/wardrobe/sneaker6.jpg"
+  },
+  {
+    "id": 11,
+    "name": "Brown Leather Loafers",
+    "category": "Footwear",
+    "style": "classic",
+    "season": "autumn",
+    "color": "Brown",
+    "image": "/wardrobe/long-sleeve1.jpg"
+  },
+  {
+    "id": 12,
+    "name": "Casual Long-Sleeve Shirt",
+    "category": "Top",
+    "style": "casual",
+    "season": "autumn",
+    "color": "Gray",
+    "image": "/wardrobe/long-sleeve2.jpg"
+  },
+  {
+    "id": 13,
+    "name": "Chunky Street Sneakers",
+    "category": "Footwear",
+    "style": "streetwear",
+    "season": "spring",
+    "color": "White",
+    "image": "/wardrobe/sneaker3.jpg"
+  },
+  {
+    "id": 14,
+    "name": "White Office Shirt",
+    "category": "Top",
+    "style": "formal",
+    "season": "spring",
+    "color": "White",
+    "image": "/wardrobe/sneaker4.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Olive Cargo Trousers",
+    "category": "Bottom",
+    "style": "utility",
+    "season": "autumn",
+    "color": "Green",
+    "image": "/wardrobe/cap2.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Slim Denim Trousers",
+    "category": "Bottom",
+    "style": "casual",
+    "season": "spring",
+    "color": "Blue",
+    "image": "/wardrobe/jeans2.jpg"
+  },
+  {
+    "id": 17,
+    "name": "Black Slim Trousers",
+    "category": "Bottom",
+    "style": "formal",
+    "season": "winter",
+    "color": "Black",
+    "image": "/wardrobe/jeans3.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Blue Polo Sneakers",
+    "category": "Footwear",
+    "style": "sporty",
+    "season": "summer",
+    "color": "Blue",
+    "image": "/wardrobe/sneaker5.jpg"
+  },
+  {
+    "id": 19,
+    "name": "Gray Knit Sneakers",
+    "category": "Footwear",
+    "style": "casual",
+    "season": "autumn",
+    "color": "Gray",
+    "image": "/wardrobe/sneaker6.jpg"
+  },
+  {
+    "id": 20,
+    "name": "White Low-Top Sneakers",
+    "category": "Footwear",
+    "style": "casual",
+    "season": "summer",
+    "color": "White",
+    "image": "/wardrobe/sneaker7.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Classic Black Beanie",
+    "category": "Accessory",
+    "style": "casual",
+    "season": "winter",
+    "color": "Black",
+    "image": "/wardrobe/sneaker8.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Tan Leather Wallet",
+    "category": "Accessory",
+    "style": "classic",
+    "season": "all",
+    "color": "Brown",
+    "image": "/wardrobe/wallet1.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Silver Wrist Watch",
+    "category": "Accessory",
+    "style": "formal",
+    "season": "all",
+    "color": "Silver",
+    "image": "/wardrobe/watch1.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Luxury Chronograph Watch",
+    "category": "Accessory",
+    "style": "luxury",
+    "season": "all",
+    "color": "Silver",
+    "image": "/wardrobe/watch2.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Golden Chain Watch",
+    "category": "Accessory",
+    "style": "luxury",
+    "season": "all",
+    "color": "Gold",
+    "image": "/wardrobe/watch3.jpg"
+  }
+]

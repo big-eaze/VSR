@@ -35,7 +35,7 @@ export default function AIScannerShowcase() {
   return (
     <>
       <Header />
-      <div className=" w-full h-screen flex flex-col justify-center items-center gap-20 min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-6">
+      <div className=" w-full flex flex-col justify-center items-center gap-20 min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-6 py-28 sm:py-0">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             How Our AI <span className="text-[#f04e23]">Styles</span> You
