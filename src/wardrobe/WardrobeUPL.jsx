@@ -56,55 +56,68 @@ export default function WardrobeUploadPage() {
       {/* Upload Section */}
       <div className="flex flex-col items-center justify-center">
         <div className="w-full max-w-md">
-          <label
-            htmlFor="file-input"
-            className="group relative block cursor-pointer rounded-2xl border-2 border-dashed border-transparent bg-white p-8 shadow-lg transition hover:border-indigo-500 hover:shadow-xl"
-          >
-            {!preview ? (
-              <div className="flex flex-col items-center justify-center text-center">
-                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50 group-hover:bg-indigo-100 transition">
-                  <Upload className="h-10 w-10 text-indigo-500" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-700">
-                  Upload Your Outfit
-                </h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Take a photo or choose one from storage.
-                </p>
-
-                <div className="mt-6 flex gap-3">
-                  <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1 text-sm text-indigo-600 shadow-sm group-hover:bg-indigo-100">
-                    <Camera className="h-4 w-4" /> Camera
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-600 shadow-sm group-hover:bg-gray-200">
-                    <ImageIcon className="h-4 w-4" /> Gallery
-                  </span>
-                </div>
+          {!preview ? (
+            <div className="flex flex-col items-center justify-center text-center rounded-2xl border-2 border-dashed border-transparent bg-white p-8 shadow-lg">
+              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50">
+                <Upload className="h-10 w-10 text-indigo-500" />
               </div>
-            ) : (
-              <div className="relative animate-fadeIn">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="h-60 w-full rounded-xl object-cover shadow-md"
-                />
-                <button
-                  onClick={removePreview}
-                  className="absolute top-3 right-3 rounded-full bg-white/80 p-2 text-gray-600 shadow hover:bg-white"
+              <h3 className="text-lg font-semibold text-gray-700">
+                Upload Your Outfit
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Take a photo or choose one from storage.
+              </p>
+
+              {/* Two Buttons */}
+              <div className="mt-6 flex gap-3">
+                {/* Camera trigger */}
+                <label
+                  htmlFor="camera-input"
+                  className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1 text-sm text-indigo-600 shadow-sm cursor-pointer hover:bg-indigo-100"
                 >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            )}
-          </label>
+                  <Camera className="h-4 w-4" /> Camera
+                </label>
 
-          {/* hidden input */}
+                {/* Gallery trigger */}
+                <label
+                  htmlFor="gallery-input"
+                  className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-600 shadow-sm cursor-pointer hover:bg-gray-200"
+                >
+                  <ImageIcon className="h-4 w-4" /> Gallery
+                </label>
+              </div>
+            </div>
+          ) : (
+            <div className="relative animate-fadeIn">
+              <img
+                src={preview}
+                alt="Preview"
+                className="h-60 w-full rounded-xl object-cover shadow-md"
+              />
+              <button
+                onClick={removePreview}
+                className="absolute top-3 right-3 rounded-full bg-white/80 p-2 text-gray-600 shadow hover:bg-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+
+          {/* Hidden Inputs */}
           <input
-            id="file-input"
+            id="camera-input"
             type="file"
             accept="image/*"
-            capture="environment"
+            capture="environment"   // forces camera
             className="hidden"
+            onChange={handleFileChange}
+          />
+
+          <input
+            id="gallery-input"
+            type="file"
+            accept="image/*"
+            className="hidden"     // opens gallery
             onChange={handleFileChange}
           />
 
