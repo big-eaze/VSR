@@ -1,12 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Loader2, Shirt, ShoppingBag, Wand2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { generateOutfits } from "../utils/chroma";
+import { useOutfits } from "../utils/chroma.jsx";
 import wardrobe from "../../data/outfits";
+import StyleSelector from "../components/StyleSelector.jsx";
+import { MenuContext } from "../utils/MenuContext.jsx";
 
 export default function OutfitGenerator() {
+
+  const { preferredStyle, setPreferredStyle } = useContext(MenuContext);
+  const [bestOutfits, setBestOutfits] = useState([]);
+
+
   const [loading, setLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
   const [loadingText, setLoadingText] = useState("");
   const messages = [
@@ -16,8 +24,22 @@ export default function OutfitGenerator() {
     "Generating outfit magic..."
   ];
 
-  const outfits = generateOutfits(wardrobe);
-  const bestOutfits = outfits.slice(0, 3)
+
+
+  const outfits = useOutfits(preferredStyle);
+
+  useEffect(() => {
+    if (outfits > 0) {
+      setBestOutfits(outfits.slice(0, 3))
+    }
+  }, [outfits]);
+
+  function regenerate() {
+    const shuffled = [...outfits].sort(() => Math.random - 0.5);
+
+    return setBestOutfits(shuffled.slice(0, 3));
+  }
+
 
   useEffect(() => {
     if (!messages || messages.length === 0) return;
@@ -42,7 +64,7 @@ export default function OutfitGenerator() {
           charIndex = 0;
           msgIndex = (msgIndex + 1) % messages.length;
           typeNext();
-        }, 1200);
+        }, 3000);
       }
 
     };
@@ -52,45 +74,35 @@ export default function OutfitGenerator() {
     return () => {
       isCancelled = true;
     };
+
+    //eslint-disable-next-line
   }, []);
+
+
 
 
 
 
   // Fake AI delay
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 11000);
+
+    if (!loading) return;
+
+    const duration = firstLoading ? 2000 : 11000;
+
+    const timer = setTimeout(
+      () => {
+        setLoading(false)
+        setFirstLoading(false);
+      }
+      , duration
+    );
+
     return () => clearTimeout(timer);
-  }, []);
 
-  {/*const outfits = [
-    {
-      id: 1,
-      icon: <Shirt className="w-8 h-8 text-[#f04e23]" />,
-      label: "Casual Fit",
-      img: "matching1.jpg",
-      desc: "Relaxed tee, denim jeans & sneakers.",
-      details: ["Cotton T-shirt", "Slim fit jeans", "White sneakers"],
+  }, [loading]);
 
-    },
-    {
-      id: 2,
-      icon: <ShoppingBag className="w-8 h-8 text-[#f04e23]" />,
-      label: "Streetwear",
-      img: "matching2.jpg",
-      desc: "Oversized hoodie, joggers & high-tops.",
-      details: ["Graphic hoodie", "Black joggers", "Nike Air Force 1"],
-    },
-    {
-      id: 3,
-      icon: <Wand2 className="w-8 h-8 text-[#f04e23]" />,
-      label: "Smart Casual",
-      img: "matching3.jpg",
-      desc: "Blazer, chinos & loafers.",
-      details: ["Navy blazer", "Beige chinos", "Brown loafers"],
-    },
-  ];*/
-  }
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900  via-[#A0552D] to-black text-white px-6 py-12">
@@ -245,12 +257,17 @@ export default function OutfitGenerator() {
             </motion.div>
 
 
+            <StyleSelector selected={preferredStyle} onSelect={setPreferredStyle} />
 
             {/* Button */}
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
+              onClick={() => {
+                regenerate();
+                setLoading(true);
+              }}
               className="mt-12 px-10 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-[#f04e23] to-[#A0552D] shadow-lg hover:shadow-[#f04e23]/40 transition"
             >
               🔥 Generate Another Outfit

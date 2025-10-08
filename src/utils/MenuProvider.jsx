@@ -15,12 +15,18 @@ export function MenuProvider({ children }) {
     accessory: null,
   });
 
+  //preferred style (user)
+
+  const [preferredStyle, setPreferredStyle] = useState(null);
+
   return (
     <MenuContext.Provider value={{
       authOpen,
       setAuthOpen,
       selectedCloth,
-      setSelectedCloth
+      setSelectedCloth,
+      preferredStyle,
+      setPreferredStyle
     }}
     >
       {children}

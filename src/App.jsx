@@ -72,3 +72,5 @@ export default App
 //https://www.wix.com/website/templates/html/online-store/fashion-clothing/2
 
 //https://www.wix.com/website-template/view/html/2114?originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Fonline-store%2Ffashion-clothing%2F2&tpClick=view_button&esi=234adaa1-a59f-42c4-b8ee-bfd268c0d43a
+
+//https://www.figma.com/design/cVSqF8giCDk7idytytbKqu/Website-Redesign?node-id=0-1&p=f&t=sWBgDXvhK62DR78L-0

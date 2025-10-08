@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { LogoIcon } from '../utils/LogoIcon'
 import { User } from 'lucide-react'
 import { MenuContext } from '../utils/MenuContext';
@@ -22,7 +23,16 @@ const Header = () => {
     <header className="fixed top-0 z-20 w-full h-20 bg-black/70 backdrop-blur-md text-white flex items-center justify-between px-10">
       {/* LEFT: Logo */}
       <div className="flex items-center space-x-3">
-        <LogoIcon size={40} />
+
+        <motion.div
+          whileHover={{ scale: 1.2, rotate: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+          className="sm:block hidden p-3 rounded-full bg-white/20 shadow-lg hover:shadow-[#f04e23]/50"
+        >
+          <LogoIcon className="w-12 h-12 relative z-10 drop-shadow-lg" />
+        </motion.div>
+
+
         <h1 className="text-2xl font-extrabold tracking-wider">
           VS<span className="text-[#f04e23]">!A</span>
         </h1>
@@ -85,7 +95,7 @@ const Header = () => {
         {/* Mobile Menu */}
         <div
           className={`md:hidden absolute top-20 w-full right-0 bg-black/75 backdrop-blur-md transform transition-transform duration-500 ${isOpen ? "translate-y-0" : "-translate-y-[200%]"
-            } `} 
+            } `}
         >
           <nav className="flex flex-col items-center space-y-6 py-10">
             {navItems.map((item) => (

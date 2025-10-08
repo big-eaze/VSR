@@ -41,7 +41,7 @@ export default function WardrobePage() {
       setFilteredCategory([
         ...wardrobe.Tops,
         ...wardrobe.Bottoms,
-        ...wardrobe.Footwear,
+        ...wardrobe.Footwears,
         ...wardrobe.Accessories
       ]);
     } else if (category === "Top") {
@@ -49,7 +49,7 @@ export default function WardrobePage() {
     } else if (category === "Bottom") {
       setFilteredCategory(wardrobe.Bottoms);
     } else if (category === "Footwear") {
-      setFilteredCategory(wardrobe.Footwear);
+      setFilteredCategory(wardrobe.Footwears);
     } else if (category === "Accessories") {
       setFilteredCategory(wardrobe.Accessories);
     }

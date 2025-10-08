@@ -1,4 +1,22 @@
 import chroma from "chroma-js";
+import { useMemo } from "react";
+import wardrobe from "../../data/outfits";
+
+// Hook: Generate outfits, filtered by style if provided
+export function useOutfits(preferredStyle) {
+  return useMemo(() => {
+    const allOutfits = generateOutfits(wardrobe);
+
+    // If a style is chosen, filter
+    const filtered = preferredStyle
+      ? allOutfits.filter((o) => o.style === preferredStyle)
+      : allOutfits;
+
+    // Shuffle and take best 3
+    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 3);
+  }, [preferredStyle]); // ✅ re-run when preferredStyle changes
+}
 
 function colorScore(c1, c2) {
   try {
@@ -12,21 +30,20 @@ function colorScore(c1, c2) {
   }
 }
 
+
+
 function isStyleMatch(top, bottom, shoe) {
-  // All must share the same style
   return top.style === bottom.style && top.style === shoe.style;
 }
 
-export function generateOutfits(wardrobe) {
+function generateOutfits(wardrobe) {
   const outfits = [];
 
   wardrobe.Tops.forEach((top) => {
     wardrobe.Bottoms.forEach((bottom) => {
       wardrobe.Footwears.forEach((shoe) => {
-        // 1️⃣ Style filter
         if (!isStyleMatch(top, bottom, shoe)) return;
 
-        // 2️⃣ Color compatibility (average % match of all pairs)
         const scores = [
           colorScore(top.color, bottom.color),
           colorScore(bottom.color, shoe.color),
@@ -38,12 +55,11 @@ export function generateOutfits(wardrobe) {
         outfits.push({
           items: [top, bottom, shoe],
           style: top.style,
-          score: avgScore, // percent 0–100
+          score: avgScore,
         });
       });
     });
   });
 
-  // Rank by score (higher % = better match)
-  return outfits.sort((a, b) => b.score - a.score);
+  return outfits.sort((a, b) => b.score - a.score); // higher % first
 }

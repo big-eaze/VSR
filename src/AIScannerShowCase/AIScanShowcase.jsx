@@ -75,7 +75,7 @@ export default function AIScannerShowcase() {
                bg-gray-900/60 backdrop-blur-xl border border-[#f04e23]/50
                shadow-lg shadow-black/30 transition-all duration-300"
           >
-            <span  className="relative z-10">🚀 Begin Styling</span>
+            <span className="relative z-10">🚀 Begin Styling</span>
 
             {/* Animated gradient pulse */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#f04e23] via-[#A0552D] to-[#f04e23] 
