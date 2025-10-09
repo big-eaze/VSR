@@ -66,6 +66,7 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
+
               <input
                 type="password"
                 placeholder="Password"
@@ -74,6 +75,7 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
+
               <input
                 type="confirm password"
                 placeholder="confirm Password"
@@ -82,6 +84,7 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
+
             </>
           ) : (
             <>
@@ -94,6 +97,7 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
+
               <input
                 type="password"
                 placeholder="Password"
@@ -102,6 +106,7 @@ export default function AuthModal() {
                 required
                 className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-white"
               />
+              
               <div className="flex items-center text-sm text-white ">
                 <input type="checkbox" className=" accent-[#A0552D] w-4 h-4 mr-2" />
                 <p>Remember me </p>

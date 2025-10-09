@@ -126,6 +126,10 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
+                {
+                  service.title === "Virtual Try-On" &&
+                  <p className="text-lg text-end mt-20 text-gray-300 group-hover:text-white font-bold">This feature is coming soon.....</p>
+                }
               </motion.div>
             ))}
           </div>

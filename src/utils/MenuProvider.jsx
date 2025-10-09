@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { MenuContext } from "./MenuContext";
+import wardrobe from "../../data/outfits";
 
 
 export function MenuProvider({ children }) {
@@ -18,6 +19,7 @@ export function MenuProvider({ children }) {
   //preferred style (user)
 
   const [preferredStyle, setPreferredStyle] = useState(null);
+  const [wardrobeOverall, setWardrobeOverall] = useState(wardrobe);
 
   return (
     <MenuContext.Provider value={{
@@ -26,7 +28,9 @@ export function MenuProvider({ children }) {
       selectedCloth,
       setSelectedCloth,
       preferredStyle,
-      setPreferredStyle
+      setPreferredStyle,
+      wardrobeOverall,
+      setWardrobeOverall
     }}
     >
       {children}

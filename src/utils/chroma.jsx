@@ -27,7 +27,7 @@ function colorScore(c1, c2) {
     return Math.max(0, Math.min(100, score)); // clamp between 0–100
   } catch {
     return 0; // invalid color = 0% match
-  }
+  };
 }
 
 
@@ -43,7 +43,6 @@ function generateOutfits(wardrobe) {
     wardrobe.Bottoms.forEach((bottom) => {
       wardrobe.Footwears.forEach((shoe) => {
         if (!isStyleMatch(top, bottom, shoe)) return;
-
         const scores = [
           colorScore(top.color, bottom.color),
           colorScore(bottom.color, shoe.color),

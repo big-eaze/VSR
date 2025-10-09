@@ -1,16 +1,16 @@
-import React, { useEffect } from "react"
-import HomePage from "./Home/HomePage"
-import WardrobePage from "./wardrobe/WardrobePage"
-import Services from "./Services/Services"
-import Contact from "./contact/Contact"
+import React, { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { MenuContext } from "./utils/MenuContext";
 
-import { Routes, Route, useLocation } from "react-router-dom"
-import { MenuContext } from "./utils/MenuContext"
-import Loader from "./components/Loader"
-import TryOn3D from "./TryOn/TryOn3D"
-import WardrobeUPL from "./wardrobe/WardrobeUPL"
-import AIScannerShowcase from "./AIScannerShowCase/AIScanShowcase"
-import OutfitGenerator from "./AIScannerShowCase/OutfitGenerator"
+import HomePage from "./Home/HomePage";
+import WardrobePage from "./wardrobe/WardrobePage";
+import Services from "./Services/Services";
+import Contact from "./contact/Contact";
+import Loader from "./components/Loader";
+import WardrobeUPL from "./wardrobe/WardrobeUPL";
+import AIScannerShowcase from "./AIScannerShowCase/AIScanShowcase";
+import OutfitGenerator from "./AIScannerShowCase/OutfitGenerator";
+import TryOnPage from "./TryOn/TryOnPage";
 
 
 function App() {
@@ -58,19 +58,12 @@ function App() {
       <Route path="/wardrobe" element={<WardrobePage />} />
       <Route path="/services" element={<Services />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/try-on" element={<TryOn3D />} />
       <Route path="/upload" element={<WardrobeUPL />} />
       <Route path="generator" element={<OutfitGenerator />} />
       <Route path="/more-abt" element={<AIScannerShowcase />} />
+      <Route path="try-on" element={<TryOnPage />} />
     </Routes>
   )
 }
 
 export default App
-
-
-//https://www.wix.com/website/templates/html/online-store/fashion-clothing/2
-
-//https://www.wix.com/website-template/view/html/2114?originUrl=https%3A%2F%2Fwww.wix.com%2Fwebsite%2Ftemplates%2Fhtml%2Fonline-store%2Ffashion-clothing%2F2&tpClick=view_button&esi=234adaa1-a59f-42c4-b8ee-bfd268c0d43a
-
-//https://www.figma.com/design/cVSqF8giCDk7idytytbKqu/Website-Redesign?node-id=0-1&p=f&t=sWBgDXvhK62DR78L-0

@@ -20,5 +20,13 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".perspective": {
+          perspective: "1000px",
+        },
+      });
+    },
+  ],
 }

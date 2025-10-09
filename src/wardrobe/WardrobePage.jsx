@@ -1,74 +1,58 @@
-import { PlusCircle, Sparkles, Shirt, BarChart } from "lucide-react"
+import { PlusCircle, Sparkles, BarChart, Trash } from "lucide-react"
 import Header from "../components/Header"
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import { MenuContext } from "../utils/MenuContext";
 import Footer from "../components/Footer";
 import AuthModal from "../Auth/AuthModal";
-import wardrobe from "../../data/outfits";
 import WRLoader from "../components/WRLoader";
-import { AnimatePresence, MotionConfig } from "framer-motion";
+import { useRemove } from "../utils/wardrobeContext";
 
 export default function WardrobePage() {
-
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
+  const [activeFilter, setActiveFilter] = React.useState("All"); // track current filter
+  const [filteredCategory, setFilteredCategory] = React.useState([]);
 
-  const { authOpen } = React.useContext(MenuContext);
-
-  const [filteredCategory, setFilteredCategory] = React.useState([
-    ...wardrobe.Tops,
-    ...wardrobe.Bottoms,
-    ...wardrobe.Footwears,
-    ...wardrobe.Accessories,
-  ]);
-  ;
+  const { authOpen, wardrobeOverall } = React.useContext(MenuContext);
+  const { removeWear } = useRemove();
 
 
-  //Pagination logic
-  const rowsperPage = 12;
-  const totalPages = Math.ceil(filteredCategory.length / rowsperPage);
-  const indexOfLastItem = currentPage * rowsperPage;
-  const indexOfFirstItem = indexOfLastItem - rowsperPage;
+  useEffect(() => {
+    if (activeFilter === "All") {
+      setFilteredCategory([
+        ...wardrobeOverall.Tops,
+        ...wardrobeOverall.Bottoms,
+        ...wardrobeOverall.Footwears,
+        ...wardrobeOverall.Accessories,
+      ]);
+    } else if (activeFilter === "Top") {
+      setFilteredCategory(wardrobeOverall.Tops);
+    } else if (activeFilter === "Bottom") {
+      setFilteredCategory(wardrobeOverall.Bottoms);
+    } else if (activeFilter === "Footwear") {
+      setFilteredCategory(wardrobeOverall.Footwears);
+    } else if (activeFilter === "Accessories") {
+      setFilteredCategory(wardrobeOverall.Accessories);
+    }
+  }, [wardrobeOverall, activeFilter]);
+
+  // Pagination logic
+  const rowsPerPage = 12;
+  const totalPages = Math.ceil(filteredCategory.length / rowsPerPage);
+  const indexOfLastItem = currentPage * rowsPerPage;
+  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
   const currentClothings = filteredCategory.slice(indexOfFirstItem, indexOfLastItem);
 
-
-
-  // Filter logic
-  const handleFilter = (category) => {
-    if (category === "All") {
-      // merge all categories
-      setFilteredCategory([
-        ...wardrobe.Tops,
-        ...wardrobe.Bottoms,
-        ...wardrobe.Footwears,
-        ...wardrobe.Accessories
-      ]);
-    } else if (category === "Top") {
-      setFilteredCategory(wardrobe.Tops);
-    } else if (category === "Bottom") {
-      setFilteredCategory(wardrobe.Bottoms);
-    } else if (category === "Footwear") {
-      setFilteredCategory(wardrobe.Footwears);
-    } else if (category === "Accessories") {
-      setFilteredCategory(wardrobe.Accessories);
-    }
-  };
-
   function handlePageClick(pageNumber) {
-    // show loader
     setLoading(true);
-
     setTimeout(() => {
       setCurrentPage(pageNumber);
       setLoading(false);
-      // optional: scroll the grid into view
       const gridTop = document.querySelector("section h2")?.getBoundingClientRect()?.top ?? 0;
       window.scrollBy({ top: gridTop - 120, behavior: "smooth" });
     }, 3000);
   }
-
-
 
   return (
     <>
@@ -86,15 +70,10 @@ export default function WardrobePage() {
             <PlusCircle className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:rotate-90" />
             <span>Add Item</span>
           </button>
-
-
         </header>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6 text-sm sm:text-base">
-
-
-          {/* Buttons wrapper */}
           <div className="flex flex-wrap gap-2">
             {[
               { label: "All", value: "All" },
@@ -106,13 +85,15 @@ export default function WardrobePage() {
               <button
                 key={filter.value}
                 onClick={() => {
-                  handleFilter(filter.value);
-                  setLoading(true);
-                  setTimeout(() => setLoading(false), 4000);
+                  setActiveFilter(filter.value);
                   setCurrentPage(1);
-
+                  setLoading(true);
+                  setTimeout(() => setLoading(false), 400);
                 }}
-                className="px-4 py-2 bg-gray-800 rounded-full hover:bg-gray-700 transition whitespace-nowrap"
+                className={`px-4 py-2 rounded-full transition whitespace-nowrap ${activeFilter === filter.value
+                  ? "bg-[#f04e23] text-white"
+                  : "bg-gray-800 hover:bg-gray-700"
+                  }`}
               >
                 {filter.label}
               </button>
@@ -121,241 +102,97 @@ export default function WardrobePage() {
         </div>
 
         {/* Wardrobe Grid */}
-        <section className="">
+        <section>
           <h2 className="text-xl font-bold mb-4">Your Items</h2>
-
-          {/* relative wrapper so overlay only covers this region */}
           <div className="relative">
-
-            {/* Overlay loader — only shown while loading */}
             {loading ? (
-              <div
-                className="w-full h-96 flex items-center justify-center  rounded-xl"
-                aria-busy="true"
-              >
+              <div className="w-full h-96 flex items-center justify-center rounded-xl" aria-busy="true">
                 <WRLoader />
               </div>
-            ) :
-              (
-                <>
-                  <motion.div
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6"
-                    variants={{
-                      hidden: { opacity: 0 },
-                      show: {
-                        opacity: 1,
-                        transition: {
-                          staggerChildren: 0.08, // delay between each card
+            ) : (
+              <>
+                <motion.div
+                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.08 },
+                    },
+                  }}
+                  initial="hidden"
+                  animate="show"
+                >
+                  {currentClothings.map((item) => (
+                    <motion.div
+                      key={item.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 40, scale: 0.9 },
+                        show: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: { type: "spring", stiffness: 120, damping: 12 },
                         },
-                      },
-                    }}
-                    initial="hidden"
-                    animate="show"
-                  >
-                    {currentClothings.map((item) => (
-                      <motion.div
-                        key={item.id}
-                        variants={{
-                          hidden: { opacity: 0, y: 40, scale: 0.9 },
-                          show: {
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                            transition: { type: "spring", stiffness: 120, damping: 12 },
-                          },
-                        }}
-                        whileHover={{
-                          scale: 1.05,
-                          rotate: 1,
-                          transition: { type: "spring", stiffness: 200 },
-                        }}
-                        className="bg-gray-800/60 h-96 rounded-xl shadow-lg overflow-hidden cursor-pointer"
-                      >
-                        <motion.img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-72 object-cover"
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.4 }}
-                        />
+                      }}
+                      whileHover={{
+                        scale: 1.05,
+                        rotate: 1,
+                        transition: { type: "spring", stiffness: 200 },
+                      }}
+                      className="bg-gray-800/60 h-96 rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                    >
+                      <motion.img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-72 object-cover"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                      <div className="flex items-center justify-between">
                         <div className="p-3">
                           <h3 className="font-semibold">{item.name}</h3>
                           <p className="text-sm text-gray-400">
                             {item.category} • {item.color}
                           </p>
                         </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                  {/* Pagination */}
-                  <div>
-                    <div className="flex justify-center mt-8 space-x-2">
-                      {[...Array(totalPages)].map((_, index) => (
-                        <button
-                          key={index + 1}
-                          onClick={() => {
-                            handlePageClick(index + 1);
-                            window.scrollTo({
-                              top: 0,
-                              behaviour: "smooth"
-                            })
-                          }}
-                          className={`px-3 py-1 rounded-full ${currentPage === index + 1
-                            ? "bg-[#f04e23] text-white"
-                            : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                            } transition`}
+                        <div
+                          onClick={() => removeWear(item.id, item.category)}
+                          className="pr-4 w-10 h-10 text-white  hover:text-[#f04e23] transition"
                         >
-                          {index + 1}
-                        </button>
-                      ))}
-                    </div>
-                    <div>
-                      <p className="text-center text-sm text-gray-400 mt-2">
-                        Page {currentPage} of {totalPages} • {filteredCategory.length} items total
-                      </p>
-                    </div>
-                  </div>
-                </>
-              )
-            }
-          </div>
-
-
-        </section>
-
-
-        {/* Outfit Suggestions */}
-        <section className="mt-16">
-          <h2 className="flex items-center gap-2 text-2xl font-bold mb-8">
-            <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
-            Suggested Outfits
-          </h2>
-
-          {/* Parent container with stagger effect */}
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.25 } },
-            }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {[
-              {
-                tag: "Casual",
-                tagColor: "bg-yellow-500/20 text-yellow-400",
-                title: "Casual Fit",
-              },
-              {
-                tag: "Night Out",
-                tagColor: "bg-pink-500/20 text-pink-400",
-                title: "Night Out",
-              },
-              {
-                tag: "Formal",
-                tagColor: "bg-green-500/20 text-green-400",
-                title: "Formal Look",
-              },
-            ].map((outfit, i) => (
-              <motion.div
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 50, scale: 0.9 },
-                  show: {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: { duration: 0.8, ease: "easeOut" },
-                  },
-                }}
-                whileHover={{ rotateX: 5, rotateY: -5, scale: 1.02 }}
-                className="group relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500"
-              >
-                {/* Category tag with glow pulse */}
-                <span
-                  className={`${outfit.tagColor} absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full animate-pulse`}
-                >
-                  {outfit.tag}
-                </span>
-
-                {/* Title */}
-                <p className="text-lg font-semibold mb-4 group-hover:text-yellow-300 transition">
-                  {outfit.title}
-                </p>
-
-                {/* Outfit images with staggered zoom-in */}
-                <div className="flex gap-3">
-                  {["/matching1.jpg", "/matching2.jpg", "/matching3.jpg"].map(
-                    (src, idx) => (
-                      <motion.img
-                        key={idx}
-                        src={src}
-                        className="w-20 h-20 rounded-xl object-cover border border-gray-700"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{
-                          opacity: 1,
-                          scale: 1,
-                          transition: { delay: idx * 0.2, duration: 0.6 },
-                        }}
-                        whileHover={{ scale: 1.1 }}
-                      />
-                    )
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </section>
-
-
-
-        {/* Wardrobe Insights */}
-        <section className="mt-12">
-          <h2 className="flex items-center gap-2 text-xl font-bold mb-4">
-            <BarChart className="w-5 h-5 text-teal-400" />
-            Wardrobe Insights
-          </h2>
-          <motion.div initial="hidden"
-            whileInView="show"
-            variants={{
-              hidden: {},
-              show: { transition: { staggerChildren: 0.3 } }, // bars animate one after another
-            }} className="flex flex-col space-y-2 sm:space-y-4 bg-black/50 sm:py-5 py-3 px-5 sm:px-8 rounded-lg">
-            <p className="text-[10px] sm:text-sm font-semibold text-white drop-shadow-md whitespace-nowrap">
-              👕40% Tops - 👖30% Bottoms - 👟20% Shoes - 🎒10% Others
-            </p>
-
-            <div
-              className="w-full bg-gray-700 h-3  rounded-full overflow-hidden flex"
-            >
-              {[
-                { w: "40%", color: "bg-teal-500" },
-                { w: "30%", color: "bg-indigo-500" },
-                { w: "20%", color: "bg-pink-500" },
-                { w: "10%", color: "bg-yellow-500" },
-              ].map((bar, i) => (
-                <motion.div
-                  key={i}
-                  className={`${bar.color} flex-none flex items-center justify-start overflow-ellipsis`}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: bar.w }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                >
-
+                          <Trash className="w-full h-full" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </motion.div>
-              ))}
-            </div>
-          </motion.div>
 
-
-        </section >
-      </div >
-      {authOpen && (<AuthModal />)
-      }
-
-
+                {/* Pagination */}
+                <div>
+                  <div className="flex justify-center mt-8 space-x-2">
+                    {[...Array(totalPages)].map((_, index) => (
+                      <button
+                        key={index + 1}
+                        onClick={() => handlePageClick(index + 1)}
+                        className={`px-3 py-1 rounded-full ${currentPage === index + 1
+                          ? "bg-[#f04e23] text-white"
+                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                          } transition`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-center text-sm text-gray-400 mt-2">
+                    Page {currentPage} of {totalPages} • {filteredCategory.length} items total
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      </div>
+      {authOpen && <AuthModal />}
     </>
-  )
+  );
 }

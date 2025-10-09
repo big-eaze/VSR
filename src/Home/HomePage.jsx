@@ -136,7 +136,7 @@ const HomePage = () => {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold">
+            <h2 className="text-3xl sm:text-4xl text-center font-bold">
               Ready to find your next outfit?
             </h2>
           </motion.div>
@@ -146,7 +146,7 @@ const HomePage = () => {
             transition={{ duration: 1.5 }}
             viewport={{ once: true }}
           >
-            <p className="mt-4 text-md sm:text-lg">
+            <p className="mt-4 text-md text-center sm:text-lg">
               Start matching your wardrobe with AI-powered suggestions today.
             </p>
           </motion.div>
