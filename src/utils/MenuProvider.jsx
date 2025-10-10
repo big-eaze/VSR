@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuContext } from "./MenuContext";
 import wardrobe from "../../data/outfits";
 
@@ -19,7 +19,21 @@ export function MenuProvider({ children }) {
   //preferred style (user)
 
   const [preferredStyle, setPreferredStyle] = useState(null);
-  const [wardrobeOverall, setWardrobeOverall] = useState(wardrobe);
+
+  const [wardrobeOverall, setWardrobeOverall] = useState(() => {
+    try {
+      const saved = localStorage.getItem("wardrobe");
+      return saved ? JSON.parse(saved) : wardrobe;
+    } catch (error) {
+      console.error("Invalid wardrobe in localStorage, resetting:", error);
+      localStorage.removeItem("wardrobe");
+      return wardrobe;
+    }
+  }
+  );
+  useEffect(() => {
+    localStorage.setItem("wardrobe", JSON.stringify(wardrobeOverall));
+  }, [wardrobeOverall]);
 
   return (
     <MenuContext.Provider value={{

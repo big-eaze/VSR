@@ -58,7 +58,8 @@ export default function AIScannerShowcase() {
               >
                 <div className="flex justify-center mb-4">{step.icon}</div>
                 <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
-                <p className="text-gray-400 text-sm">{step.desc}</p>
+                <p className="text-gray-400 text-sm mb-2">{step.desc}</p>
+                <span className="text-end text-lg font-bold">{index === 3 && "Coming soon..."}</span>
               </motion.div>
             ))}
           </div>
