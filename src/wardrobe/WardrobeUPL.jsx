@@ -9,6 +9,8 @@ import { MenuContext } from "../utils/MenuContext";
 
 export default function WardrobeUploadPage() {
   const [preview, setPreview] = useState(null);
+  const [error, setError] = useState(null);
+
   const [recentUploads, setRecentUploads] = useState(() => {
     const saved = localStorage.getItem("recent",)
     return saved ? JSON.parse(saved) : [];
@@ -26,16 +28,33 @@ export default function WardrobeUploadPage() {
   const { setWardrobeOverall } = useContext(MenuContext);
 
 
-  function handleFileChange(e) {
+  async function handleFileChange(e) {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result);
-      }
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    // check file size (bytes → MB)
+    const sizeInMB = file.size / (1024 * 1024);
+    if (sizeInMB > 1) { // limit to 1MB for safety
+      setError("File is too large! Please upload an image under 1 MB.");
+      setPreview(null);
+      return;
     }
-  };
+
+    setError(null); // clear previous error
+    const base64 = await fileToBase64(file);
+    setPreview(base64);
+  }
+
+
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(file);
+    });
+  }
 
 
   function removePreview() {
@@ -122,7 +141,8 @@ export default function WardrobeUploadPage() {
     uploadDetails.name &&
     uploadDetails.style &&
     uploadDetails.color &&
-    uploadDetails.category;
+    uploadDetails.category &&
+    !error;
 
 
 
@@ -237,6 +257,8 @@ export default function WardrobeUploadPage() {
                 >
                   <X className="h-5 w-5" />
                 </button>
+
+
                 {/* Action button */}
                 {preview && (
 
@@ -249,7 +271,6 @@ export default function WardrobeUploadPage() {
                   </button>
                 )}
               </form>
-
             </div>
           )}
 

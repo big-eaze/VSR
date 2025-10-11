@@ -4,7 +4,7 @@ import { MenuContext } from "./MenuContext";
 export function useRemove() {
   const { setWardrobeOverall } = useContext(MenuContext);
 
-  const removeWear = (wearId, category) => {
+  function removeWear(wearId, category) {
     const map = {
       top: "Tops",
       bottom: "Bottoms",
@@ -24,3 +24,4 @@ export function useRemove() {
 
   return { removeWear };
 }
+
