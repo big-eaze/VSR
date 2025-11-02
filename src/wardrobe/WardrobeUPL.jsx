@@ -257,9 +257,6 @@ export default function WardrobeUploadPage() {
                 >
                   <X className="h-5 w-5" />
                 </button>
-
-
-                {/* Action button */}
                 {preview && (
 
                   <button

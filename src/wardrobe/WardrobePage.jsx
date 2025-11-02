@@ -191,7 +191,91 @@ export default function WardrobePage() {
             )}
           </div>
         </section>
+        <section className="mt-24 text-white">
+          {/* --- FULL-WIDTH ANGLED SNAPSHOT --- */}
+          <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] py-24 bg-[url('/fashion-texture.jpg')] bg-cover bg-center">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
+
+            <h2 className="relative text-3xl md:text-4xl font-bold text-center mb-16 tracking-tight uppercase z-10">
+              Your Style Snapshot
+            </h2>
+
+            <div className="relative grid grid-cols-2 md:grid-cols-4 text-center z-10">
+              {[
+                { label: "Tops", value: wardrobeOverall.Tops.length },
+                { label: "Bottoms", value: wardrobeOverall.Bottoms.length },
+                { label: "Shoes", value: wardrobeOverall.Footwears.length },
+                { label: "Accessories", value: wardrobeOverall.Accessories.length },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden flex flex-col justify-center items-center 
+          h-56 border-x border-white/10 bg-white/10 backdrop-blur-xl 
+          hover:bg-white/20 hover:scale-[1.02] transition-all duration-500"
+                  style={{
+                    clipPath: "polygon(0 0, 100% 5%, 100% 95%, 0% 100%)",
+                  }}
+                >
+                  <span className="text-5xl font-extrabold text-[#f04e23] drop-shadow-lg">
+                    {stat.value}
+                  </span>
+                  <p className="uppercase text-gray-300 mt-2 tracking-widest text-sm">
+                    {stat.label}
+                  </p>
+
+                  <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#f04e23] to-transparent opacity-70"></div>
+                </div>
+              ))}
+            </div>
+
+            {/* overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 pointer-events-none"></div>
+          </div>
+
+          {/* --- FULL-WIDTH GLASS MIX & MATCH --- */}
+          <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] mt-32 overflow-hidden">
+            <div className="relative h-[480px] sm:h-[550px] flex flex-col sm:flex-row">
+              {/* Glass gradient background */}
+              <div className="absolute inset-0 bg-[url('/studio-bg.jpg')] bg-cover bg-center"></div>
+              <div className="absolute inset-0 bg-black/50 backdrop-blur-lg"></div>
+
+              {/* Left: Content */}
+              <div className="relative flex-1 flex flex-col justify-center items-start px-8 sm:px-20 z-10">
+                <h2 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
+                  Mix & Match<br />
+                  <span className="text-[#f04e23]">Challenge</span>
+                </h2>
+                <p className="text-gray-300 max-w-md mb-8">
+                  Let the AI stylist remix your wardrobe. Combine unexpected pieces and
+                  discover new outfit chemistry.
+                </p>
+                <button className="relative px-8 py-3 font-semibold uppercase tracking-wider overflow-hidden 
+          before:absolute before:inset-0 before:bg-[#f04e23]/90 before:translate-x-[-100%] hover:before:translate-x-0
+          before:transition-transform before:duration-500 before:ease-out 
+          border border-[#f04e23] text-white transition-all duration-300 hover:text-black">
+                  <span className="relative z-10">Try Outfit Generator</span>
+                </button>
+              </div>
+
+              {/* Right: Reflective Glass Panel */}
+              <div className="relative flex-1 flex justify-center items-center overflow-hidden">
+                <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border-l border-white/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#f04e23]/20 via-transparent to-transparent mix-blend-overlay"></div>
+
+                {/* optional image / pattern */}
+                <div className="relative z-10 text-center text-[#f04e23]/80 font-bold text-3xl tracking-wider opacity-70">
+                  ✦ Wardrobe Fusion ✦
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
       </div>
+
       {authOpen && <AuthModal />}
     </>
   );
