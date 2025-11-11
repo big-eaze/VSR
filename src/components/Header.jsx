@@ -167,22 +167,7 @@ const Header = () => {
               {item.label}
             </NavLink>
           ))}
-          {!userPrivate ? (
-            <Link
-              to="/auth"
-              className="text-[#f04e23] font-semibold mt-4"
-              onClick={() => setIsOpen(false)}
-            >
-              Log in
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="text-[#f04e23] font-semibold mt-4"
-            >
-              Log Out
-            </button>
-          )}
+
         </nav>
       </div>
     </header>
