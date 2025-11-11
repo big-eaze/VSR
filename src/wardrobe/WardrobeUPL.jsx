@@ -7,14 +7,28 @@ import { FaShoePrints } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MenuContext } from "../utils/MenuContext";
 
+
 export default function WardrobeUploadPage() {
   const [preview, setPreview] = useState(null);
+  const [userPreview, setUserPreview] = useState(null);
   const [error, setError] = useState(null);
 
   const [recentUploads, setRecentUploads] = useState(() => {
-    const saved = localStorage.getItem("recent",)
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem("recent");
+      const userSaved = localStorage.getItem("user-recent");
+      const user = localStorage.getItem("user");
+      if (saved && !user) return JSON.parse(saved) || [];
+      if (user) return JSON.parse(userSaved) || [];
+      return [];
+    } catch {
+      return [];
+    }
   });
+
+
+  const user = localStorage.getItem("user");
+
   const [uploadDetails, setUploadDetails] = useState({
     name: "",
     style: "",
@@ -30,19 +44,28 @@ export default function WardrobeUploadPage() {
 
   async function handleFileChange(e) {
     const file = e.target.files[0];
+    const user = localStorage.getItem("user");
     if (!file) return;
 
     // check file size (bytes → MB)
     const sizeInMB = file.size / (1024 * 1024);
     if (sizeInMB > 1) { // limit to 1MB for safety
       setError("File is too large! Please upload an image under 1 MB.");
-      setPreview(null);
+      if (user) {
+        setUserPreview(null)
+      } else {
+        setPreview(null);
+      }
       return;
     }
 
     setError(null); // clear previous error
     const base64 = await fileToBase64(file);
-    setPreview(base64);
+    if (user) {
+      setUserPreview(base64)
+    } else {
+      setPreview(base64);
+    }
   }
 
 
@@ -58,66 +81,61 @@ export default function WardrobeUploadPage() {
 
 
   function removePreview() {
-    if (preview) {
-      URL.revokeObjectURL(preview);
-    }
     setPreview(null);
+    setUserPreview(null);
   };
 
   function saveToWardrobe(e) {
     e.preventDefault();
+    const user = localStorage.getItem("user");
+    const imageToSave = user ? userPreview : preview;
 
-    if (preview) {
-      setRecentUploads([preview, ...recentUploads.slice(0, 4)]);
-      setPreview(null);
+    if (!imageToSave) return;
+
+    const newItem = {
+      id: crypto.randomUUID(),
+      name: uploadDetails.name,
+      style: uploadDetails.style,
+      season: "all",
+      color: uploadDetails.color,
+      image: imageToSave,
+      category: uploadDetails.category.toLowerCase(),
     };
 
-
-    if (preview && uploadDetails) {
-      const newItem = {
-        id: crypto.randomUUID(),
-        name: uploadDetails.name,
-        style: uploadDetails.style,
-        season: "all",
-        color: uploadDetails.color,
-        image: preview,
-        category: uploadDetails.category.toLowerCase(),
+    setWardrobeOverall((prev) => {
+      const map = {
+        Top: "Tops",
+        Bottom: "Bottoms",
+        Footwear: "Footwears",
+        Accessory: "Accessories",
       };
+      const key = map[uploadDetails.category];
+      if (!key) return prev;
 
-      setWardrobeOverall((prev) => {
-        const map = {
-          Top: "Tops",
-          Bottom: "Bottoms",
-          Footwear: "Footwears",
-          Accessory: "Accessories",
-        };
+      return {
+        ...prev,
+        [key]: [newItem, ...prev[key]],
+      };
+    });
 
-        const key = map[uploadDetails.category];
-        if (!key) return prev;
+    setRecentUploads((prev) => [imageToSave, ...prev.slice(0, 4)]);
+    setPreview(null);
+    setUserPreview(null);
+    setUploadDetails({
+      name: "",
+      style: "",
+      season: "",
+      color: "",
+      image: "",
+      category: "",
+    });
+  }
 
-
-        return {
-          ...prev,
-          [key]: [newItem, ...prev[key]], // add to correct category
-        };
-      });
-
-      // also update local "recent uploads" UI
-      setRecentUploads([preview, ...recentUploads.slice(0, 4)]);
-      setPreview(null);
-      setUploadDetails({
-        name: "",
-        style: "",
-        season: "",
-        color: "",
-        image: "",
-        category: "",
-      });
-    }
-  };
 
   useEffect(() => {
     localStorage.setItem("recent", JSON.stringify(recentUploads));
+    const user = localStorage.getItem("user");
+    user && localStorage.setItem("user-recent", JSON.stringify(recentUploads))
   }, [recentUploads]);
 
 
@@ -134,10 +152,12 @@ export default function WardrobeUploadPage() {
     console.log(uploadDetails);
   }
 
+  const activePreview = user ? userPreview : preview;
+
   //this logic activates/enables the save wardrobe button 
   // when all relevant fields have been filled
   const isFormComplete =
-    preview &&
+    activePreview &&
     uploadDetails.name &&
     uploadDetails.style &&
     uploadDetails.color &&
@@ -148,12 +168,16 @@ export default function WardrobeUploadPage() {
 
 
 
+
+
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br w-full from-gray-900 via-[#A0552D] to-black px-4 sm:px-6 py-5">
       {/* Header */}
       <div>
         <div className="p-1 rounded-full w-fit mb-4 sm:mb-0 hover:bg-gray-700/50">
-          <Link to="/" className=" ">
+          <Link to={"/wardrobe"} >
             <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
         </div>
@@ -172,7 +196,7 @@ export default function WardrobeUploadPage() {
       {/* Upload Section */}
       <div className="flex flex-col items-center justify-center">
         <div className="w-full max-w-md">
-          {!preview ? (
+          {!activePreview ? (
             <div className="flex flex-col items-center justify-center text-center rounded-2xl border-2 border-dashed border-transparent bg-white p-8 shadow-lg">
               <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50">
                 <Upload className="h-10 w-10 text-indigo-500" />
@@ -184,9 +208,8 @@ export default function WardrobeUploadPage() {
                 Take a photo or choose one from storage.
               </p>
 
-              {/* Two Buttons */}
+
               <div className="mt-6 flex gap-3">
-                {/* Camera trigger */}
                 <label
                   htmlFor="camera-input"
                   className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1 text-sm text-indigo-600 shadow-sm cursor-pointer hover:bg-indigo-100"
@@ -194,7 +217,7 @@ export default function WardrobeUploadPage() {
                   <Camera className="h-4 w-4" /> Camera
                 </label>
 
-                {/* Gallery trigger */}
+
                 <label
                   htmlFor="gallery-input"
                   className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-600 shadow-sm cursor-pointer hover:bg-gray-200"
@@ -206,7 +229,7 @@ export default function WardrobeUploadPage() {
           ) : (
             <div className="relative animate-fadeIn">
               <img
-                src={preview}
+                src={userPreview ? userPreview : preview}
                 alt="Preview"
                 className="h-60 w-full rounded-xl object-cover shadow-md"
               />
@@ -256,17 +279,7 @@ export default function WardrobeUploadPage() {
                   className="absolute top-3 right-3 rounded-full bg-white/80 p-2 text-gray-600 shadow hover:bg-white"
                 >
                   <X className="h-5 w-5" />
-                </button>
-                {preview && (
-
-                  <button
-                    onClick={saveToWardrobe}
-                    disabled={!isFormComplete}
-                    className={`mt-6 w-full rounded-xl bg-indigo-600 px-4 py-3 text-white font-medium shadow-md  flex items-center justify-center gap-2 ${isFormComplete ? "transition hover:bg-indigo-700" : "disabled:opacity-50 cursor-not-allowed"} `}
-                  >
-                    <CheckCircle2 className="h-5 w-5" /> Save to Wardrobe
-                  </button>
-                )}
+                </button> 
               </form>
             </div>
           )}
@@ -288,6 +301,18 @@ export default function WardrobeUploadPage() {
             className="hidden"     // opens gallery
             onChange={handleFileChange}
           />
+          {activePreview && (
+            <button
+              onClick={saveToWardrobe}
+              disabled={!isFormComplete}
+              className={`mt-6 w-full rounded-xl bg-indigo-600 px-4 py-3 text-white font-medium shadow-md flex items-center justify-center gap-2 ${isFormComplete
+                  ? "transition hover:bg-indigo-700"
+                  : "disabled:opacity-50 cursor-not-allowed"
+                }`}
+            >
+              <CheckCircle2 className="h-5 w-5" /> Save to Wardrobe
+            </button>
+          )}
 
 
         </div>

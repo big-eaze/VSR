@@ -15,7 +15,6 @@ const HomePage = () => {
     <div>
       <Header />
       <div className="w-full min-h-screen bg-[#0D0D0D] text-gray-100">
-        {/* ================= HERO ================= */}
         <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden">
           <motion.div
             initial={{ opacity: 0, y: -50 }}
@@ -31,15 +30,14 @@ const HomePage = () => {
               seconds — powered by VSA.
             </p>
             <button className="mt-8 px-8 py-3 bg-[#f04e23] hover:bg-[#d13d18] text-white font-semibold rounded-full shadow-lg transition">
-              <Link to="/upload">Try It Now</Link>
+              <Link to="/upload">upload your wears</Link>
             </button>
           </motion.div>
 
-          {/* soft light texture overlay */}
+       
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
         </section>
 
-        {/* ================= HOW IT WORKS ================= */}
         <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#1A0D08] to-[#120907] text-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <motion.h2
@@ -89,7 +87,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* ================= SMART SUGGESTIONS ================= */}
         <section className="relative py-28 bg-gradient-to-b from-[#120907] via-[#1F1009] to-[#2C150C] overflow-hidden">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <motion.h2
@@ -147,7 +144,6 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* ================= WHY CHOOSE US ================= */}
         <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#3B1E12] to-[#1A1A1A] text-white">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-16">
@@ -188,7 +184,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        {/* ================= CTA + STATS ================= */}
+
         <section className="relative py-24 bg-gradient-to-br from-[#f04e23] via-[#A0552D] to-[#3B1E12] text-white text-center overflow-hidden">
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
@@ -202,7 +198,7 @@ const HomePage = () => {
             Discover your perfect outfit — powered by AI and your unique wardrobe.
           </p>
           <button
-            onClick={() => navigate("/upload")}
+            onClick={() => navigate("/more-abt")}
             className="px-10 py-4 bg-white text-[#f04e23] rounded-full font-semibold shadow-lg hover:scale-105 transition"
           >
             Try It Free

@@ -18,6 +18,7 @@ export function useOutfits(preferredStyle) {
   }, [preferredStyle]); // ✅ re-run when preferredStyle changes
 }
 
+
 function colorScore(c1, c2) {
   try {
     const distance = chroma.distance(c1.toLowerCase(), c2.toLowerCase());
@@ -29,8 +30,6 @@ function colorScore(c1, c2) {
     return 0; // invalid color = 0% match
   };
 }
-
-
 
 function isStyleMatch(top, bottom, shoe) {
   return top.style === bottom.style && top.style === shoe.style;

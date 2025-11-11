@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import AuthModal from "../Auth/AuthModal";
 import WRLoader from "../components/WRLoader";
 import { useRemove } from "../utils/wardrobeContext";
+import { useNavigate } from "react-router-dom";
 
 export default function WardrobePage() {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -14,26 +15,27 @@ export default function WardrobePage() {
   const [activeFilter, setActiveFilter] = React.useState("All"); // track current filter
   const [filteredCategory, setFilteredCategory] = React.useState([]);
 
+  const navigation = useNavigate();
+
   const { authOpen, wardrobeOverall } = React.useContext(MenuContext);
   const { removeWear } = useRemove();
-
 
   useEffect(() => {
     if (activeFilter === "All") {
       setFilteredCategory([
-        ...wardrobeOverall.Tops,
-        ...wardrobeOverall.Bottoms,
-        ...wardrobeOverall.Footwears,
-        ...wardrobeOverall.Accessories,
+        ...(wardrobeOverall?.Tops || []),
+        ...(wardrobeOverall?.Bottoms || []),
+        ...(wardrobeOverall?.Footwears || []),
+        ...(wardrobeOverall?.Accessories || []),
       ]);
     } else if (activeFilter === "Top") {
-      setFilteredCategory(wardrobeOverall.Tops);
+      setFilteredCategory(wardrobeOverall?.Tops || []);
     } else if (activeFilter === "Bottom") {
-      setFilteredCategory(wardrobeOverall.Bottoms);
+      setFilteredCategory(wardrobeOverall?.Bottoms || []);
     } else if (activeFilter === "Footwear") {
-      setFilteredCategory(wardrobeOverall.Footwears);
+      setFilteredCategory(wardrobeOverall?.Footwears || []);
     } else if (activeFilter === "Accessories") {
-      setFilteredCategory(wardrobeOverall.Accessories);
+      setFilteredCategory(wardrobeOverall?.Accessories || []);
     }
   }, [wardrobeOverall, activeFilter]);
 
@@ -54,14 +56,17 @@ export default function WardrobePage() {
     }, 3000);
   }
 
+  console.log(wardrobeOverall);
+
   return (
     <>
       <Header />
-      <div className="pt-32 min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white p-3 sm:p-6">
-        {/* Header */}
+      <div className="pt-32 min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-3 overflow-hidden sm:px-6">
+
         <header className="flex items-center justify-between mb-8">
           <h1 className="sm:text-3xl text-xl font-extrabold">👕 Your Wardrobe</h1>
-          <button className="group flex items-center gap-2 px-5 py-2.5 text-sm sm:text-base font-semibold rounded-xl 
+          <button onClick={() => navigation("/upload")}
+            className="group flex items-center gap-2 px-5 py-2.5 text-sm sm:text-base font-semibold rounded-xl 
             bg-gradient-to-r from-[#f04e23] to-[#c93c17] 
             text-white shadow-md hover:shadow-lg 
             hover:from-[#c93c17] hover:to-[#f04e23] 
@@ -72,7 +77,7 @@ export default function WardrobePage() {
           </button>
         </header>
 
-        {/* Filters */}
+
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6 text-sm sm:text-base">
           <div className="flex flex-wrap gap-2">
             {[
@@ -101,7 +106,6 @@ export default function WardrobePage() {
           </div>
         </div>
 
-        {/* Wardrobe Grid */}
         <section>
           <h2 className="text-xl font-bold mb-4">Your Items</h2>
           <div className="relative">
@@ -157,10 +161,13 @@ export default function WardrobePage() {
                           </p>
                         </div>
                         <div
-                          onClick={() => removeWear(item.id, item.category)}
-                          className="pr-4 w-10 h-10 text-white  hover:text-[#f04e23] transition"
+                          className="pr-4 text-white  hover:text-[#f04e23] transition"
                         >
-                          <Trash className="w-full h-full" />
+                          <Trash onClick={() => {
+                            removeWear(item.id, item.category)
+                            console.log("removed")
+                          }
+                          } size={20} />
                         </div>
                       </div>
                     </motion.div>
@@ -191,8 +198,9 @@ export default function WardrobePage() {
             )}
           </div>
         </section>
+
+
         <section className="mt-24 text-white">
-          {/* --- FULL-WIDTH ANGLED SNAPSHOT --- */}
           <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] py-24 bg-[url('/fashion-texture.jpg')] bg-cover bg-center">
             <div className="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
 
@@ -202,10 +210,10 @@ export default function WardrobePage() {
 
             <div className="relative grid grid-cols-2 md:grid-cols-4 text-center z-10">
               {[
-                { label: "Tops", value: wardrobeOverall.Tops.length },
-                { label: "Bottoms", value: wardrobeOverall.Bottoms.length },
-                { label: "Shoes", value: wardrobeOverall.Footwears.length },
-                { label: "Accessories", value: wardrobeOverall.Accessories.length },
+                { label: "Tops", value: wardrobeOverall?.Tops?.length || 0 },
+                { label: "Bottoms", value: wardrobeOverall?.Bottoms?.length || 0 },
+                { label: "Shoes", value: wardrobeOverall?.Footwears?.length || 0 },
+                { label: "Accessories", value: wardrobeOverall?.Accessories?.length || 0 },
               ].map((stat, i) => (
                 <div
                   key={i}
@@ -228,18 +236,21 @@ export default function WardrobePage() {
               ))}
             </div>
 
-            {/* overlay gradient */}
+
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 pointer-events-none"></div>
           </div>
 
-          {/* --- FULL-WIDTH GLASS MIX & MATCH --- */}
-          <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw] mt-32 overflow-hidden">
+
+
+
+
+          <div className="relative w-screen left-1/2 right-1/2 -mx-[50vw]  overflow-hidden">
             <div className="relative h-[480px] sm:h-[550px] flex flex-col sm:flex-row">
-              {/* Glass gradient background */}
+
               <div className="absolute inset-0 bg-[url('/studio-bg.jpg')] bg-cover bg-center"></div>
               <div className="absolute inset-0 bg-black/50 backdrop-blur-lg"></div>
 
-              {/* Left: Content */}
+
               <div className="relative flex-1 flex flex-col justify-center items-start px-8 sm:px-20 z-10">
                 <h2 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
                   Mix & Match<br />
@@ -250,19 +261,18 @@ export default function WardrobePage() {
                   discover new outfit chemistry.
                 </p>
                 <button className="relative px-8 py-3 font-semibold uppercase tracking-wider overflow-hidden 
-          before:absolute before:inset-0 before:bg-[#f04e23]/90 before:translate-x-[-100%] hover:before:translate-x-0
-          before:transition-transform before:duration-500 before:ease-out 
-          border border-[#f04e23] text-white transition-all duration-300 hover:text-black">
+                  before:absolute before:inset-0 before:bg-[#f04e23]/90 before:translate-x-[-100%] hover:before:translate-x-0
+                  before:transition-transform before:duration-500 before:ease-out 
+                  border border-[#f04e23] text-white transition-all duration-300 hover:text-black">
                   <span className="relative z-10">Try Outfit Generator</span>
                 </button>
               </div>
 
-              {/* Right: Reflective Glass Panel */}
               <div className="relative flex-1 flex justify-center items-center overflow-hidden">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border-l border-white/20"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#f04e23]/20 via-transparent to-transparent mix-blend-overlay"></div>
 
-                {/* optional image / pattern */}
+
                 <div className="relative z-10 text-center text-[#f04e23]/80 font-bold text-3xl tracking-wider opacity-70">
                   ✦ Wardrobe Fusion ✦
                 </div>
@@ -270,13 +280,10 @@ export default function WardrobePage() {
             </div>
           </div>
         </section>
-
-
-
-
       </div>
 
       {authOpen && <AuthModal />}
+      <Footer />
     </>
   );
 }

@@ -13,8 +13,8 @@ export default function Contact() {
     <>
       <Header />
       <section className="min-h-screen relative bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white pt-32 py-24">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          {/* Section Heading */}
+        <div className="max-w-7xl mx-auto px-3 lg:px-12">
+       
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -30,9 +30,9 @@ export default function Contact() {
             </p>
           </motion.div>
 
-          {/* Contact Grid */}
+     
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Info */}
+
             <div className="space-y-8">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
@@ -80,13 +80,12 @@ export default function Contact() {
               </motion.div>
             </div>
 
-            {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 3 }}
               viewport={{ once: true }}
-              className="bg-gray-900/50 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-800">
+              className="bg-gray-900/50 backdrop-blur-md p-4 md:p-8 rounded-2xl shadow-xl border border-gray-800">
               <form className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold mb-2">

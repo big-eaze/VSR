@@ -51,12 +51,12 @@ export default function StyleSelector() {
         ${preferredStyle === style.key ? "border-white/40" : "border-white/10"}
       `}
         >
-          {/* Glow Background */}
+    
           <div
             className={`absolute inset-0 bg-gradient-to-r ${style.gradient} opacity-70 blur-2xl`}
           ></div>
 
-          {/* Content */}
+
           <div className="relative z-10 flex flex-col items-center text-center space-y-4">
             <div className="p-4 bg-black/40 rounded-2xl shadow-inner">
               {style.icon}

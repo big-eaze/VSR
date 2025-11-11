@@ -15,6 +15,7 @@ export default {
           "50%": { transform: "scaleY(1.2)", opacity: "1" },
         },
       },
+      darkMode: "class",
       animation: {
         wave: "wave 1s ease-in-out infinite",
       },

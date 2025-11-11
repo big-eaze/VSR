@@ -11,6 +11,8 @@ import WardrobeUPL from "./wardrobe/WardrobeUPL";
 import AIScannerShowcase from "./AIScannerShowCase/AIScanShowcase";
 import OutfitGenerator from "./AIScannerShowCase/OutfitGenerator";
 import TryOnPage from "./TryOn/TryOnPage";
+import AuthPage from "./Auth/AuthModal";
+import Profile from "./Profile/Profile";
 
 
 function App() {
@@ -54,6 +56,8 @@ function App() {
 
   return (
     <Routes>
+
+      <Route path="/auth" element={<AuthPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/wardrobe" element={<WardrobePage />} />
       <Route path="/services" element={<Services />} />
@@ -62,8 +66,12 @@ function App() {
       <Route path="generator" element={<OutfitGenerator />} />
       <Route path="/more-abt" element={<AIScannerShowcase />} />
       <Route path="try-on" element={<TryOnPage />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   )
 }
 
 export default App
+
+
+

@@ -1,5 +1,9 @@
 import React, { useContext } from "react";
 import { MenuContext } from "./MenuContext";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
+import { useNavigate } from "react-router-dom";
 
 export function useRemove() {
   const { setWardrobeOverall } = useContext(MenuContext);
@@ -8,12 +12,14 @@ export function useRemove() {
     const map = {
       top: "Tops",
       bottom: "Bottoms",
-      footwear: "Footwears",
-      accessory: "Accessories",
+      footwears: "Footwears",
+      accessories: "Accessories",
     };
 
     const key = map[category];
 
+    console.log("wear id", wearId);
+    console.log("category", category);
     if (!key) return;
 
     setWardrobeOverall((prev) => ({
@@ -24,4 +30,8 @@ export function useRemove() {
 
   return { removeWear };
 }
+
+
+
+
 
