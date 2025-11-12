@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCircle } from "lucide-react";
+import { AlertCircle, Check, CheckCircle, CircleSlash } from "lucide-react";
 
 
 export default function FeedbackSection() {
@@ -64,22 +64,26 @@ export default function FeedbackSection() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.4 }}
-            className="text-center"
+            className="text-center px-4 sm:px-6"
           >
-            <p className="text-[#f04e23] flex items-center gap-2 text-lg font-semibold">
-              <CheckCircle /> Thank you for your feedback!
+            <p className="text-[#f04e23] flex flex-col sm:flex-row items-center justify-center gap-2 text-base sm:text-lg font-semibold flex-wrap leading-relaxed">
+              <CheckCircle className="w-6 h-6 shrink-0" />
+              <span>Thank you for your feedback!</span>
             </p>
-            <p className="text-gray-400 text-sm mt-2">
+
+            <p className="text-gray-400 text-sm sm:text-base mt-2 px-2">
               We’ll get back to you soon.
             </p>
+
             <button
               onClick={handleReset}
-              className="mt-4 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/20 transition"
+              className="mt-4 px-4 sm:px-6 py-2 text-sm sm:text-base bg-white/10 text-white rounded-lg hover:bg-white/20 transition"
             >
               Send Another
             </button>
           </motion.div>
         )}
+
 
         {status === "error" && (
           <motion.div
@@ -88,10 +92,10 @@ export default function FeedbackSection() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.4 }}
-            className="text-center"
+            className="text-center px-4 sm:px-6"
           >
-            <p className="text-red-400 text-lg font-semibold">
-              ⚠️ Please write a message before sending.
+            <p className="text-red-400 flex flex-col sm:flex-row items-center justify-center gap-2 text-base sm:text-lg font-semibold flex-wrap leading-relaxed">
+              <AlertCircle className="w-6 h-6 shrink-0" /> Please write a message before sending.
             </p>
             <button
               onClick={handleReset}

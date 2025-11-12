@@ -260,7 +260,7 @@ export default function WardrobePage() {
                   Let the AI stylist remix your wardrobe. Combine unexpected pieces and
                   discover new outfit chemistry.
                 </p>
-                <button className="relative px-8 py-3 font-semibold uppercase tracking-wider overflow-hidden 
+                <button onClick={() => { navigation("/generator") }} className="relative px-8 py-3 font-semibold uppercase tracking-wider overflow-hidden 
                   before:absolute before:inset-0 before:bg-[#f04e23]/90 before:translate-x-[-100%] hover:before:translate-x-0
                   before:transition-transform before:duration-500 before:ease-out 
                   border border-[#f04e23] text-white transition-all duration-300 hover:text-black">

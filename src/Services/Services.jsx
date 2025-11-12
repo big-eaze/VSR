@@ -162,6 +162,7 @@ export default function Services() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1 }}
               viewport={{ once: true }}
+              onClick={() => navigate("/more-abt")}
               className="bg-[#f04e23] text-white px-10 py-4 rounded-full font-semibold hover:bg-[#f04e23]/50 transition shadow-lg">
               Start Matching Now
             </motion.button>

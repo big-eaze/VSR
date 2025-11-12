@@ -6,6 +6,7 @@ import wardrobe from "../../data/outfits";
 
 export function MenuProvider({ children }) {
   const [userPrivate, setUserPrivate] = useState(null);
+  const [preferredStyle, setPreferredStyle] = useState(null);
   const [wardrobeOverall, setWardrobeOverall] = useState({
     Tops: [],
     Bottoms: [],
@@ -84,6 +85,8 @@ export function MenuProvider({ children }) {
         setWardrobeOverall,
         logout,
         loading,
+        preferredStyle,
+        setPreferredStyle
       }}
     >
       {children}

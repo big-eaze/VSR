@@ -31,7 +31,7 @@ function Profile() {
               className="w-full h-full object-cover object-top transition-all group-hover:opacity-70"
             />
 
-  
+
             <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition cursor-pointer">
               <Camera className="w-6 h-6 text-white mb-1" />
               <span className="text-sm">Change</span>
@@ -73,7 +73,7 @@ function Profile() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
       </section>
 
- 
+
       <section className="py-20 bg-gradient-to-b from-[#120907] via-[#1A0D08] to-[#2C150C]">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <motion.h2
@@ -98,19 +98,19 @@ function Profile() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:bg-white/20 shadow-lg"
+                className="bg-white/10 backdrop-blur-xl flex flex-col rounded-2xl p-6 border border-white/10 hover:bg-white/20 shadow-lg"
               >
-                <h3 className="text-4xl font-bold text-[#f04e23] mb-2">
+                <h3 className="text-4xl font-bold  text-[#f04e23] mb-2">
                   {stat.value}
                 </h3>
-                <p className="text-gray-300 text-sm">{stat.label}</p>
+                <p className="text-gray-300 text-sm overflow-hidden text-ellipsis">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-  
+
       <section className="py-24 bg-gradient-to-br from-[#2C150C] via-[#3B1E12] to-[#0D0D0D]">
         <div className="max-w-4xl mx-auto px-6">
           <motion.h2
