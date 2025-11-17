@@ -11,13 +11,27 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { authOpen } = React.useContext(MenuContext);
 
+  const [loaded, setLoaded] = useState({
+    img1: false,
+    img2: false,
+    img3: false,
+  });
+
+  const Skeleton = () => (
+    <motion.div
+      className="absolute inset-0 w-full h-full bg-gray-700/30 rounded-3xl"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    />
+  );
+
   return (
     <div>
       <Header />
       <div className="w-full min-h-screen bg-[#0D0D0D] text-gray-100">
         <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden px-6 md:px-20 py-12">
 
-          {/* Left Side */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             animate={{ opacity: 1, x: 0 }}
@@ -32,6 +46,7 @@ const HomePage = () => {
             >
               Your AI <span className="text-[#f04e23]">Stylist</span> at Home
             </motion.h1>
+
             <motion.p
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -40,6 +55,7 @@ const HomePage = () => {
             >
               Upload your wardrobe, snap a photo, and get stunning outfit matches in seconds — powered by VSA.
             </motion.p>
+
             <motion.button
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -51,106 +67,35 @@ const HomePage = () => {
           </motion.div>
 
 
+
+
           <div className="w-full h-[550px] sm:h-[650px] md:flex-1 md:h-[750px] relative mt-20 sm:mt-10 md:ml-10 flex justify-start items-center">
-
-
-            {/* Card 1 - back */}
-            <motion.div
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-5"
-              style={{ width: "100%", left: "0%" }}
-            >
-              <img
-                src="homeslide6.jpg"
-                className="absolute inset-0 w-full h-full object-right object-cover"
-              />
-            </motion.div>
-
-            {/* Card 2 - middle */}
-            <motion.div
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-10"
-              style={{ width: "100%", left: "35%" }}
-            >
-              <img
-                src="homeslide10.jpg"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </motion.div>
-
-            {/* Card 3 - front */}
-            <motion.div
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-10"
-              style={{ width: "100%", left: "70%" }}
-            >
-              <img
-                src="homeslide7.jpg"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </motion.div>
-
+            {[
+              { key: "img1", src: "homeslide6.jpg", left: "0%", z: 5, delay: 0 },
+              { key: "img2", src: "homeslide10.jpg", left: "35%", z: 10, delay: 0.2 },
+              { key: "img3", src: "homeslide7.jpg", left: "70%", z: 20, delay: 0.4 },
+            ].map((img) => (
+              <motion.div
+                key={img.key}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={loaded[img.key] ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0.95 }}
+                transition={{ duration: 0.8, delay: img.delay }}
+                className="absolute top-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden"
+                style={{ left: img.left, zIndex: img.z }}
+              >
+                <AnimatePresence>
+                  {!loaded[img.key] && <Skeleton key={img.key} />}
+                </AnimatePresence>
+                <img
+                  src={img.src}
+                  onLoad={() => setLoaded((prev) => ({ ...prev, [img.key]: true }))}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${loaded[img.key] ? "opacity-100" : "opacity-0"
+                    }`}
+                />
+              </motion.div>
+            ))}
           </div>
 
-
-
-        </section>
-
-
-
-        <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#1A0D08] to-[#120907] text-white overflow-hidden">
-          <div className="max-w-6xl mx-auto px-6 relative z-10">
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold text-center mb-16"
-            >
-              How It <span className="text-[#f04e23]">Works</span>
-            </motion.h2>
-
-            <div className="grid md:grid-cols-3 gap-10 relative">
-              {[
-                {
-                  icon: <Camera className="w-10 h-10 text-[#f04e23]" />,
-                  title: "Snap Your Wardrobe",
-                  desc: "Take photos or upload your clothes directly into your virtual wardrobe.",
-                },
-                {
-                  icon: <Sparkles className="w-10 h-10 text-[#f04e23]" />,
-                  title: "AI Outfit Matching",
-                  desc: "Our AI analyzes your wardrobe and crafts stunning outfit ideas.",
-                },
-                {
-                  icon: <Wand2 className="w-10 h-10 text-[#f04e23]" />,
-                  title: "Discover Your Style",
-                  desc: "Get personalized suggestions based on trends, vibe, and weather.",
-                },
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 60 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.3 }}
-                  viewport={{ once: true }}
-                  className="relative bg-white/10 backdrop-blur-xl rounded-3xl p-10 border border-white/10 hover:bg-white/20 transition-transform hover:-translate-y-2 shadow-lg"
-                >
-                  <div className="absolute -top-6 left-6 bg-[#f04e23] text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg">
-                    {i + 1}
-                  </div>
-                  <div className="mt-6">{step.icon}</div>
-                  <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
-                  <p className="mt-2 text-gray-300 leading-relaxed">{step.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
         </section>
 
         <section className="relative py-28 bg-gradient-to-b from-[#120907] via-[#1F1009] to-[#2C150C] overflow-hidden">
