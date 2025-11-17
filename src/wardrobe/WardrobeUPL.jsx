@@ -1,33 +1,43 @@
-
 import React, { useContext, useEffect, useState } from "react";
-import { Camera, Upload, Image as ImageIcon, X, CheckCircle2, ArrowLeft, } from "lucide-react";
-import { Shirt, Watch } from "lucide-react";
+import {
+  Camera,
+  Upload,
+  Image as ImageIcon,
+  X,
+  CheckCircle2,
+  ArrowLeft,
+  Watch
+} from "lucide-react";
+import { Shirt } from "lucide-react";
 import { GiTrousers } from "react-icons/gi";
 import { FaShoePrints } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { MenuContext } from "../utils/MenuContext";
 
-
 export default function WardrobeUploadPage() {
-  const [preview, setPreview] = useState(null);
-  const [userPreview, setUserPreview] = useState(null);
-  const [error, setError] = useState(null);
+  const { userPrivate, setWardrobeOverall } = useContext(MenuContext);
+
+  // ---------------------------------------
+  // DYNAMIC RECENT-KEY PER USER
+  // ---------------------------------------
+  const getRecentKey = (uid) => (uid ? `recent_${uid}` : "recent_guest");
 
   const [recentUploads, setRecentUploads] = useState(() => {
     try {
-      const saved = localStorage.getItem("recent");
-      const userSaved = localStorage.getItem("user-recent");
-      const user = localStorage.getItem("user");
-      if (saved && !user) return JSON.parse(saved) || [];
-      if (user) return JSON.parse(userSaved) || [];
-      return [];
+      const key = getRecentKey(userPrivate?.uid);
+      const saved = localStorage.getItem(key);
+      return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
 
-
-  const user = localStorage.getItem("user");
+  // ---------------------------------------
+  // UPLOAD & FORM STATE
+  // ---------------------------------------
+  const [preview, setPreview] = useState(null);
+  const [userPreview, setUserPreview] = useState(null);
+  const [error, setError] = useState(null);
 
   const [uploadDetails, setUploadDetails] = useState({
     name: "",
@@ -38,58 +48,48 @@ export default function WardrobeUploadPage() {
     category: ""
   });
 
+  const isUserLoggedIn = !!userPrivate;
+  const activePreview = isUserLoggedIn ? userPreview : preview;
 
-  const { setWardrobeOverall } = useContext(MenuContext);
-
-
+  // ---------------------------------------
+  // HANDLE FILE UPLOAD
+  // ---------------------------------------
   async function handleFileChange(e) {
     const file = e.target.files[0];
-    const user = localStorage.getItem("user");
     if (!file) return;
 
-    // check file size (bytes → MB)
+    // Limit image to 1MB
     const sizeInMB = file.size / (1024 * 1024);
-    if (sizeInMB > 1) { // limit to 1MB for safety
+    if (sizeInMB > 1) {
       setError("File is too large! Please upload an image under 1 MB.");
-      if (user) {
-        setUserPreview(null)
-      } else {
-        setPreview(null);
-      }
+      if (isUserLoggedIn) setUserPreview(null);
+      else setPreview(null);
       return;
     }
 
-    setError(null); // clear previous error
+    setError(null);
+
     const base64 = await fileToBase64(file);
-    if (user) {
-      setUserPreview(base64)
-    } else {
-      setPreview(base64);
-    }
+    if (isUserLoggedIn) setUserPreview(base64);
+    else setPreview(base64);
   }
-
-
 
   function fileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.onerror = (err) => reject(err);
       reader.readAsDataURL(file);
     });
   }
 
-
-  function removePreview() {
-    setPreview(null);
-    setUserPreview(null);
-  };
-
+  // ---------------------------------------
+  // SAVE ITEM TO WARDROBE
+  // ---------------------------------------
   function saveToWardrobe(e) {
     e.preventDefault();
-    const user = localStorage.getItem("user");
-    const imageToSave = user ? userPreview : preview;
 
+    const imageToSave = isUserLoggedIn ? userPreview : preview;
     if (!imageToSave) return;
 
     const newItem = {
@@ -99,7 +99,7 @@ export default function WardrobeUploadPage() {
       season: "all",
       color: uploadDetails.color,
       image: imageToSave,
-      category: uploadDetails.category.toLowerCase(),
+      category: uploadDetails.category.toLowerCase()
     };
 
     setWardrobeOverall((prev) => {
@@ -107,18 +107,21 @@ export default function WardrobeUploadPage() {
         Top: "Tops",
         Bottom: "Bottoms",
         Footwear: "Footwears",
-        Accessory: "Accessories",
+        Accessory: "Accessories"
       };
       const key = map[uploadDetails.category];
       if (!key) return prev;
 
       return {
         ...prev,
-        [key]: [newItem, ...prev[key]],
+        [key]: [newItem, ...prev[key]]
       };
     });
 
+    // Save to recent uploads
     setRecentUploads((prev) => [imageToSave, ...prev.slice(0, 4)]);
+
+    // Reset states
     setPreview(null);
     setUserPreview(null);
     setUploadDetails({
@@ -127,35 +130,35 @@ export default function WardrobeUploadPage() {
       season: "",
       color: "",
       image: "",
-      category: "",
+      category: ""
     });
   }
 
-
-  useEffect(() => {
-    localStorage.setItem("recent", JSON.stringify(recentUploads));
-    const user = localStorage.getItem("user");
-    user && localStorage.setItem("user-recent", JSON.stringify(recentUploads))
-  }, [recentUploads]);
-
-
-  function handleInputChange(e) {
-
-    const { name, value } = e.target;
-    setUploadDetails(
-      (prev) => (
-        {
-          ...prev,
-          [name]: value
-        }
-      ))
-    console.log(uploadDetails);
+  function removePreview() {
+    setPreview(null);
+    setUserPreview(null);
   }
 
-  const activePreview = user ? userPreview : preview;
+  // ---------------------------------------
+  // SAVE RECENT UPLOADS TO LOCALSTORAGE
+  // ---------------------------------------
+  useEffect(() => {
+    const key = getRecentKey(userPrivate?.uid);
+    localStorage.setItem(key, JSON.stringify(recentUploads));
+  }, [recentUploads, userPrivate]);
 
-  //this logic activates/enables the save wardrobe button 
-  // when all relevant fields have been filled
+  // ---------------------------------------
+  // HANDLE FORM INPUT
+  // ---------------------------------------
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setUploadDetails((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  }
+
+  // Button enabled state
   const isFormComplete =
     activePreview &&
     uploadDetails.name &&
@@ -164,20 +167,15 @@ export default function WardrobeUploadPage() {
     uploadDetails.category &&
     !error;
 
-
-
-
-
-
-
-
-
+  // ---------------------------------------
+  // FULL UI BELOW
+  // ---------------------------------------
   return (
     <div className="min-h-screen bg-gradient-to-br w-full from-gray-900 via-[#A0552D] to-black px-4 sm:px-6 py-5">
       {/* Header */}
       <div>
         <div className="p-1 rounded-full w-fit mb-4 sm:mb-0 hover:bg-gray-700/50">
-          <Link to={"/wardrobe"} >
+          <Link to={"/wardrobe"}>
             <ArrowLeft className="w-6 h-6 text-white" />
           </Link>
         </div>
@@ -191,7 +189,6 @@ export default function WardrobeUploadPage() {
           </p>
         </div>
       </div>
-
 
       {/* Upload Section */}
       <div className="flex flex-col items-center justify-center">
@@ -208,7 +205,6 @@ export default function WardrobeUploadPage() {
                 Take a photo or choose one from storage.
               </p>
 
-
               <div className="mt-6 flex gap-3">
                 <label
                   htmlFor="camera-input"
@@ -216,7 +212,6 @@ export default function WardrobeUploadPage() {
                 >
                   <Camera className="h-4 w-4" /> Camera
                 </label>
-
 
                 <label
                   htmlFor="gallery-input"
@@ -229,32 +224,32 @@ export default function WardrobeUploadPage() {
           ) : (
             <div className="relative animate-fadeIn">
               <img
-                src={userPreview ? userPreview : preview}
+                src={activePreview}
                 alt="Preview"
                 className="h-60 w-full rounded-xl object-cover shadow-md"
               />
+
               <form>
+                {/* Category */}
                 <div className="mt-4">
-                  <p className="mb-2 text-sm font-medium text-gray-300">Choose Category</p>
+                  <p className="mb-2 text-sm font-medium text-gray-300">
+                    Choose Category
+                  </p>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { name: "Top", value: "Tops", icon: <Shirt size={18} /> },
-                      { name: "Bottom", value: "Bottoms", icon: <GiTrousers size={18} /> },
-                      { name: "Footwear", value: "Footwears", icon: <FaShoePrints size={18} /> },
-                      { name: "Accessory", value: "Accessories", icon: < Watch size={18} /> },
+                      { name: "Top", icon: <Shirt size={18} /> },
+                      { name: "Bottom", icon: <GiTrousers size={18} /> },
+                      { name: "Footwear", icon: <FaShoePrints size={18} /> },
+                      { name: "Accessory", icon: <Watch size={18} /> }
                     ].map((c) => (
                       <div
                         key={c.name}
-                        onClick={() => {
-                          setUploadDetails(
-                            (prev) => (
-                              {
-                                ...prev,
-                                category: c.name
-                              }
-                            ))
-
-                        }}
+                        onClick={() =>
+                          setUploadDetails((prev) => ({
+                            ...prev,
+                            category: c.name
+                          }))
+                        }
                         className={`flex items-center gap-2 px-4 py-3 rounded-xl cursor-pointer transition ${uploadDetails.category === c.name
                           ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
                           : "bg-gray-800 text-gray-300 hover:bg-gray-700"
@@ -266,20 +261,44 @@ export default function WardrobeUploadPage() {
                     ))}
                   </div>
                 </div>
+
+                {/* Inputs */}
                 <div className="w-full space-y-2 mt-6">
                   <div className="w-full grid grid-cols-2 gap-3">
-                    <input onChange={handleInputChange} name="color" value={uploadDetails.color} type="text" placeholder="enter color" className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg" />
-                    <input onChange={handleInputChange} name="name" value={uploadDetails.name} type="text" placeholder="enter name" className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg" />
+                    <input
+                      onChange={handleInputChange}
+                      name="color"
+                      value={uploadDetails.color}
+                      type="text"
+                      placeholder="enter color"
+                      className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg"
+                    />
+                    <input
+                      onChange={handleInputChange}
+                      name="name"
+                      value={uploadDetails.name}
+                      type="text"
+                      placeholder="enter name"
+                      className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg"
+                    />
                   </div>
-                  <input onChange={handleInputChange} name="style" value={uploadDetails.style} type="text" placeholder="enter style e.g formal, fashion, gym-fit, casual." className="bg-gray-800 text-white w-full p-3 outline-none rounded-lg" />
+                  <input
+                    onChange={handleInputChange}
+                    name="style"
+                    value={uploadDetails.style}
+                    type="text"
+                    placeholder="enter style e.g formal, fashion, gym-fit..."
+                    className="bg-gray-800 text-white w-full p-3 outline-none rounded-lg"
+                  />
                 </div>
 
+                {/* Remove Preview */}
                 <button
                   onClick={removePreview}
                   className="absolute top-3 right-3 rounded-full bg-white/80 p-2 text-gray-600 shadow hover:bg-white"
                 >
                   <X className="h-5 w-5" />
-                </button> 
+                </button>
               </form>
             </div>
           )}
@@ -289,32 +308,31 @@ export default function WardrobeUploadPage() {
             id="camera-input"
             type="file"
             accept="image/*"
-            capture="environment"   // forces camera
+            capture="environment"
             className="hidden"
             onChange={handleFileChange}
           />
-
           <input
             id="gallery-input"
             type="file"
             accept="image/*"
-            className="hidden"     // opens gallery
+            className="hidden"
             onChange={handleFileChange}
           />
+
+          {/* Save Button */}
           {activePreview && (
             <button
               onClick={saveToWardrobe}
               disabled={!isFormComplete}
               className={`mt-6 w-full rounded-xl bg-indigo-600 px-4 py-3 text-white font-medium shadow-md flex items-center justify-center gap-2 ${isFormComplete
-                  ? "transition hover:bg-indigo-700"
-                  : "disabled:opacity-50 cursor-not-allowed"
+                ? "transition hover:bg-indigo-700"
+                : "disabled:opacity-50 cursor-not-allowed"
                 }`}
             >
               <CheckCircle2 className="h-5 w-5" /> Save to Wardrobe
             </button>
           )}
-
-
         </div>
       </div>
 
@@ -326,11 +344,14 @@ export default function WardrobeUploadPage() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {recentUploads.map((img, idx) => (
-              <div className="p-2 bg-white/10 rounded-lg border-transparent border shadow-lg transition hover:border-indigo-500 hover:shadow-xl" key={idx}>
+              <div
+                className="p-2 bg-white/10 rounded-lg border-transparent border shadow-lg transition hover:border-indigo-500 hover:shadow-xl"
+                key={idx}
+              >
                 <img
                   src={img}
                   alt={`Recent ${idx}`}
-                  className="h-52 w-full  object-cover shadow-sm hover:shadow-md transition"
+                  className="h-52 w-full object-cover shadow-sm hover:shadow-md transition"
                 />
               </div>
             ))}

@@ -56,7 +56,6 @@ function App() {
 
   return (
     <Routes>
-
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/" element={<HomePage />} />
       <Route path="/wardrobe" element={<WardrobePage />} />

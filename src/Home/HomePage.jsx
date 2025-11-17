@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRight, Wand2, Camera, Sparkles } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import AuthModal from "../Auth/AuthModal";
 import { MenuContext } from "../utils/MenuContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,28 +15,94 @@ const HomePage = () => {
     <div>
       <Header />
       <div className="w-full min-h-screen bg-[#0D0D0D] text-gray-100">
-        <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden">
+        <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden px-6 md:px-20 py-12">
+
+          {/* Left Side */}
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="relative z-10 text-center max-w-3xl px-6"
+            initial={{ opacity: 0, x: -80 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9 }}
+            className="flex-1 flex flex-col justify-center max-w-xl z-10 mt-20 sm:mt-10 text-center md:text-left"
           >
-            <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
+            <motion.h1
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
+            >
               Your AI <span className="text-[#f04e23]">Stylist</span> at Home
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-gray-200">
-              Upload your wardrobe. Snap a photo. Get stunning outfit matches in
-              seconds — powered by VSA.
-            </p>
-            <button className="mt-8 px-8 py-3 bg-[#f04e23] hover:bg-[#d13d18] text-white font-semibold rounded-full shadow-lg transition">
-              <Link to="/upload">upload your wears</Link>
-            </button>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-gray-200 text-lg md:text-xl mb-8"
+            >
+              Upload your wardrobe, snap a photo, and get stunning outfit matches in seconds — powered by VSA.
+            </motion.p>
+            <motion.button
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="bg-[#f04e23] hover:bg-[#d13d18] px-6 sm:px-8 py-3 rounded-full font-semibold shadow-2xl transition mx-auto md:mx-0"
+            >
+              <Link to="/upload">Upload Your Wears</Link>
+            </motion.button>
           </motion.div>
 
-       
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
+
+          <div className="w-full h-[550px] sm:h-[650px] md:flex-1 md:h-[750px] relative mt-20 sm:mt-10 md:ml-10 flex justify-start items-center">
+
+
+            {/* Card 1 - back */}
+            <motion.div
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-5"
+              style={{ width: "100%", left: "0%" }}
+            >
+              <img
+                src="homeslide6.jpg"
+                className="absolute inset-0 w-full h-full object-right object-cover"
+              />
+            </motion.div>
+
+            {/* Card 2 - middle */}
+            <motion.div
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-10"
+              style={{ width: "100%", left: "35%" }}
+            >
+              <img
+                src="homeslide10.jpg"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Card 3 - front */}
+            <motion.div
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="absolute top-0 left-0 w-full h-full rounded-3xl shadow-2xl overflow-hidden z-10"
+              style={{ width: "100%", left: "70%" }}
+            >
+              <img
+                src="homeslide7.jpg"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </motion.div>
+
+          </div>
+
+
+
         </section>
+
+
 
         <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#1A0D08] to-[#120907] text-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-6 relative z-10">

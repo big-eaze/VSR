@@ -15,47 +15,63 @@ export function MenuProvider({ children }) {
   });
   const [loading, setLoading] = useState(true);
 
+  const wardrobeKey = (uid) =>
+    uid ? `wardrobe_${uid}` : "guest_wardrobe";
+
   useEffect(() => {
     async function restoreUserSession() {
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
-        const wardrobeData = JSON.parse(localStorage.getItem("wardrobe"));
+        const key = wardrobeKey(userData?.uid);
+        const savedWardrobe = JSON.parse(localStorage.getItem(key));
 
         if (userData) {
+          // LOGGED-IN USER
           setUserPrivate(userData);
 
-          if (wardrobeData) {
-            setWardrobeOverall(wardrobeData);
+          if (savedWardrobe) {
+            setWardrobeOverall(savedWardrobe);
           } else {
-            const wardrobeRef = doc(db, "users", userData.uid, "wardrobe", "meta");
+            // Fetch from Firestore
+            const wardrobeRef = doc(
+              db,
+              "users",
+              userData.uid,
+              "wardrobe",
+              "meta"
+            );
             const wardrobeSnap = await getDoc(wardrobeRef);
 
             if (wardrobeSnap.exists()) {
               const data = wardrobeSnap.data();
               setWardrobeOverall(data);
-              localStorage.setItem("wardrobe", JSON.stringify(data));
+              localStorage.setItem(key, JSON.stringify(data));
             } else {
-              // ensure default
-              const emptyWardrobe = {
+              // Empty default for new user
+              const empty = {
                 Tops: [],
                 Bottoms: [],
                 Footwears: [],
                 Accessories: [],
               };
-              setWardrobeOverall(emptyWardrobe);
-              localStorage.setItem("wardrobe", JSON.stringify(emptyWardrobe));
+              setWardrobeOverall(empty);
+              localStorage.setItem(key, JSON.stringify(empty));
             }
           }
         } else {
-          // 👇 Initialize empty wardrobe for logged-out state
-          const defaultWardrobe = wardrobe;
-          setWardrobeOverall(defaultWardrobe);
-          localStorage.setItem("wardrobe", JSON.stringify(defaultWardrobe));
+          // GUEST USER
+          if (savedWardrobe) {
+            setWardrobeOverall(savedWardrobe);
+          } else {
+            // Guest default wardrobes
+            const guestWardrobe = wardrobe;
+            setWardrobeOverall(guestWardrobe);
+            localStorage.setItem("guest_wardrobe", JSON.stringify(guestWardrobe));
+          }
         }
       } catch (error) {
-        console.error("⚠️ Error restoring user session:", error);
-        localStorage.removeItem("user");
-        localStorage.removeItem("wardrobe");
+        console.error("⚠️ Error restoring session:", error);
+        localStorage.clear();
       } finally {
         setLoading(false);
       }
@@ -65,15 +81,16 @@ export function MenuProvider({ children }) {
   }, []);
 
   const logout = () => {
+    const key = wardrobeKey(userPrivate?.uid);
     localStorage.removeItem("user");
-    localStorage.removeItem("wardrobe");
+    localStorage.removeItem(key);
+
+    // Restore guest wardrobe after logout
+    const guestWardrobe =
+      JSON.parse(localStorage.getItem("guest_wardrobe")) || wardrobe;
+
+    setWardrobeOverall(guestWardrobe);
     setUserPrivate(null);
-    setWardrobeOverall({
-      Tops: [],
-      Bottoms: [],
-      Footwears: [],
-      Accessories: [],
-    });
   };
 
   return (
@@ -86,7 +103,7 @@ export function MenuProvider({ children }) {
         logout,
         loading,
         preferredStyle,
-        setPreferredStyle
+        setPreferredStyle,
       }}
     >
       {children}
