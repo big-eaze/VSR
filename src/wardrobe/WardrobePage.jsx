@@ -78,7 +78,6 @@ export default function WardrobePage() {
           </button>
         </header>
 
-
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 text-sm sm:text-base">
           {/* Filters */}
           <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
@@ -120,7 +119,7 @@ export default function WardrobePage() {
               </div>
             ) : (
               <>
-                {/* Masonry style grid */}
+                {/* Masonry style grid with mobile-friendly fixes */}
                 <motion.div
                   className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
                   variants={{
@@ -142,7 +141,8 @@ export default function WardrobePage() {
                       <motion.img
                         src={item.image}
                         alt={item.name}
-                        className="w-full rounded-3xl object-cover"
+                        className="w-full h-auto object-cover rounded-3xl"
+                        loading="lazy"
                         whileHover={{ scale: 1.1, rotate: 1 }}
                         transition={{ duration: 0.5 }}
                       />
@@ -153,16 +153,12 @@ export default function WardrobePage() {
                           <p className="text-gray-300 text-xs sm:text-sm">{item.category} • {item.color}</p>
                         </div>
                         <button
-                          onClick={() => {
-                            removeWear(item.id, item.category);
-                            console.log("removed");
-                          }}
+                          onClick={() => removeWear(item.id, item.category)}
                           className="text-gray-300 hover:text-[#f04e23] transition text-xl"
                         >
                           <Trash size={22} />
                         </button>
                       </div>
-                      {/* Floating hover action */}
                       <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
                         <Trash size={22} className="text-white hover:text-[#f04e23]" />
                       </div>
@@ -194,8 +190,6 @@ export default function WardrobePage() {
             )}
           </div>
         </section>
-
-
 
 
         <section className="mt-24 text-white">
@@ -280,8 +274,17 @@ export default function WardrobePage() {
         </section>
       </div>
 
-      {authOpen && <AuthModal />}
+      {authOpen && <AuthModal />
+      }
       <Footer />
     </>
   );
 }
+
+
+
+
+
+
+
+
