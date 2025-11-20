@@ -33,14 +33,14 @@ const HomePage = () => {
         <section className="relative min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden px-6 md:px-20 py-12">
 
           <motion.div
-            initial={{ opacity: 0, x: -80 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1, }}
             transition={{ duration: 0.9 }}
             className="flex-1 flex flex-col justify-center max-w-xl z-10 mt-20 sm:mt-10 text-center md:text-left"
           >
             <motion.h1
-              initial={{ opacity: 0, y: -30 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, }}
+              animate={{ opacity: 1, }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
             >
@@ -57,12 +57,13 @@ const HomePage = () => {
             </motion.p>
 
             <motion.button
+              onClick={() => navigate("/upload")}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="bg-[#f04e23] hover:bg-[#d13d18] px-6 sm:px-8 py-3 rounded-full font-semibold shadow-2xl transition mx-auto md:mx-0"
             >
-              <Link to="/upload">Upload Your Wears</Link>
+              <p>Upload Your Wears</p>
             </motion.button>
           </motion.div>
 
@@ -73,7 +74,7 @@ const HomePage = () => {
             {[
               { key: "img1", src: "homeslide6.jpg", left: "0%", z: 5, delay: 0 },
               { key: "img2", src: "homeslide10.jpg", left: "35%", z: 10, delay: 0.2 },
-              { key: "img3", src: "homeslide7.jpg", left: "70%", z: 20, delay: 0.4 },
+              { key: "img3", src: "homeslide7.jpg", left: "70%", z: 10, delay: 0.4 },
             ].map((img) => (
               <motion.div
                 key={img.key}

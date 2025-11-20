@@ -11,11 +11,12 @@ import {
 import { Shirt } from "lucide-react";
 import { GiTrousers } from "react-icons/gi";
 import { FaShoePrints } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MenuContext } from "../utils/MenuContext";
 
 export default function WardrobeUploadPage() {
   const { userPrivate, setWardrobeOverall } = useContext(MenuContext);
+  const navigate = useNavigate();
 
   // ---------------------------------------
   // DYNAMIC RECENT-KEY PER USER
@@ -175,9 +176,9 @@ export default function WardrobeUploadPage() {
       {/* Header */}
       <div>
         <div className="p-1 rounded-full w-fit mb-4 sm:mb-0 hover:bg-gray-700/50">
-          <Link to={"/wardrobe"}>
+          <button onClick={() => navigate(-1)}>
             <ArrowLeft className="w-6 h-6 text-white" />
-          </Link>
+          </button>
         </div>
 
         <div className="text-center mb-10">

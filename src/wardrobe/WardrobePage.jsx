@@ -44,6 +44,7 @@ export default function WardrobePage() {
   const totalPages = Math.ceil(filteredCategory.length / rowsPerPage);
   const indexOfLastItem = currentPage * rowsPerPage;
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;
+
   const currentClothings = filteredCategory.slice(indexOfFirstItem, indexOfLastItem);
 
   function handlePageClick(pageNumber) {
@@ -78,8 +79,9 @@ export default function WardrobePage() {
         </header>
 
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6 text-sm sm:text-base">
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 text-sm sm:text-base">
+          {/* Filters */}
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
             {[
               { label: "All", value: "All" },
               { label: "Tops", value: "Top" },
@@ -95,9 +97,9 @@ export default function WardrobePage() {
                   setLoading(true);
                   setTimeout(() => setLoading(false), 400);
                 }}
-                className={`px-4 py-2 rounded-full transition whitespace-nowrap ${activeFilter === filter.value
-                  ? "bg-[#f04e23] text-white"
-                  : "bg-gray-800 hover:bg-gray-700"
+                className={`px-5 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap shadow-sm ${activeFilter === filter.value
+                  ? "bg-gradient-to-r from-[#f04e23] to-[#f09060] text-white shadow-lg"
+                  : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`}
               >
                 {filter.label}
@@ -106,23 +108,24 @@ export default function WardrobePage() {
           </div>
         </div>
 
-        <section>
-          <h2 className="text-xl font-bold mb-4">Your Items</h2>
+        <section className="py-8">
+          <h2 className="text-3xl font-extrabold mb-8 text-center sm:text-left text-gradient bg-clip-text text-transparent bg-gradient-to-r from-[#f04e23] to-[#f09060]">
+            Your Items
+          </h2>
+
           <div className="relative">
             {loading ? (
-              <div className="w-full h-96 flex items-center justify-center rounded-xl" aria-busy="true">
+              <div className="w-full h-96 flex items-center justify-center rounded-xl bg-gray-900/30" aria-busy="true">
                 <WRLoader />
               </div>
             ) : (
               <>
+                {/* Masonry style grid */}
                 <motion.div
-                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-6"
+                  className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
                   variants={{
                     hidden: { opacity: 0 },
-                    show: {
-                      opacity: 1,
-                      transition: { staggerChildren: 0.08 },
-                    },
+                    show: { opacity: 1, transition: { staggerChildren: 0.08 } },
                   }}
                   initial="hidden"
                   animate="show"
@@ -131,66 +134,59 @@ export default function WardrobePage() {
                     <motion.div
                       key={item.id}
                       variants={{
-                        hidden: { opacity: 0, y: 40, scale: 0.9 },
-                        show: {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          transition: { type: "spring", stiffness: 120, damping: 12 },
-                        },
+                        hidden: { opacity: 0, y: 30, scale: 0.95 },
+                        show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 120, damping: 12 } },
                       }}
-                      whileHover={{
-                        scale: 1.05,
-                        rotate: 1,
-                        transition: { type: "spring", stiffness: 200 },
-                      }}
-                      className="bg-gray-800/60 h-96 rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                      className="relative mb-6 break-inside-avoid rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-all duration-500 cursor-pointer"
                     >
                       <motion.img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-72 object-cover"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.4 }}
+                        className="w-full rounded-3xl object-cover"
+                        whileHover={{ scale: 1.1, rotate: 1 }}
+                        transition={{ duration: 0.5 }}
                       />
-                      <div className="flex items-center justify-between">
-                        <div className="p-3">
-                          <h3 className="font-semibold">{item.name}</h3>
-                          <p className="text-sm text-gray-400">
-                            {item.category} • {item.color}
-                          </p>
+                      {/* Gradient overlay with info */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-5 py-4 flex justify-between items-center rounded-b-3xl">
+                        <div>
+                          <h3 className="text-white font-bold text-sm sm:text-lg">{item.name}</h3>
+                          <p className="text-gray-300 text-xs sm:text-sm">{item.category} • {item.color}</p>
                         </div>
-                        <div
-                          className="pr-4 text-white  hover:text-[#f04e23] transition"
+                        <button
+                          onClick={() => {
+                            removeWear(item.id, item.category);
+                            console.log("removed");
+                          }}
+                          className="text-gray-300 hover:text-[#f04e23] transition text-xl"
                         >
-                          <Trash onClick={() => {
-                            removeWear(item.id, item.category)
-                            console.log("removed")
-                          }
-                          } size={20} />
-                        </div>
+                          <Trash size={22} />
+                        </button>
+                      </div>
+                      {/* Floating hover action */}
+                      <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-full opacity-0 hover:opacity-100 transition-opacity duration-300">
+                        <Trash size={22} className="text-white hover:text-[#f04e23]" />
                       </div>
                     </motion.div>
                   ))}
                 </motion.div>
 
                 {/* Pagination */}
-                <div>
-                  <div className="flex justify-center mt-8 space-x-2">
+                <div className="mt-12 flex flex-col items-center">
+                  <div className="flex flex-wrap justify-center gap-3 mb-2">
                     {[...Array(totalPages)].map((_, index) => (
                       <button
                         key={index + 1}
                         onClick={() => handlePageClick(index + 1)}
-                        className={`px-3 py-1 rounded-full ${currentPage === index + 1
-                          ? "bg-[#f04e23] text-white"
-                          : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                          } transition`}
+                        className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${currentPage === index + 1
+                          ? "bg-gradient-to-r from-[#f04e23] to-[#f09060] text-white shadow-lg"
+                          : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
+                          }`}
                       >
                         {index + 1}
                       </button>
                     ))}
                   </div>
-                  <p className="text-center text-sm text-gray-400 mt-2">
+                  <p className="text-gray-400 text-sm">
                     Page {currentPage} of {totalPages} • {filteredCategory.length} items total
                   </p>
                 </div>
@@ -198,6 +194,8 @@ export default function WardrobePage() {
             )}
           </div>
         </section>
+
+
 
 
         <section className="mt-24 text-white">
