@@ -17,27 +17,67 @@ export default function WardrobePage() {
 
   const navigation = useNavigate();
 
-  const { authOpen, wardrobeOverall } = React.useContext(MenuContext);
+  const { authOpen, userWardrobe, guestWardrobe, setUserWardrobe, setGuestWardrobe } = React.useContext(MenuContext);
   const { removeWear } = useRemove();
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+
+
 
   useEffect(() => {
-    if (activeFilter === "All") {
-      setFilteredCategory([
-        ...(wardrobeOverall?.Tops || []),
-        ...(wardrobeOverall?.Bottoms || []),
-        ...(wardrobeOverall?.Footwears || []),
-        ...(wardrobeOverall?.Accessories || []),
-      ]);
-    } else if (activeFilter === "Top") {
-      setFilteredCategory(wardrobeOverall?.Tops || []);
-    } else if (activeFilter === "Bottom") {
-      setFilteredCategory(wardrobeOverall?.Bottoms || []);
-    } else if (activeFilter === "Footwear") {
-      setFilteredCategory(wardrobeOverall?.Footwears || []);
-    } else if (activeFilter === "Accessories") {
-      setFilteredCategory(wardrobeOverall?.Accessories || []);
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+      const stored = localStorage.getItem(`wardrobe_${user.uid}`);
+      if (stored) {
+        setUserWardrobe(JSON.parse(stored));
+      }
+    } else {
+      const stored = localStorage.getItem("guest_wardrobe");
+      if (stored) {
+        setGuestWardrobe(JSON.parse(stored));
+      }
     }
-  }, [wardrobeOverall, activeFilter]);
+  }, []);
+
+  useEffect(() => {
+    if (userData) {
+      if (activeFilter === "All") {
+        setFilteredCategory([
+          ...(userWardrobe?.Tops || []),
+          ...(userWardrobe?.Bottoms || []),
+          ...(userWardrobe?.Footwears || []),
+          ...(userWardrobe?.Accessories || []),
+        ]);
+      } else if (activeFilter === "Top") {
+        setFilteredCategory(userWardrobe?.Tops || []);
+      } else if (activeFilter === "Bottom") {
+        setFilteredCategory(userWardrobe?.Bottoms || []);
+      } else if (activeFilter === "Footwear") {
+        setFilteredCategory(userWardrobe?.Footwears || []);
+      } else if (activeFilter === "Accessories") {
+        setFilteredCategory(userWardrobe?.Accessories || []);
+      }
+    } else {
+      if (activeFilter === "All") {
+        setFilteredCategory([
+          ...(guestWardrobe?.Tops || []),
+          ...(guestWardrobe?.Bottoms || []),
+          ...(guestWardrobe?.Footwears || []),
+          ...(guestWardrobe?.Accessories || []),
+        ]);
+      } else if (activeFilter === "Top") {
+        setFilteredCategory(guestWardrobe?.Tops || []);
+      } else if (activeFilter === "Bottom") {
+        setFilteredCategory(guestWardrobe?.Bottoms || []);
+      } else if (activeFilter === "Footwear") {
+        setFilteredCategory(guestWardrobe?.Footwears || []);
+      } else if (activeFilter === "Accessories") {
+        setFilteredCategory(guestWardrobe?.Accessories || []);
+      }
+    }
+
+  }, [userWardrobe, guestWardrobe, activeFilter]);
 
   // Pagination logic
   const rowsPerPage = 12;
@@ -57,7 +97,6 @@ export default function WardrobePage() {
     }, 3000);
   }
 
-  console.log(wardrobeOverall);
 
   return (
     <>
@@ -202,10 +241,10 @@ export default function WardrobePage() {
 
             <div className="relative grid grid-cols-2 md:grid-cols-4 text-center z-10">
               {[
-                { label: "Tops", value: wardrobeOverall?.Tops?.length || 0 },
-                { label: "Bottoms", value: wardrobeOverall?.Bottoms?.length || 0 },
-                { label: "Shoes", value: wardrobeOverall?.Footwears?.length || 0 },
-                { label: "Accessories", value: wardrobeOverall?.Accessories?.length || 0 },
+                { label: "Tops", value: userData ? userWardrobe?.Tops?.length : guestWardrobe?.Tops.length || 0 },
+                { label: "Bottoms", value: userData ? userWardrobe?.Bottoms?.length : guestWardrobe?.Bottoms?.length || 0 },
+                { label: "Shoes", value: userData ? userWardrobe?.Footwears?.length : guestWardrobe?.Bottoms?.length || 0 },
+                { label: "Accessories", value: userData ? userWardrobe?.Accessories?.length : guestWardrobe?.Accessories?.length || 0 },
               ].map((stat, i) => (
                 <div
                   key={i}

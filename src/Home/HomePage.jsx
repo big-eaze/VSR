@@ -197,6 +197,58 @@ const HomePage = () => {
         </section>
 
 
+
+        <section className="relative py-24 bg-gradient-to-b from-[#1A1A1A] via-[#2C150C] to-[#3B1E12] text-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+              What Our Users <span className="text-[#f04e23]">Say</span>
+            </h2>
+
+            <div className="flex space-x-8 overflow-x-auto py-8 px-2 scrollbar-hide">
+              {[
+                {
+                  name: "Jane D.",
+                  review: "VSA transformed my wardrobe! Now I know exactly what to wear every day.",
+                  avatar: "/woman1.jpg",
+                },
+                {
+                  name: "Michael R.",
+                  review: "AI outfit suggestions are spot on. I save so much time every morning!",
+                  avatar: "/man1.jpg",
+                },
+                {
+                  name: "Andrew L.",
+                  review: "Love how it combines my clothes into stylish looks. Highly recommend!",
+                  avatar: "/man2.jpg",
+                },
+              ].map((testimonial, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 * i }}
+                  viewport={{ once: true }}
+                  className="relative flex-shrink-0 w-80 p-6 bg-[#1F1009]/60 backdrop-blur-md rounded-3xl shadow-lg hover:scale-105 transform transition-all"
+                >
+                  {/* Circular Avatar */}
+                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 w-20 h-20 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-lg">
+                    <img src={testimonial.avatar} alt={testimonial.name} className="w-full h-full object-cover" />
+                  </div>
+
+                  {/* Speech Bubble */}
+                  <div className="mt-12">
+                    <p className="text-gray-200 italic text-center relative px-4 py-3 bg-[#000000]/30 rounded-xl before:content-[''] before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-t-[#000000]/30 before:border-x-transparent before:border-b-transparent">
+                      "{testimonial.review}"
+                    </p>
+                  </div>
+
+                  <h3 className="text-center text-lg font-semibold mt-4">{testimonial.name}</h3>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="relative py-24 bg-gradient-to-br from-[#f04e23] via-[#A0552D] to-[#3B1E12] text-white text-center overflow-hidden">
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
@@ -215,6 +267,8 @@ const HomePage = () => {
           >
             Try It Free
           </button>
+
+
 
           <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 text-center mt-20">
             {[
@@ -240,6 +294,10 @@ const HomePage = () => {
             ))}
           </div>
         </section>
+
+
+
+
       </div>
 
       {authOpen && <AuthModal />}

@@ -4,13 +4,13 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
+import { MenuContext } from "./MenuContext";
 
 /**
  * Handle user signup
  */
-export async function handleSignup(form, navigate, setUserPrivate, setWardrobeOverall) {
+export async function handleSignup(form, navigate, setUserPrivate, setUserWardrobe) {
   const { username, email, password, confirmPassword } = form;
-
   try {
     if (password !== confirmPassword) {
       throw new Error("Passwords do not match");
@@ -44,7 +44,7 @@ export async function handleSignup(form, navigate, setUserPrivate, setWardrobeOv
 
     // Sync states
     setUserPrivate(userData);
-    setWardrobeOverall(emptyWardrobe);
+    setUserWardrobe(emptyWardrobe);
 
     navigate("/");
     console.log("✅ User created successfully:", user);

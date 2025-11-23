@@ -15,23 +15,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { MenuContext } from "../utils/MenuContext";
 
 export default function WardrobeUploadPage() {
-  const { userPrivate, setWardrobeOverall } = useContext(MenuContext);
+  const { userPrivate, setUserWardrobe, userWardrobe, guestWardrobe, setGuestWardrobe, recentUploads, setRecentUploads, recentUserUploads, setRecentUserUploads } = useContext(MenuContext);
   const navigate = useNavigate();
 
-  // ---------------------------------------
-  // DYNAMIC RECENT-KEY PER USER
-  // ---------------------------------------
-  const getRecentKey = (uid) => (uid ? `recent_${uid}` : "recent_guest");
-
-  const [recentUploads, setRecentUploads] = useState(() => {
-    try {
-      const key = getRecentKey(userPrivate?.uid);
-      const saved = localStorage.getItem(key);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
 
   // ---------------------------------------
   // UPLOAD & FORM STATE
@@ -51,6 +37,7 @@ export default function WardrobeUploadPage() {
 
   const isUserLoggedIn = !!userPrivate;
   const activePreview = isUserLoggedIn ? userPreview : preview;
+  const recentData = isUserLoggedIn ? recentUserUploads : recentUploads;
 
   // ---------------------------------------
   // HANDLE FILE UPLOAD
@@ -93,6 +80,8 @@ export default function WardrobeUploadPage() {
     const imageToSave = isUserLoggedIn ? userPreview : preview;
     if (!imageToSave) return;
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
     const newItem = {
       id: crypto.randomUUID(),
       name: uploadDetails.name,
@@ -100,38 +89,65 @@ export default function WardrobeUploadPage() {
       season: "all",
       color: uploadDetails.color,
       image: imageToSave,
-      category: uploadDetails.category.toLowerCase()
+      category: uploadDetails.category.toLowerCase(),
     };
 
-    setWardrobeOverall((prev) => {
-      const map = {
-        Top: "Tops",
-        Bottom: "Bottoms",
-        Footwear: "Footwears",
-        Accessory: "Accessories"
+    const map = {
+      Top: "Tops",
+      Bottom: "Bottoms",
+      Footwear: "Footwears",
+      Accessory: "Accessories",
+    };
+    const key = map[uploadDetails.category];
+    if (!key) return;
+
+    if (isUserLoggedIn) {
+      // USER LOGGED IN
+      const updated = {
+        ...userWardrobe,
+        [key]: [newItem, ...userWardrobe[key]],
       };
-      const key = map[uploadDetails.category];
-      if (!key) return prev;
 
-      return {
-        ...prev,
-        [key]: [newItem, ...prev[key]]
+      setUserWardrobe(updated);
+
+      localStorage.setItem(
+        `wardrobe_${userPrivate.uid}`,
+        JSON.stringify(updated)
+      );
+
+      setRecentUserUploads(prev => [imageToSave, ...(prev || []).slice(0, 4)]);
+    }
+    else {
+      // GUEST USER
+      const updated = {
+        ...guestWardrobe,
+        [key]: [newItem, ...guestWardrobe[key]],
       };
-    });
 
-    // Save to recent uploads
-    setRecentUploads((prev) => [imageToSave, ...prev.slice(0, 4)]);
+      setGuestWardrobe(updated);
 
-    // Reset states
+      localStorage.setItem(
+        "guest_wardrobe",
+        JSON.stringify(updated)
+      );
+
+      setRecentUploads(prev => [imageToSave, ...(prev || []).slice(0, 4)]);
+
+    }
+
+
+
+
     setPreview(null);
     setUserPreview(null);
+
     setUploadDetails({
       name: "",
       style: "",
       season: "",
       color: "",
       image: "",
-      category: ""
+      category: "",
     });
   }
 
@@ -140,14 +156,7 @@ export default function WardrobeUploadPage() {
     setUserPreview(null);
   }
 
-  // ---------------------------------------
-  // SAVE RECENT UPLOADS TO LOCALSTORAGE
-  // ---------------------------------------
-  useEffect(() => {
-    const key = getRecentKey(userPrivate?.uid);
-    localStorage.setItem(key, JSON.stringify(recentUploads));
-  }, [recentUploads, userPrivate]);
-
+  console.log(recentUploads);
   // ---------------------------------------
   // HANDLE FORM INPUT
   // ---------------------------------------
@@ -158,6 +167,17 @@ export default function WardrobeUploadPage() {
       [name]: value
     }));
   }
+
+  console.log(recentData);
+
+
+  useEffect(() => {
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) console.log(userWardrobe);
+    else console.log(guestWardrobe);
+
+  }, [userWardrobe, guestWardrobe])
 
   // Button enabled state
   const isFormComplete =
@@ -338,27 +358,28 @@ export default function WardrobeUploadPage() {
       </div>
 
       {/* Recent Uploads */}
-      {recentUploads.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-lg font-semibold text-white/50 mb-4">
-            Recently Added
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {recentUploads.map((img, idx) => (
-              <div
-                className="p-2 bg-white/10 rounded-lg border-transparent border shadow-lg transition hover:border-indigo-500 hover:shadow-xl"
-                key={idx}
-              >
-                <img
-                  src={img}
-                  alt={`Recent ${idx}`}
-                  className="h-52 w-full object-cover shadow-sm hover:shadow-md transition"
-                />
-              </div>
-            ))}
+      {
+        Array.isArray(recentData) && recentData.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-lg font-semibold text-white/50 mb-4">
+              Recently Added
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+              {recentData.map((img, idx) => (
+                <div
+                  className="p-2 bg-white/10 rounded-lg border-transparent border shadow-lg transition hover:border-indigo-500 hover:shadow-xl"
+                  key={idx}
+                >
+                  <img
+                    src={img}
+                    alt={`Recent ${idx}`}
+                    className="h-52 w-full object-cover shadow-sm hover:shadow-md transition"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

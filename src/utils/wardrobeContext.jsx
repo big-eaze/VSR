@@ -1,37 +1,74 @@
 import React, { useContext } from "react";
 import { MenuContext } from "./MenuContext";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "./firebase";
-import { useNavigate } from "react-router-dom";
 
 export function useRemove() {
-  const { setWardrobeOverall } = useContext(MenuContext);
+  const {
+    userPrivate,
+    setUserWardrobe,
+    setGuestWardrobe,
+    recentUploads,
+    setRecentUploads,
+    recentUserUploads,
+    setRecentUserUploads,
+  } = useContext(MenuContext);
 
   function removeWear(wearId, category) {
     const map = {
       top: "Tops",
       bottom: "Bottoms",
-      footwears: "Footwears",
-      accessories: "Accessories",
+      footwear: "Footwears",
+      accessory: "Accessories",
     };
 
-    const key = map[category];
-
-    console.log("wear id", wearId);
-    console.log("category", category);
+    const key = map[category.toLowerCase()];
     if (!key) return;
 
-    setWardrobeOverall((prev) => ({
-      ...prev,
-      [key]: prev[key].filter((wear) => wear.id !== wearId),
-    }));
-  };
+    let removedImage;
+
+    if (userPrivate) {
+      // Logged-in user
+      setUserWardrobe((prev) => {
+        const filtered = prev[key].filter((wear) => {
+          if (wear.id === wearId) removedImage = wear.image;
+          return wear.id !== wearId;
+        });
+        const updated = { ...prev, [key]: filtered };
+
+        // Update localStorage
+        localStorage.setItem(`wardrobe_${userPrivate.uid}`, JSON.stringify(updated));
+        return updated;
+      });
+
+      if (removedImage) {
+        setRecentUserUploads((prev) => {
+          const updatedRecent = [...(prev || []).filter((img) => img !== removedImage)];
+          localStorage.setItem(`recent_${userPrivate.uid}`, JSON.stringify(updatedRecent));
+          return updatedRecent;
+        });
+      }
+    } else {
+      // Guest
+      setGuestWardrobe((prev) => {
+        const filtered = prev[key].filter((wear) => {
+          if (wear.id === wearId) removedImage = wear.image;
+          return wear.id !== wearId;
+        });
+        const updated = { ...prev, [key]: filtered };
+
+        // Update localStorage
+        localStorage.setItem("guest_wardrobe", JSON.stringify(updated));
+        return updated;
+      });
+
+      if (removedImage) {
+        setRecentUploads((prev) => {
+          const updatedRecent = [...(prev || []).filter((img) => img !== removedImage)];
+          localStorage.setItem("recent_guest", JSON.stringify(updatedRecent));
+          return updatedRecent;
+        });
+      }
+    }
+  }
 
   return { removeWear };
 }
-
-
-
-
-

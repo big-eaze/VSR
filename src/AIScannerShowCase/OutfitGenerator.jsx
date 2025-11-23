@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Loader2, Shirt, ShoppingBag, Wand2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOutfits } from "../utils/chroma.jsx";
-import wardrobe from "../../data/outfits";
 import StyleSelector from "../components/StyleSelector.jsx";
 import { MenuContext } from "../utils/MenuContext.jsx";
 
 export default function OutfitGenerator() {
 
-  const { preferredStyle, setPreferredStyle } = useContext(MenuContext);
+  const { preferredStyle, setPreferredStyle, userWardrobe, guestWardrobe } = useContext(MenuContext);
   const [bestOutfits, setBestOutfits] = useState([]);
 
 
@@ -105,14 +104,14 @@ export default function OutfitGenerator() {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900  via-[#A0552D] to-black text-white px-6 py-12">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-6 py-12">
       {/* Header */}
-      {!loading
-        &&
+      {!loading && (
         <Link to="/" className="p-2 absolute top-4 left-4 rounded-full hover:bg-gray-700/50">
           <ArrowLeft className="w-6 h-6 text-white" />
         </Link>
-      }
+      )}
+
       <motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -135,7 +134,6 @@ export default function OutfitGenerator() {
             className="flex flex-col items-center justify-center gap-6 mt-16"
           >
             <div className="relative">
-              {/* Glowing background */}
               <div className="absolute inset-0 w-28 h-28 rounded-full bg-[#f04e23]/30 blur-2xl animate-pulse"></div>
               <Loader2 className="w-14 h-14 animate-spin text-[#f04e23] relative z-10" />
             </div>
@@ -143,6 +141,37 @@ export default function OutfitGenerator() {
               {loadingText}
               <span className="animate-pulse">|</span>
             </p>
+          </motion.div>
+        ) : bestOutfits.length === 0 ? (
+          // ❌ Empty or insufficient wardrobe UI
+          <motion.div
+            key="empty-wardrobe"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center gap-6 mt-16 text-center"
+          >
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="text-6xl"
+            >
+              👕✨
+            </motion.div>
+            <p className="text-xl md:text-2xl font-semibold text-gray-200 max-w-xl">
+              {Object.values(userWardrobe || guestWardrobe || {}).every(arr => arr.length === 0)
+                ? "Your wardrobe is empty! Add some amazing fits to see AI-powered outfit suggestions."
+                : "Hmm… Looks like we need a few more pieces to create your perfect outfits. Add more items to unlock AI magic!"}
+            </p>
+            <Link
+              to="/upload"
+              className="mt-6 px-8 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-[#f04e23] to-[#A0552D] shadow-lg hover:scale-105 transition"
+            >
+              {Object.values(userWardrobe || guestWardrobe || {}).every(arr => arr.length === 0)
+                ? "Upload Wears Now"
+                : "Add More Fits"}
+            </Link>
           </motion.div>
         ) : (
           // 👕 Results Phase
@@ -154,10 +183,8 @@ export default function OutfitGenerator() {
             transition={{ duration: 0.6 }}
             className="w-full max-w-6xl mt-12"
           >
-
-            {/* outfit grid */}
+            {/* Outfit grid */}
             <motion.div
-              key="results"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -208,7 +235,6 @@ export default function OutfitGenerator() {
                       </h3>
                       <p className="text-gray-400 text-sm text-center italic">
                         {outfit.mood || "Tap to see full breakdown "}
-
                       </p>
                     </div>
 
@@ -256,7 +282,6 @@ export default function OutfitGenerator() {
               </div>
             </motion.div>
 
-
             <StyleSelector selected={preferredStyle} onSelect={setPreferredStyle} />
 
             {/* Button */}
@@ -276,5 +301,6 @@ export default function OutfitGenerator() {
         )}
       </AnimatePresence>
     </div>
+
   );
 }

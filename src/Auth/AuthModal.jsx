@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useContext, useState } from "react";
+import { Loader2, Eye, EyeOff, } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { handleSignin, handleSignup } from "../utils/AuthHandler";
@@ -12,7 +12,10 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ username: "", email: "", password: "", confirmPassword: "" });
   const [message, setMessage] = useState("");
-  const { setUserPrivate, setWardrobeOverall } = useContext(MenuContext);
+  const { setUserPrivate, setUserWardrobe } = useContext(MenuContext);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
 
@@ -21,12 +24,14 @@ export default function AuthPage() {
   const navigate = useNavigate();
   async function onSubmit(e) {
     e.preventDefault();
+    setLoading(true)
     if (isSignUp) {
-      await handleSignup(form, navigate, setUserPrivate, setWardrobeOverall);
+      await handleSignup(form, navigate, setUserPrivate, setUserWardrobe);
 
     } else {
-      await handleSignin(form, navigate, setUserPrivate, setWardrobeOverall);
+      await handleSignin(form, navigate, setUserPrivate, setUserWardrobe);
     }
+    setLoading(false);
   }
 
 
@@ -56,11 +61,9 @@ export default function AuthPage() {
             : "Sign in to continue curating your next stunning outfit."}
         </p>
 
-        <form
-          onSubmit={onSubmit}
-          className="space-y-5"
-        >
+        <form onSubmit={onSubmit} className="space-y-5">
 
+          {/* Username (Sign Up only) */}
           {isSignUp && (
             <input
               type="text"
@@ -68,44 +71,75 @@ export default function AuthPage() {
               autoComplete="username"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
+              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+      placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
               required
             />
           )}
 
-
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
             autoComplete="email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
+            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+    placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            autoComplete="password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
-            required
-          />
-
-          {isSignUp && (
+          {/* PASSWORD with show/hide */}
+          <div className="relative">
             <input
-              type="password"
-              placeholder="Confirm Password"
-              autoComplete="confirm password"
-              value={form.confirmPassword}
-              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              autoComplete="password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              className="w-full px-4 py-3 pr-12 rounded-xl bg-white/10 border border-white/20 
+      placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
               required
             />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white"
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {/* CONFIRM PASSWORD with show/hide */}
+          {isSignUp && (
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                autoComplete="confirm-password"
+                value={form.confirmPassword}
+                onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                className="w-full px-4 py-3 pr-12 rounded-xl bg-white/10 border border-white/20 
+        placeholder-gray-400 focus:ring-2 focus:ring-[#f04e23] outline-none"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           )}
 
+          {/* Remember me */}
           {!isSignUp && (
             <div className="flex items-center justify-between text-sm text-gray-300">
               <label className="flex items-center gap-2">
@@ -118,14 +152,18 @@ export default function AuthPage() {
             </div>
           )}
 
+          {/* SUBMIT BUTTON */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#f04e23] to-[#A0552D] hover:scale-[1.02] transition-transform font-semibold"
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 
+    rounded-xl bg-gradient-to-r from-[#f04e23] to-[#A0552D] 
+    hover:scale-[1.02] transition-transform font-semibold
+    ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
-            {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-            {isSignUp ? "Create Account" : "Sign In"}
+            {loading ? (<Loader2 className="w-5 h-5 animate-spin" />) : isSignUp ? "Create Account" : "Sign In"}
           </button>
+
         </form>
 
         {message && (
