@@ -28,13 +28,13 @@ export default function OutfitGenerator() {
   const outfits = useOutfits(preferredStyle);
 
   useEffect(() => {
-    if (outfits > 0) {
+    if (outfits && outfits.length > 0) {
       setBestOutfits(outfits.slice(0, 3))
     }
   }, [outfits]);
 
   function regenerate() {
-    const shuffled = [...outfits].sort(() => Math.random - 0.5);
+    const shuffled = [...outfits].sort(() => Math.random() - 0.5);
 
     return setBestOutfits(shuffled.slice(0, 3));
   }
@@ -105,7 +105,7 @@ export default function OutfitGenerator() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-6 py-12">
-      {/* Header */}
+    
       {!loading && (
         <Link to="/" className="p-2 absolute top-4 left-4 rounded-full hover:bg-gray-700/50">
           <ArrowLeft className="w-6 h-6 text-white" />
@@ -121,10 +121,10 @@ export default function OutfitGenerator() {
         ✨ Outfit <span className="text-[#f04e23]">Generator</span>
       </motion.h1>
 
-      {/* Animated Content */}
+
       <AnimatePresence mode="wait">
         {loading ? (
-          // 🔄 Loading Phase
+         
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
@@ -143,7 +143,7 @@ export default function OutfitGenerator() {
             </p>
           </motion.div>
         ) : bestOutfits.length === 0 ? (
-          // ❌ Empty or insufficient wardrobe UI
+       
           <motion.div
             key="empty-wardrobe"
             initial={{ opacity: 0, y: 20 }}
@@ -159,22 +159,38 @@ export default function OutfitGenerator() {
             >
               👕✨
             </motion.div>
+
             <p className="text-xl md:text-2xl font-semibold text-gray-200 max-w-xl">
-              {Object.values(userWardrobe || guestWardrobe || {}).every(arr => arr.length === 0)
-                ? "Your wardrobe is empty! Add some amazing fits to see AI-powered outfit suggestions."
-                : "Hmm… Looks like we need a few more pieces to create your perfect outfits. Add more items to unlock AI magic!"}
+              {(() => {
+                const wardrobe = userWardrobe || guestWardrobe || {};
+
+            
+                const tops = (wardrobe.Tops || []).filter(t => t.style === preferredStyle);
+                const bottoms = (wardrobe.Bottoms || []).filter(b => b.style === preferredStyle);
+                const footwears = (wardrobe.Footwears || []).filter(f => f.style === preferredStyle);
+
+               
+                const missingCategories = [];
+                if (tops.length < 1) missingCategories.push("Tops");
+                if (bottoms.length < 1) missingCategories.push("Bottoms");
+                if (footwears.length < 1) missingCategories.push("Footwears");
+
+                if (missingCategories.length > 0) {
+                  return `Add more ${preferredStyle} wears in: ${missingCategories.join(", ")} to generate outfits!`;
+                }
+
+                return "Hmm… Looks like we don't have enough outfit combinations yet. Add more items to unlock AI magic!";
+              })()}
             </p>
+
             <Link
               to="/upload"
               className="mt-6 px-8 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-[#f04e23] to-[#A0552D] shadow-lg hover:scale-105 transition"
             >
-              {Object.values(userWardrobe || guestWardrobe || {}).every(arr => arr.length === 0)
-                ? "Upload Wears Now"
-                : "Add More Fits"}
+              Add More Fits
             </Link>
           </motion.div>
         ) : (
-          // 👕 Results Phase
           <motion.div
             key="results"
             initial={{ opacity: 0, y: 50 }}
@@ -199,7 +215,7 @@ export default function OutfitGenerator() {
                     onClick={() => setExpanded(expanded === i ? null : i)}
                     className="relative bg-gray-900/60 backdrop-blur-2xl rounded-3xl shadow-2xl cursor-pointer overflow-hidden group border border-white/10"
                   >
-                    {/* Score Badge */}
+                  
                     <motion.div
                       animate={{ rotate: [0, 360] }}
                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -210,7 +226,6 @@ export default function OutfitGenerator() {
                       </div>
                     </motion.div>
 
-                    {/* Images Collage */}
                     <div className="relative h-60 w-full overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10"></div>
                       <div className="flex items-center justify-center h-full gap-3 p-4">
@@ -228,7 +243,7 @@ export default function OutfitGenerator() {
                       </div>
                     </div>
 
-                    {/* Title */}
+               
                     <div className="p-6">
                       <h3 className="font-extrabold text-2xl text-center mb-3 bg-gradient-to-r from-[#f04e23] to-[#A0552D] bg-clip-text text-transparent tracking-wide">
                         Outfit #{i + 1}
@@ -238,7 +253,7 @@ export default function OutfitGenerator() {
                       </p>
                     </div>
 
-                    {/* Expandable Details */}
+                  
                     <AnimatePresence>
                       {expanded === i && (
                         <motion.div
@@ -284,7 +299,7 @@ export default function OutfitGenerator() {
 
             <StyleSelector selected={preferredStyle} onSelect={setPreferredStyle} />
 
-            {/* Button */}
+  
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

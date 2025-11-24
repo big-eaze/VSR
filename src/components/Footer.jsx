@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="bg-gradient-to-b from-[#2a2a2a] via-[#1e1e1e] to-black text-gray-300">
       <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 px-6 py-14">
 
-        {/* Brand */}
         <div>
           <h3 className="text-[#A0552D] font-bold text-2xl mb-4 tracking-wide">VS!A</h3>
           <p className="text-sm text-gray-400 mb-4">
@@ -20,7 +19,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Quick Links */}
+
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
           <ul className="space-y-2 text-gray-400">
@@ -31,7 +30,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Experience */}
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Experience</h3>
           <ul className="space-y-2 text-gray-400">
@@ -42,7 +40,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Newsletter */}
+
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Join Our Newsletter</h3>
           <form className="space-y-3">

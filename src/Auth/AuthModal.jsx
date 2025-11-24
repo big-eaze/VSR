@@ -152,7 +152,6 @@ export default function AuthPage() {
             </div>
           )}
 
-          {/* SUBMIT BUTTON */}
           <button
             type="submit"
             disabled={loading}
