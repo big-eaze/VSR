@@ -30,9 +30,9 @@ function Profile() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 flex flex-col items-center mt-48 xl:mt-20 w-full"
+          className="relative z-10 flex flex-col items-center justify-center mt-24 md:mt-14 w-full h-full"
         >
-          <div className="relative w-[90%] md:w-[60%] xl:w-[40%] p-8 rounded-3xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(240,78,35,0.15)]">
+          <div className="relative w-[90%] md:w-[60%] xl:w-[40%] p-5 rounded-3xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(240,78,35,0.15)]">
             <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-36 h-36 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-[0_0_40px_rgba(240,78,35,0.45)] group">
               <img
                 src={userAvatar || "/avatar.png"}
