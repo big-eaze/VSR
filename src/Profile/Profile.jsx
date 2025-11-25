@@ -25,15 +25,17 @@ function Profile() {
     <div className="min-h-screen bg-[#0D0D0D] text-gray-100">
       <Header />
 
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1F1009] via-[#2C150C] to-[#f04e23]/20">
+      <section className="relative min-h-[75vh] md:h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1F1009] via-[#2C150C] to-[#f04e23]/20 pt-28 md:pt-0">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 flex flex-col items-center justify-center mt-24 md:mt-14 w-full h-full"
+          className="relative z-10 flex items-center justify-center w-full h-full"
         >
-          <div className="relative w-[90%] md:w-[60%] xl:w-[40%] p-5 rounded-3xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(240,78,35,0.15)]">
-            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-36 h-36 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-[0_0_40px_rgba(240,78,35,0.45)] group">
+          <div className="relative w-[80%] md:w-[60%] xl:w-[40%] p-5 rounded-3xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(240,78,35,0.15)] flex flex-col items-center">
+
+            {/* Avatar */}
+            <div className="absolute -top-14 md:-top-16 left-1/2 -translate-x-1/2 w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-[0_0_40px_rgba(240,78,35,0.45)] group">
               <img
                 src={userAvatar || "/avatar.png"}
                 alt="User Avatar"
@@ -61,7 +63,8 @@ function Profile() {
               </label>
             </div>
 
-            <div className="mt-20 text-center">
+            {/* User Info */}
+            <div className="mt-20 md:mt-24 text-center">
               <h1 className="text-3xl md:text-4xl font-bold tracking-wide">
                 {user?.username || "John Doe"}
               </h1>
@@ -70,6 +73,7 @@ function Profile() {
               </p>
             </div>
 
+            {/* Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               className="mt-8 px-6 py-3 w-full bg-[#f04e23] text-white font-semibold rounded-xl shadow-lg hover:bg-[#d13d18] transition"
@@ -80,9 +84,12 @@ function Profile() {
             >
               Edit Profile
             </motion.button>
+
           </div>
         </motion.div>
       </section>
+
+
 
 
 
