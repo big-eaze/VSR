@@ -24,6 +24,17 @@ export function MenuProvider({ children }) {
 
   const wardrobeKey = (uid) =>
     uid ? `wardrobe_${uid}` : "guest_wardrobe";
+  const avatarKey = (uid) => (uid && `avatar_${uid}`);
+
+  function saveAvatar(uid, url) {
+    localStorage.setItem(avatarKey(uid), url);
+  }
+  function getAvatar(uid) {
+    return localStorage.getItem(avatarKey(uid)) || null;
+  }
+
+
+
 
 
 

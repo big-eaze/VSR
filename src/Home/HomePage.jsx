@@ -156,45 +156,74 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#3B1E12] to-[#1A1A1A] text-white">
-          <div className="max-w-6xl mx-auto px-6 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-16">
+        <section className="relative py-24 bg-gradient-to-b from-[#2C150C] via-[#3B1E12] to-[#1A1A1A] text-white overflow-hidden">
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-24 text-center">
               Why Choose <span className="text-[#f04e23]">VSA?</span>
             </h2>
-            <div className="grid md:grid-cols-3 gap-10">
+
+            <div className="relative flex flex-col items-center gap-32">
               {[
                 {
                   icon: "🎯",
                   title: "Personalized to You",
                   desc: "Tailored outfit ideas based on your taste, lifestyle, and weather.",
+                  x: -48,
+                  y: 0,
+                  rotate: -5
                 },
                 {
                   icon: "🤖",
                   title: "Smart Fashion Tech",
-                  desc: "Our AI fuses trend forecasting with personal preference learning.",
+                  desc: "AI fuses trend forecasting with personal preference learning.",
+                  x: 48,
+                  y: 0,
+                  rotate: 5
                 },
                 {
                   icon: "💡",
                   title: "Save Time & Money",
                   desc: "Plan looks effortlessly and rediscover your wardrobe’s potential.",
+                  x: 0,
+                  y: 0,
+                  rotate: 0
                 },
               ].map((item, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 40 }}
+                  className="relative flex items-center gap-6 max-w-xl"
+                  initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 * i }}
                   viewport={{ once: true }}
-                  className="bg-white/10 backdrop-blur-xl rounded-3xl p-10 border border-white/10 shadow-xl hover:bg-white/20 transition"
+                  transition={{ duration: 0.8, delay: i * 0.3 }}
+                  style={{
+                    transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg)`
+                  }}
                 >
-                  <div className="text-5xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
-                  <p className="text-gray-200">{item.desc}</p>
+                  <motion.div
+                    className="text-6xl"
+                    whileHover={{ scale: 1.2, rotate: [item.rotate, item.rotate + 10, item.rotate] }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {item.icon}
+                  </motion.div>
+                  <div className="flex flex-col">
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-[#f04e23] to-[#A0552D] bg-clip-text text-transparent">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-200 text-sm mt-2">{item.desc}</p>
+                  </div>
+
                 </motion.div>
               ))}
             </div>
           </div>
+
+          {/* Background abstract shapes */}
+          
         </section>
+
+
 
 
 

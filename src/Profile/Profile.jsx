@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User, Settings, Camera, PenLine, LogOut, Sparkles, ArrowRight, SunMoon } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Modal from "../components/Modal";
 import { MenuContext } from "../utils/MenuContext";
+import { saveAvatar, getAvatar } from "../utils/userAvatar";
 import FeedbackSection from "../components/FeedbackSection";
 
 function Profile() {
@@ -12,66 +13,77 @@ function Profile() {
   const [openModal, setOpenModal] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
+
+
+  const userAvatar = getAvatar(user?.uid);
+
+  useEffect(() => {
+    console.log("User data:", user);
+  }, [])
+
   return (
     <div className="min-h-screen bg-[#0D0D0D] text-gray-100">
       <Header />
 
-      <section className="relative h-[60vh] flex flex-col items-center justify-center bg-gradient-to-br from-[#1F1009] via-[#2C150C] to-[#f04e23]/30 overflow-hidden">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1F1009] via-[#2C150C] to-[#f04e23]/20">
         <motion.div
-          initial={{ opacity: 0, y: -40 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 text-center"
+          className="relative z-10 flex flex-col items-center mt-48 xl:mt-20 w-full"
         >
-
-          <div className="relative mx-auto mt-12 xl:mt-0 w-32 h-32 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-[0_0_30px_rgba(240,78,35,0.4)] group">
-            <img
-              src={user?.avatar || "/avatar.png"}
-              alt="User Avatar"
-              className="w-full h-full object-cover object-top transition-all group-hover:opacity-70"
-            />
-
-
-            <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition cursor-pointer">
-              <Camera className="w-6 h-6 text-white mb-1" />
-              <span className="text-sm">Change</span>
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      localStorage.setItem("avatar", reader.result);
-                      window.location.reload();
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                }}
+          <div className="relative w-[90%] md:w-[60%] xl:w-[40%] p-8 rounded-3xl bg-black/20 backdrop-blur-xl border border-white/10 shadow-[0_0_60px_rgba(240,78,35,0.15)]">
+            <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-36 h-36 rounded-full overflow-hidden border-4 border-[#f04e23] shadow-[0_0_40px_rgba(240,78,35,0.45)] group">
+              <img
+                src={userAvatar || "/avatar.png"}
+                alt="User Avatar"
+                className="w-full h-full object-cover object-top transition-all group-hover:opacity-70"
               />
-            </label>
+              <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition cursor-pointer">
+                <Camera className="w-6 h-6 text-white mb-1" />
+                <span className="text-sm">Change</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        saveAvatar(user.uid, reader.result);
+                        window.location.reload();
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+              </label>
+            </div>
+
+            <div className="mt-20 text-center">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-wide">
+                {user?.username || "John Doe"}
+              </h1>
+              <p className="text-gray-400 mt-1">
+                {user?.email || "user@example.com"}
+              </p>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              className="mt-8 px-6 py-3 w-full bg-[#f04e23] text-white font-semibold rounded-xl shadow-lg hover:bg-[#d13d18] transition"
+              onClick={() => {
+                setActiveSection("Edit Personal Info");
+                setOpenModal(true);
+              }}
+            >
+              Edit Profile
+            </motion.button>
           </div>
-
-          <h1 className="mt-6 text-3xl md:text-4xl font-bold">
-            {user?.username || "John Doe"}
-          </h1>
-          <p className="text-gray-400 mt-1">{user?.email || "user@example.com"}</p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            className="mt-6 px-6 py-2 bg-[#f04e23] text-white font-semibold rounded-full shadow-lg hover:bg-[#d13d18] transition"
-            onClick={() => {
-              setActiveSection("Edit Personal Info");
-              setOpenModal(true);
-            }}
-          >
-            Edit Profile
-          </motion.button>
         </motion.div>
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_60%)]"></div>
       </section>
+
 
 
       <section className="py-20 bg-gradient-to-b from-[#120907] via-[#1A0D08] to-[#2C150C]">

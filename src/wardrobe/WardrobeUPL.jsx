@@ -130,9 +130,7 @@ export default function WardrobeUploadPage() {
         "guest_wardrobe",
         JSON.stringify(updated)
       );
-
       setRecentUploads(prev => [imageToSave, ...(prev || []).slice(0, 4)]);
-
     }
 
 
