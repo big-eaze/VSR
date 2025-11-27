@@ -282,7 +282,7 @@ export default function WardrobePage() {
               <div className="absolute inset-0 bg-black/50 backdrop-blur-lg"></div>
 
 
-              <div className="relative flex-1 flex flex-col justify-center items-start px-8 sm:px-20 z-10">
+              <div className="relative flex-1 flex flex-col justify-center items-start px-8 py-8 sm:px-20 z-10">
                 <h2 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
                   Mix & Match<br />
                   <span className="text-[#f04e23]">Challenge</span>
@@ -299,7 +299,7 @@ export default function WardrobePage() {
                 </button>
               </div>
 
-              <div className="relative flex-1 flex justify-center items-center overflow-hidden">
+              <div className="relative flex-1 flex justify-center items-center px-8 py-8 sm:px-20 overflow-hidden">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-xl border-l border-white/20"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-[#f04e23]/20 via-transparent to-transparent mix-blend-overlay"></div>
 

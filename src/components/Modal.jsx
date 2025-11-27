@@ -17,7 +17,7 @@ export default function Modal({ open, onClose, title, children }) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-black/10 text-gray-200 w-[90%] max-w-md rounded-2xl p-6 relative border border-white/10 shadow-2xl"
+            className="bg-black/70 text-gray-200 w-[90%] max-w-md rounded-2xl p-6 relative border border-white/10 shadow-2xl"
           >
             <button
               onClick={onClose}

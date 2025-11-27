@@ -90,7 +90,7 @@ const Header = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 mt-2 w-44 bg-white/10 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-lg"
+                  className="absolute right-0 mt-2 w-44 bg-black/70 border-y-2 border-y-[#f04e23] backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-lg"
                 >
                   <Link
                     to="/profile"

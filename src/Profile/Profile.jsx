@@ -2,24 +2,83 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { User, Settings, Camera, PenLine, LogOut, Sparkles, ArrowRight, SunMoon } from "lucide-react";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 import Modal from "../components/Modal";
 import { MenuContext } from "../utils/MenuContext";
+import { handleEmailUpdate, handleUpdateUsername } from "../utils/AuthHandler";
 import { saveAvatar, getAvatar } from "../utils/userAvatar";
 import FeedbackSection from "../components/FeedbackSection";
+import PasswordModal from "../components/PasswordModal";
+import { auth } from "../utils/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+
 
 function Profile() {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const { userPrivate, setUserPrivate } = React.useContext(MenuContext);
   const [openModal, setOpenModal] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [verificationModal, setVerificationModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [pendingEmailUpdate, setPendingEmailUpdate] = useState(null);
+
+  const [editUserData, setEditUserData] = useState({
+    username: userPrivate?.username || "",
+    email: userPrivate?.email || "",
+  })
 
 
 
-  const userAvatar = getAvatar(user?.uid);
+
 
   useEffect(() => {
-    console.log("User data:", user);
-  }, [])
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user); // user is authenticated
+        setEditUserData({
+          username: user.displayName || "",
+          email: user.email || "",
+        });
+      } else {
+        setCurrentUser(null);
+        setMessage("No authenticated user found. Please log in again.");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+
+  console.log(userPrivate);
+  function handleFormValidation() {
+    if (!editUserData.username.trim()) {
+      alert("Username cannot be empty.");
+      return false;
+    }
+    if (!editUserData.email.trim() || !/\S+@\S+\.\S+/.test(editUserData.email)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+    if (editUserData.username === userPrivate.username && editUserData.email === userPrivate.email) {
+      alert("No changes detected.");
+      return false;
+    }
+    if (editUserData.email !== userPrivate.email) {
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(editUserData.email)) {
+        alert("Please enter a valid email address.");
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+
+  const userAvatar = getAvatar(userPrivate?.uid);
+
 
   return (
     <div className="min-h-screen bg-[#0D0D0D] text-gray-100">
@@ -66,10 +125,10 @@ function Profile() {
             {/* User Info */}
             <div className="mt-20 md:mt-24 text-center">
               <h1 className="text-3xl md:text-4xl font-bold tracking-wide">
-                {user?.username || "John Doe"}
+                {userPrivate?.username || "John Doe"}
               </h1>
               <p className="text-gray-400 mt-1">
-                {user?.email || "user@example.com"}
+                {userPrivate?.email || "user@example.com"}
               </p>
             </div>
 
@@ -170,26 +229,58 @@ function Profile() {
         </div>
       </section>
 
+
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}
         title={activeSection}
       >
         {activeSection === "Edit Personal Info" && (
-          <form className="space-y-3">
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!handleFormValidation()) return;
+              // If email changed, trigger password modal
+              if (editUserData.email !== userPrivate.email) {
+                setPendingEmailUpdate(editUserData);
+                setPasswordModalOpen(true);
+              } else {
+                handleUpdateUsername(editUserData.username, setUserPrivate, null,);
+              }
+            }}
+          >
+
             <input
               type="text"
-              placeholder="Full Name"
+              name="username"
+              value={editUserData?.username || ""}
+              placeholder="Username"
+              onChange={(e) => {
+                setEditUserData({ ...editUserData, username: e.target.value });
+              }}
               className="w-full bg-white/5 border border-white/10 rounded-lg p-2 focus:outline-none"
             />
             <input
               type="email"
+              name="email"
+              value={editUserData?.email || ""}
               placeholder="Email"
+              onChange={(e) => {
+                setEditUserData({ ...editUserData, email: e.target.value });
+              }}
               className="w-full bg-white/5 border border-white/10 rounded-lg p-2 focus:outline-none"
             />
-            <button className="w-full bg-[#f04e23] py-2 rounded-lg hover:bg-[#d13d18]">
+            <button
+              type="submit"
+              disabled={!currentUser}
+              className={`w-full bg-[#f04e23] py-2 rounded-lg ${!currentUser ? "opacity-50 cursor-not-allowed" : "hover:bg-[#d13d18]"
+                }`}
+            >
               Save Changes
             </button>
+
+            <p className="text-sm mt-4 text-[#f04e23] tracking-wide">{message}</p>
           </form>
         )}
 
@@ -229,6 +320,47 @@ function Profile() {
           </div>
         )}
       </Modal>
+      <Modal
+        open={verificationModal}
+        onClose={() => setVerificationModal(false)}
+        title="Verify Your New Email"
+      >
+        <div className="text-center space-y-4 py-2">
+          <p className="text-gray-300">
+            A verification link has been sent to your new email address.
+          </p>
+          <p className="text-gray-400 text-sm">
+            Please click the link in the email to confirm and complete the update.
+          </p>
+
+          <button
+            onClick={() => setVerificationModal(false)}
+            className="w-full bg-[#f04e23] py-2 rounded-lg hover:bg-[#d13d18]"
+          >
+            Okay, I Understand
+          </button>
+        </div>
+      </Modal>
+
+      <PasswordModal
+        open={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        onSubmit={async (password) => {
+          try {
+            await handleEmailUpdate({
+              username: pendingEmailUpdate.username,
+              email: pendingEmailUpdate.email,
+              password,
+              setUserPrivate
+            });
+            setPasswordModalOpen(false);
+            setVerificationModal(true); // show modal that email verification sent
+          } catch (err) {
+            alert(err.message); // show error
+          }
+        }}
+      />
+
     </div>
   );
 }
