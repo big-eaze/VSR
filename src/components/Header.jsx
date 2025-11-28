@@ -8,7 +8,7 @@ import { MenuContext } from "../utils/MenuContext";
 const navItems = [
   { label: "Home", to: "/" },
   { label: "Wardrobe", to: "/wardrobe" },
-  { label: "Services", to: "/services" },
+  { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -27,7 +27,7 @@ const Header = () => {
   const user = localStorage.getItem("user");
 
   return (
-    <header className="fixed top-0 z-20 w-full h-20 bg-black/70 backdrop-blur-md text-white flex items-center justify-between px-6 sm:px-10 border-b border-white/10">
+    <header className="fixed top-0 z-50 w-full h-20 bg-black/70 backdrop-blur-md text-white flex items-center justify-between px-6 sm:px-10 border-b border-white/10">
       {/* === LEFT: LOGO === */}
       <div className="flex items-center space-x-3">
         <motion.div

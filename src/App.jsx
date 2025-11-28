@@ -14,6 +14,7 @@ import TryOnPage from "./TryOn/TryOnPage";
 import AuthPage from "./Auth/AuthModal";
 import Profile from "./Profile/Profile";
 import VerifyEmail from "./VerifyEmail";
+import AboutPage from "./About";
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
       <Route path="/more-abt" element={<AIScannerShowcase />} />
       <Route path="try-on" element={<TryOnPage />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/about" element={<AboutPage />} />
     </Routes>
   )
 }

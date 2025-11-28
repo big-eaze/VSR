@@ -46,12 +46,11 @@ function Profile() {
       }
     });
 
+    console.log(editUserData);;
     return () => unsubscribe();
   }, []);
 
 
-
-  console.log(userPrivate);
   function handleFormValidation() {
     if (!editUserData.username.trim()) {
       alert("Username cannot be empty.");
@@ -112,7 +111,7 @@ function Profile() {
                     if (file) {
                       const reader = new FileReader();
                       reader.onload = () => {
-                        saveAvatar(user.uid, reader.result);
+                        saveAvatar(userPrivate.uid, reader.result);
                         window.location.reload();
                       };
                       reader.readAsDataURL(file);
@@ -254,7 +253,7 @@ function Profile() {
             <input
               type="text"
               name="username"
-              value={editUserData?.username || ""}
+              value={editUserData.username || ""}
               placeholder="Username"
               onChange={(e) => {
                 setEditUserData({ ...editUserData, username: e.target.value });
