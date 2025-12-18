@@ -3,32 +3,36 @@ import { useMemo, useContext } from "react";
 import { MenuContext } from "../utils/MenuContext.jsx";
 
 // Hook: Generate outfits, filtered by style if provided
-export function useOutfits(preferredStyle) {
+export function useOutfits(preferredStyle, generationKey) {
   const { userWardrobe, guestWardrobe } = useContext(MenuContext);
 
   return useMemo(() => {
-    // Get user from localStorage
-    const user = JSON.parse(localStorage.getItem("user"));
+    // ❌ Do nothing until user explicitly generates
+    if (!generationKey) return [];
 
-    // Use the correct wardrobe dynamically
+    const user = JSON.parse(localStorage.getItem("user"));
     const wardrobe = user ? userWardrobe : guestWardrobe;
 
     if (!wardrobe || Object.values(wardrobe).every(arr => arr.length === 0)) {
-      return []; // No outfits if wardrobe is empty
+      return [];
     }
 
     const allOutfits = generateOutfits(wardrobe);
 
-    // If a style is chosen, filter
     const filtered = preferredStyle
-      ? allOutfits.filter((o) => o.style === preferredStyle)
+      ? allOutfits.filter(o => o.style === preferredStyle)
       : allOutfits;
 
-    // Shuffle and take best 3
     const shuffled = [...filtered].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 3);
-  }, [preferredStyle, userWardrobe, guestWardrobe]); // re-run if wardrobe or style changes
-};
+
+  }, [
+    generationKey,   // ✅ ONLY trigger
+    preferredStyle,  // used when triggered
+    userWardrobe,
+    guestWardrobe
+  ]);
+}
 
 function colorScore(c1, c2) {
   try {

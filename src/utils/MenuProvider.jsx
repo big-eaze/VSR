@@ -6,6 +6,9 @@ import wardrobe from "../../data/outfits";
 import { userData } from "three/tsl";
 
 export function MenuProvider({ children }) {
+
+  const [showIntro, setShowIntro] = useState(true);
+
   const [userPrivate, setUserPrivate] = useState(null);
   const [preferredStyle, setPreferredStyle] = useState(null);
   const [guestWardrobe, setGuestWardrobe] = useState({
@@ -24,14 +27,7 @@ export function MenuProvider({ children }) {
 
   const wardrobeKey = (uid) =>
     uid ? `wardrobe_${uid}` : "guest_wardrobe";
-  const avatarKey = (uid) => (uid && `avatar_${uid}`);
 
-  function saveAvatar(uid, url) {
-    localStorage.setItem(avatarKey(uid), url);
-  }
-  function getAvatar(uid) {
-    return localStorage.getItem(avatarKey(uid)) || null;
-  }
 
 
 
@@ -168,7 +164,9 @@ export function MenuProvider({ children }) {
         recentUploads,
         setRecentUploads,
         recentUserUploads,
-        setRecentUserUploads
+        setRecentUserUploads,
+        showIntro,
+        setShowIntro
       }}
     >
       {children}

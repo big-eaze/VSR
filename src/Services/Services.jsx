@@ -63,112 +63,110 @@ export default function Services() {
   return (
     <>
       <Header />
-      <section className="relative pt-32 py-24 bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          {/* Intro */}
-          <div className="text-center mb-20">
-            <motion.h2
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="text-2xl sm:text-5xl text-center font-extrabold mb-6 tracking-wide">
-              Discover What We Offer
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: "easeOut" }}
-              viewport={{ once: true }}
-              className="text-gray-400 max-w-3xl mx-auto text-lg">
-              Your wardrobe is more than just clothes—it’s your story. With{" "}
-              <motion.span
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                viewport={{ once: true }}
-                onClick={() => navigate("/more-abt")} className="text-[#f04e23] font-semibold cursor-pointer">Virtual Styling Assistant</motion.span>,
-              you’ll unlock new ways to express yourself, save time, and look your best every single day.
-            </motion.p>
-          </div>
+      <section className="min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white py-32 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto space-y-32">
 
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-            {services.map((service, index) => (
+          {/* INTRO */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="max-w-4xl"
+          >
+            <h1 className="text-5xl sm:text-7xl font-extrabold leading-tight">
+              What we <span className="text-[#f04e23]">do.</span> <br />
+              <span className="text-white/40">And why it feels effortless.</span>
+            </h1>
+
+            <p className="mt-8 text-lg text-white/60 max-w-2xl">
+              Virtual Styling Assistant isn’t a tool — it’s a quiet intelligence
+              working behind your wardrobe, helping you look intentional every day.
+            </p>
+          </motion.div>
+
+          {/* SERVICES */}
+          <div className="space-y-24">
+
+            {/* SERVICE ITEM */}
+            {[
+              {
+                title: "Outfit intelligence",
+                description:
+                  "Your clothes already know each other. We simply reveal the combinations that work — based on context, mood, and the moment.",
+                meta: "Personalized · Instant",
+              },
+              {
+                title: "A wardrobe that remembers",
+                description:
+                  "Every piece, catalogued. Every option visible. Your wardrobe becomes searchable, organized, and impossible to forget.",
+                meta: "Upload · Categorize · Analyze",
+              },
+              {
+                title: "See before you wear",
+                description:
+                  "Visualize outfits without trying them on. Experiment freely. Commit confidently.",
+                meta: "Virtual try-on · Coming soon",
+                comingSoon: true,
+              },
+              {
+                title: "Style perspective",
+                description:
+                  "Understand what works for you. Learn how color, fabric, and balance shape your personal style over time.",
+                meta: "Insights · Trends · Guidance",
+              },
+            ].map((service, index) => (
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 * index }}
-                viewport={{ once: true }}
                 key={index}
-                className="group bg-gray-900/60 backdrop-blur-md border border-gray-700 rounded-2xl p-8 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-start"
               >
-                {/* Icon */}
-                <div className="mb-6 flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 group-hover:scale-110 transition">
-                  {service.icon}
+                {/* LEFT — TITLE */}
+                <h2 className="text-3xl sm:text-4xl font-semibold">
+                  {service.title}
+                </h2>
+
+                {/* RIGHT — CONTENT */}
+                <div className="space-y-6">
+                  <p className="text-white/60 text-lg max-w-2xl">
+                    {service.description}
+                  </p>
+
+                  <div className="flex items-center gap-4 text-sm tracking-wide text-white/40">
+                    <span>{service.meta}</span>
+                    {service.comingSoon && (
+                      <span className="text-[#f04e23]">• Coming soon</span>
+                    )}
+                  </div>
+
+                  <div className="w-full h-px bg-white/10 mt-8" />
                 </div>
-
-                {/* Title & Description */}
-                <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Mini Features */}
-                <ul className="space-y-2 text-gray-300 text-sm">
-                  {service.features.map((feature, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center space-x-2 group-hover:text-white transition"
-                    >
-                      <span className="w-2 h-2 bg-[#f04e23] rounded-full"></span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                {
-                  service.title === "Virtual Try-On" &&
-                  <p className="text-lg text-end mt-20 text-gray-300 group-hover:text-white font-bold">This feature is coming soon.....</p>
-                }
               </motion.div>
             ))}
           </div>
 
-          {/* CTA Section */}
+          {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.7 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
             viewport={{ once: true }}
-            className="mt-24 text-center">
-            <motion.h3
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 }}
-              viewport={{ once: true }}
-              className="text-2xl sm:text-3xl font-bold mb-4">
-              Ready to Elevate Your Style?
-            </motion.h3>
-            <motion.p
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.9 }}
-              viewport={{ once: true }}
-              className="text-gray-400 max-w-2xl mx-auto mb-8">
-              Join thousands of users already redefining their wardrobe. Start matching outfits, organizing your closet, and styling smarter with just a few taps.
-            </motion.p>
-            <motion.button
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1 }}
-              viewport={{ once: true }}
+            className="pt-24"
+          >
+            <button
               onClick={() => navigate("/more-abt")}
-              className="bg-[#f04e23] text-white px-10 py-4 rounded-full font-semibold hover:bg-[#f04e23]/50 transition shadow-lg">
-              Start Matching Now
-            </motion.button>
+              className="group flex items-center gap-4 text-[#f04e23] text-sm tracking-[0.35em]"
+            >
+              START EXPERIENCING IT
+              <span className="group-hover:translate-x-2 transition">→</span>
+            </button>
           </motion.div>
+
         </div>
       </section>
+
       {authOpen && (<AuthModal />)}
       <Footer />
     </>

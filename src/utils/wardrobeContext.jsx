@@ -6,9 +6,7 @@ export function useRemove() {
     userPrivate,
     setUserWardrobe,
     setGuestWardrobe,
-    recentUploads,
     setRecentUploads,
-    recentUserUploads,
     setRecentUserUploads,
   } = useContext(MenuContext);
 

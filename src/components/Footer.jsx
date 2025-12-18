@@ -1,73 +1,164 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaFacebook, FaInstagram, FaMailBulk, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-b from-[#2a2a2a] via-[#1e1e1e] to-black text-gray-300">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 px-6 py-14">
+    <footer className="relative bg-[#1A0F0A] text-white py-16 overflow-hidden">
+      {/* Floating Geometric Shapes */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.div
+          initial={{ opacity: 0, x: -100, y: 100 }}
+          animate={{ opacity: 0.5, x: 0, y: 0 }}
+          transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute w-[100px] h-[100px] rounded-full bg-[#f04e23] blur-lg"
+          style={{ top: "20%", left: "30%" }}
+        />
+        <motion.div
+          initial={{ opacity: 0, x: 100, y: -100 }}
+          animate={{ opacity: 0.5, x: 0, y: 0 }}
+          transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute w-[80px] h-[80px] rounded-full bg-[#f04e23] blur-lg"
+          style={{ top: "50%", left: "60%" }}
+        />
+      </div>
 
-        <div>
-          <h3 className="text-[#A0552D] font-bold text-2xl mb-4 tracking-wide">VS!A</h3>
-          <p className="text-sm text-gray-400 mb-4">
-            Elevate your wardrobe with AI-driven fashion insights and timeless design.
-          </p>
-          <div className="flex gap-3 mt-4">
-            <a href="#" className="hover:text-[#A0552D] transition"><i className="ri-facebook-circle-line text-2xl"></i></a>
-            <a href="#" className="hover:text-[#A0552D] transition"><i className="ri-twitter-x-line text-2xl"></i></a>
-            <a href="#" className="hover:text-[#A0552D] transition"><i className="ri-instagram-line text-2xl"></i></a>
-            <a href="#" className="hover:text-[#A0552D] transition"><i className="ri-linkedin-box-line text-2xl"></i></a>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+
+        {/* Section: Floating Logos and Links */}
+        <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center mb-12 space-y-12 lg:space-y-0">
+          {/* Logo Floating */}
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
+            className="text-[#f04e23] text-6xl font-extrabold hover:scale-110 transform transition-all"
+          >
+            VS!A
+          </motion.div>
+
+          {/* Social Media Floating Icons */}
+          <div className="flex gap-8 text-3xl text-gray-300">
+            <motion.a
+              href="#"
+              className="relative group hover:text-[#f04e23] transition-all"
+            >
+              <FaFacebook />
+              <div className="absolute inset-0 rounded-full bg-[#f04e23] opacity-0 group-hover:opacity-100 transition-all"></div>
+            </motion.a>
+            <motion.a
+              href="#"
+              className="relative group hover:text-[#f04e23] transition-all"
+            >
+              <FaTwitter />
+              <div className="absolute inset-0 rounded-full bg-[#f04e23] opacity-0 group-hover:opacity-100 transition-all"></div>
+            </motion.a>
+            <motion.a
+              href="#"
+              className="relative group hover:text-[#f04e23] transition-all"
+            >
+              <FaInstagram />
+              <div className="absolute inset-0 rounded-full bg-[#f04e23] opacity-0 group-hover:opacity-100 transition-all"></div>
+            </motion.a>
+            <motion.a
+              href="#"
+              className="relative group hover:text-[#f04e23] transition-all"
+            >
+              <FaMailBulk />
+              <div className="absolute inset-0 rounded-full bg-[#f04e23] opacity-0 group-hover:opacity-100 transition-all"></div>
+            </motion.a>
           </div>
         </div>
 
+        {/* Section: Scattered Links */}
+        <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* Floating Quick Links */}
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5 }}
+            className="relative z-10 space-y-4 text-gray-300 text-sm"
+          >
+            <h3 className="font-semibold text-lg">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <NavLink to="/" className="hover:text-[#f04e23] transition-all">
+                  Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/wardrobe" className="hover:text-[#f04e23] transition-all">
+                  Wardrobe
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/services" className="hover:text-[#f04e23] transition-all">
+                  Services
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact" className="hover:text-[#f04e23] transition-all">
+                  Contact
+                </NavLink>
+              </li>
+            </ul>
+          </motion.div>
 
-        <div>
-          <h3 className="text-white font-semibold text-lg mb-4">Quick Links</h3>
-          <ul className="space-y-2 text-gray-400">
-            <li><NavLink to="/" className="hover:text-white transition">Home</NavLink></li>
-            <li><NavLink to="/wardrobe" className="hover:text-white transition">Wardrobe</NavLink></li>
-            <li><NavLink to="/services" className="hover:text-white transition">Services</NavLink></li>
-            <li><NavLink to="/contact" className="hover:text-white transition">Contact</NavLink></li>
-          </ul>
+          {/* Floating Newsletter Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, delay: 0.2 }}
+            className="relative z-10 space-y-4"
+          >
+            <h3 className="font-semibold text-lg">Join Our Newsletter</h3>
+            <form className="space-y-4">
+              <input
+                type="email"
+                placeholder="Enter your email *"
+                className="w-full bg-transparent border-b border-gray-600 text-white py-3 placeholder-gray-400"
+              />
+              <label className="flex items-center space-x-2 text-sm text-gray-400">
+                <input type="checkbox" className="accent-[#f04e23]" />
+                <span>Subscribe to our newsletter</span>
+              </label>
+              <button
+                type="submit"
+                className="w-full bg-[#f04e23] text-white py-3 rounded-lg hover:bg-[#d13d18] transition-all font-semibold"
+              >
+                Subscribe
+              </button>
+            </form>
+          </motion.div>
+
+          {/* Floating Contact Information */}
+          <motion.div
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.5, delay: 0.4 }}
+            className="relative z-10 space-y-4"
+          >
+            <h3 className="font-semibold text-lg">Contact</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>Email: support@vsai.com</li>
+              <li>Phone: +123 456 7890</li>
+              <li>Address: 123 Style St, Fashion City</li>
+            </ul>
+          </motion.div>
         </div>
 
-        <div>
-          <h3 className="text-white font-semibold text-lg mb-4">Experience</h3>
-          <ul className="space-y-2 text-gray-400">
-            <li>FAQ</li>
-            <li>Shipping & Returns</li>
-            <li>Store Policy</li>
-            <li>Payment Methods</li>
-          </ul>
-        </div>
-
-
-        <div>
-          <h3 className="text-white font-semibold text-lg mb-4">Join Our Newsletter</h3>
-          <form className="space-y-3">
-            <input
-              type="email"
-              placeholder="Enter your email *"
-              className="w-full bg-transparent border-b border-gray-600 focus:outline-none focus:border-[#A0552D] py-2 text-sm text-white placeholder-gray-400"
-            />
-            <label className="flex items-center space-x-2 text-sm text-gray-400">
-              <input type="checkbox" className="accent-[#A0552D]" />
-              <span>Subscribe to our newsletter</span>
-            </label>
-            <button
-              type="submit"
-              className="w-full bg-[#A0552D] text-white py-2 rounded-lg hover:bg-[#A0552D]/80 transition font-medium"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <div className="border-t border-gray-700 mt-8 py-4 text-center text-sm text-gray-500">
-        © 2025 VS!A. Powered by ISR.
+        {/* Section: Footer Bottom with Neon Glow */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          className="text-center text-sm text-gray-500 mt-12 relative z-10"
+        >
+          <p>© 2025 VS!A. All Rights Reserved.</p>
+        </motion.div>
       </div>
     </footer>
-
   );
 };
 

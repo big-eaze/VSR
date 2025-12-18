@@ -190,194 +190,197 @@ export default function WardrobeUploadPage() {
   // FULL UI BELOW
   // ---------------------------------------
   return (
-    <div className="min-h-screen bg-gradient-to-br w-full from-gray-900 via-[#A0552D] to-black px-4 sm:px-6 py-5">
-      {/* Header */}
-      <div>
-        <div className="p-1 rounded-full w-fit mb-4 sm:mb-0 hover:bg-gray-700/50">
-          <button onClick={() => navigate(-1)}>
-            <ArrowLeft className="w-6 h-6 text-white" />
-          </button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white relative overflow-hidden">
 
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white">
-            Add a New Outfit 👕
+      {/* Header */}
+      <div className="relative z-10 px-5 pt-6 flex items-center gap-3">
+        <button
+          onClick={() => navigate(-1)}
+          className="p-2 rounded-full hover:bg-white/10 transition"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+
+        <div>
+          <h1 className="text-xl font-bold tracking-tight flex items-center gap-2">
+            Add Outfit <span className="text-sm opacity-70">👕</span>
           </h1>
-          <p className="mt-2 text-white/50">
-            Upload or snap your latest fit to add it to your wardrobe.
+          <p className="text-xs text-white/50">
+            Add a new piece to your wardrobe
           </p>
         </div>
       </div>
 
-      {/* Upload Section */}
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-md">
+      {/* Main Layout */}
+      <div className="relative z-10 mt-6 px-4 flex items-center justify-center gap-6 w-full">
+
+        {/* Upload/Preview Card */}
+        <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 shadow-xl overflow-hidden">
+
           {!activePreview ? (
-            <div className="flex flex-col items-center justify-center text-center rounded-2xl border-2 border-dashed border-transparent bg-white p-8 shadow-lg">
-              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50">
-                <Upload className="h-10 w-10 text-indigo-500" />
+            <div className="flex flex-col items-center justify-center text-center p-10 min-h-[380px]">
+              <div className="mb-5 h-20 w-20 rounded-full bg-[#A0552D]/30 flex items-center justify-center">
+                <Upload className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-700">
-                Upload Your Outfit
-              </h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Take a photo or choose one from storage.
+
+              <h3 className="text-lg font-semibold">Upload Outfit</h3>
+              <p className="text-sm text-white/50 mt-1">
+                Take a photo or select from gallery
               </p>
 
               <div className="mt-6 flex gap-3">
                 <label
                   htmlFor="camera-input"
-                  className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1 text-sm text-indigo-600 shadow-sm cursor-pointer hover:bg-indigo-100"
+                  className="flex items-center gap-2 rounded-xl bg-white text-black px-4 py-2 text-sm font-medium cursor-pointer hover:bg-opacity-90"
                 >
-                  <Camera className="h-4 w-4" /> Camera
+                  <Camera size={16} /> Camera
                 </label>
 
                 <label
                   htmlFor="gallery-input"
-                  className="inline-flex items-center gap-1 rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-600 shadow-sm cursor-pointer hover:bg-gray-200"
+                  className="flex items-center gap-2 rounded-xl bg-white/10 border border-white/20 px-4 py-2 text-sm cursor-pointer hover:bg-white/20"
                 >
-                  <ImageIcon className="h-4 w-4" /> Gallery
+                  <ImageIcon size={16} /> Gallery
                 </label>
               </div>
+
+
+
+              {/* Hidden Inputs */}
+              <input
+                id="camera-input"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <input
+                id="gallery-input"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
           ) : (
-            <div className="relative animate-fadeIn">
+            <div className="relative">
               <img
                 src={activePreview}
-                alt="Preview"
-                className="h-60 w-full rounded-xl object-cover shadow-md"
+                className="w-full h-[380px] object-cover"
+                alt="Outfit"
               />
 
-              <form>
-                {/* Category */}
-                <div className="mt-4">
-                  <p className="mb-2 text-sm font-medium text-gray-300">
-                    Choose Category
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { name: "Top", icon: <Shirt size={18} /> },
-                      { name: "Bottom", icon: <GiTrousers size={18} /> },
-                      { name: "Footwear", icon: <FaShoePrints size={18} /> },
-                      { name: "Accessory", icon: <Watch size={18} /> }
-                    ].map((c) => (
-                      <div
-                        key={c.name}
-                        onClick={() =>
-                          setUploadDetails((prev) => ({
-                            ...prev,
-                            category: c.name
-                          }))
-                        }
-                        className={`flex items-center gap-2 px-4 py-3 rounded-xl cursor-pointer transition ${uploadDetails.category === c.name
-                          ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
-                          : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                          }`}
-                      >
-                        {c.icon}
-                        <span>{c.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Inputs */}
-                <div className="w-full space-y-2 mt-6">
-                  <div className="w-full grid grid-cols-2 gap-3">
-                    <input
-                      onChange={handleInputChange}
-                      name="color"
-                      value={uploadDetails.color}
-                      type="text"
-                      placeholder="enter color"
-                      className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg"
-                    />
-                    <input
-                      onChange={handleInputChange}
-                      name="name"
-                      value={uploadDetails.name}
-                      type="text"
-                      placeholder="enter name"
-                      className="bg-gray-800 outline-none text-white w-full p-3 rounded-lg"
-                    />
-                  </div>
-                  <input
-                    onChange={handleInputChange}
-                    name="style"
-                    value={uploadDetails.style}
-                    type="text"
-                    placeholder="enter style e.g formal, fashion, gym-fit..."
-                    className="bg-gray-800 text-white w-full p-3 outline-none rounded-lg"
-                  />
-                </div>
-
-                {/* Remove Preview */}
-                <button
-                  onClick={removePreview}
-                  className="absolute top-3 right-3 rounded-full bg-white/80 p-2 text-gray-600 shadow hover:bg-white"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </form>
+              <button
+                onClick={removePreview}
+                className="absolute top-4 right-4 p-2 bg-black/60 rounded-full backdrop-blur hover:bg-black/80"
+              >
+                <X size={20} />
+              </button>
             </div>
           )}
+        </div>
 
-          {/* Hidden Inputs */}
-          <input
-            id="camera-input"
-            type="file"
-            accept="image/*"
-            capture="environment"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-          <input
-            id="gallery-input"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChange}
-          />
+        {/* Details Panel */}
+        {activePreview && (
+          <div className="rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 shadow-xl p-6 space-y-6">
 
-          {/* Save Button */}
-          {activePreview && (
+            {/* Categories */}
+            <div>
+              <h4 className="text-xs uppercase tracking-widest text-white/60 mb-3">
+                Category
+              </h4>
+
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { name: "Top", icon: <Shirt size={18} /> },
+                  { name: "Bottom", icon: <GiTrousers size={18} /> },
+                  { name: "Footwear", icon: <FaShoePrints size={18} /> },
+                  { name: "Accessory", icon: <Watch size={18} /> }
+                ].map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() =>
+                      setUploadDetails((prev) => ({ ...prev, category: c.name }))
+                    }
+                    className={`flex items-center gap-2 px-4 py-3 rounded-2xl transition ${uploadDetails.category === c.name
+                      ? "bg-gradient-to-r from-[#A0552D] to-pink-600 shadow-lg"
+                      : "bg-gray-800/80 hover:bg-gray-700"
+                      }`}
+                  >
+                    {c.icon}
+                    <span>{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Inputs */}
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                name="color"
+                value={uploadDetails.color}
+                onChange={handleInputChange}
+                placeholder="Color"
+                className="bg-gray-800/80 p-3 rounded-xl text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-[#A0552D]/50"
+              />
+              <input
+                name="name"
+                value={uploadDetails.name}
+                onChange={handleInputChange}
+                placeholder="Name"
+                className="bg-gray-800/80 p-3 rounded-xl text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-[#A0552D]/50"
+              />
+            </div>
+
+            <input
+              name="style"
+              value={uploadDetails.style}
+              onChange={handleInputChange}
+              placeholder="Style (formal, gym, casual...)"
+              className="w-full bg-gray-800/80 p-3 rounded-xl text-white placeholder:text-white/40 outline-none focus:ring-2 focus:ring-[#A0552D]/50"
+            />
+
+            {/* Save Button */}
             <button
               onClick={saveToWardrobe}
               disabled={!isFormComplete}
-              className={`mt-6 w-full rounded-xl bg-indigo-600 px-4 py-3 text-white font-medium shadow-md flex items-center justify-center gap-2 ${isFormComplete
-                ? "transition hover:bg-indigo-700"
-                : "disabled:opacity-50 cursor-not-allowed"
+              className={`w-full h-14 rounded-2xl font-semibold flex items-center justify-center gap-2 transition ${isFormComplete
+                ? "bg-gradient-to-r from-[#A0552D] to-pink-600 hover:opacity-90"
+                : "bg-gray-700 text-white/40 cursor-not-allowed"
                 }`}
             >
-              <CheckCircle2 className="h-5 w-5" /> Save to Wardrobe
+              <CheckCircle2 className="h-5 w-5" />
+              Save to Wardrobe
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Recent Uploads */}
-      {
-        Array.isArray(recentData) && recentData.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-lg font-semibold text-white/50 mb-4">
-              Recently Added
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {recentData.map((img, idx) => (
-                <div
-                  className="p-2 bg-white/10 rounded-lg border-transparent border shadow-lg transition hover:border-indigo-500 hover:shadow-xl"
-                  key={idx}
-                >
-                  <img
-                    src={img}
-                    alt={`Recent ${idx}`}
-                    className="h-52 w-full object-cover shadow-sm hover:shadow-md transition"
-                  />
-                </div>
-              ))}
-            </div>
+      {Array.isArray(recentData) && recentData.length > 0 && (
+        <div className="relative z-10 mt-12 px-4 pb-10">
+          <h2 className="text-sm font-semibold text-white/60 mb-5 tracking-wide">
+            Recently Added
+          </h2>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {recentData.map((img, i) => (
+              <div
+                key={i}
+                className="rounded-2xl overflow-hidden bg-white/10 border border-white/10 hover:border-[#A0552D] transition shadow-lg"
+              >
+                <img
+                  src={img}
+                  alt="recent"
+                  className="h-52 w-full object-cover"
+                />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
     </div>
+
   );
 }

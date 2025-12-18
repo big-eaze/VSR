@@ -6,136 +6,77 @@ import Footer from "../components/Footer";
 import { MenuContext } from "../utils/MenuContext";
 import AuthModal from "../Auth/AuthModal";
 
-
 export default function Contact() {
   const { authOpen } = React.useContext(MenuContext);
+
   return (
     <>
       <Header />
-      <section className="min-h-screen relative bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white pt-32 py-24">
-        <div className="max-w-7xl mx-auto px-3 lg:px-12">
-       
+      {/* Fullscreen Hero Section with Parallax Effect */}
+      <section className="min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white pt-32 pb-20 lg:pb-0 px-6 lg:px-20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-20">
+
+          {/* LEFT — EDITORIAL */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-16">
-            <h2 className="text-2xl sm:text-5xl font-extrabold mb-4 tracking-wide">
-              Get in Touch
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Have questions, feedback, or ideas? We’d love to hear from you.
-              Reach out and let’s make your wardrobe smarter together.
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="space-y-12"
+          >
+            <h1 className="text-5xl sm:text-7xl font-extrabold leading-tight">
+              Let’s <span className="text-[#f04e23]">talk.</span> <br />
+              <span className="text-white/40">Really talk.</span>
+            </h1>
+
+            <p className="text-lg text-white/60 max-w-xl">
+              Whether it’s feedback, collaboration, or a wild idea —
+              we’re listening.
             </p>
+
+            <div className="w-24 h-px bg-white/20" />
+
+            <div className="space-y-2 text-sm text-white/50">
+              <p>support@vsia.com</p>
+              <p>+1 (000) 000-3333</p>
+            </div>
           </motion.div>
 
-     
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* RIGHT — MINIMAL FORM */}
+          <motion.form
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+            className="space-y-10"
+          >
+            <input
+              placeholder="Name"
+              className="w-full bg-transparent border-b border-white/30 py-4 focus:outline-none focus:border-[#f04e23]"
+            />
 
-            <div className="space-y-8">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.7 }}
-                viewport={{ once: true }}
-                className="flex items-start space-x-4">
-                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
-                  <Mail className="w-6 h-6 text-[#f04e23]" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Email</h3>
-                  <p className="text-gray-400">support@vsia.com</p>
-                </div>
-              </motion.div>
+            <input
+              placeholder="Email"
+              className="w-full bg-transparent border-b border-white/30 py-4 focus:outline-none focus:border-[#f04e23]"
+            />
 
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-                viewport={{ once: true }}
-                className="flex items-start space-x-4">
-                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
-                  <Phone className="w-6 h-6 text-rose-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Phone</h3>
-                  <p className="text-gray-400">+1 (555) 234-5678</p>
-                </div>
-              </motion.div>
+            <textarea
+              rows={4}
+              placeholder="Message"
+              className="w-full bg-transparent border-b border-white/30 py-4 focus:outline-none focus:border-[#f04e23]"
+            />
 
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9 }}
-                viewport={{ once: true }}
-                className="flex items-start space-x-4">
-                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-800 border border-gray-700">
-                  <MapPin className="w-6 h-6 text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Address</h3>
-                  <p className="text-gray-400">123 Fashion Street, Style City</p>
-                </div>
-              </motion.div>
-            </div>
+            <button
+              className="group flex items-center gap-3 text-[#f04e23] font-semibold tracking-wide"
+            >
+              SEND MESSAGE
+              <span className="group-hover:translate-x-2 transition">→</span>
+            </button>
+          </motion.form>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 3 }}
-              viewport={{ once: true }}
-              className="bg-gray-900/50 backdrop-blur-md p-4 md:p-8 rounded-2xl shadow-xl border border-gray-800">
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-semibold mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-[#f04e23] focus:outline-none"
-                    placeholder="John Doe"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-semibold mb-2">
-                    Your Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-[#f04e23] focus:outline-none"
-                    placeholder="you@example.com"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold mb-2">
-                    Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={5}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-[#f04e23] focus:outline-none"
-                    placeholder="Type your message..."
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full flex items-center justify-center space-x-2 bg-[#f04e23] hover:bg-[#f04e23]/50 text-white px-6 py-3 rounded-lg font-semibold transition shadow-lg"
-                >
-                  <Send className="w-5 h-5" />
-                  <span>Send Message</span>
-                </button>
-              </form>
-            </motion.div>
-          </div>
         </div>
       </section>
-      {authOpen && (<AuthModal />)}
+
+
+      {authOpen && <AuthModal />}
       <Footer />
     </>
   );

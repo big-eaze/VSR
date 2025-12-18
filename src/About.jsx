@@ -13,7 +13,7 @@ export default function AboutPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen text-white bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] overflow-x-hidden">
+    <div className="min-h-screen text-white bg-gradient-to-br from-[#2C150C] via-[#A0552D] to-black overflow-x-hidden">
       <Header />
       {/* HERO — Giant overlapped typography + floating blob + split content */}
       <section className="relative  pt-24 md:pt-32 pb-20 px-6 md:px-16 lg:px-28">
@@ -343,7 +343,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

@@ -7,8 +7,8 @@ import { MenuContext } from "../utils/MenuContext";
 
 const navItems = [
   { label: "Home", to: "/" },
-  { label: "Wardrobe", to: "/wardrobe" },
   { label: "About", to: "/about" },
+  { label: "Services", to: "/services" },
   { label: "Contact", to: "/contact" },
 ];
 

@@ -1,91 +1,126 @@
 import React from "react";
-import { Camera, Scan, Wand2, Sparkles, Shirt } from "lucide-react";
+import { Shirt, Scan, Wand2, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
 export default function AIScannerShowcase() {
-
-
   const navigate = useNavigate();
-  const steps = [
+
+  const flow = [
     {
-      icon: <Shirt className="w-8 h-8 text-[#f04e23]" />,
-      title: "1. Access Wardrobe",
-      desc: "Choose items from your saved virtual wardrobe or upload new ones.",
+      title: "Your wardrobe, remembered",
+      description:
+        "Every piece you own — already there, or newly added — becomes part of a living system that never forgets.",
+      icon: <Shirt className="w-6 h-6" />,
     },
     {
-      icon: <Scan className="w-8 h-8 text-[#f04e23]" />,
-      title: "2. AI Scans",
-      desc: "Our AI detects clothing type, color, and textures with precision.",
+      title: "Quiet analysis",
+      description:
+        "Colors, textures, silhouettes. Our AI reads what the eye often misses — instantly and precisely.",
+      icon: <Scan className="w-6 h-6" />,
     },
     {
-      icon: <Wand2 className="w-8 h-8 text-[#f04e23]" />,
-      title: "3. Mix & Match",
-      desc: "Smart algorithms generate outfit combinations that actually work.",
+      title: "Intentional combinations",
+      description:
+        "Outfits aren’t generated. They’re composed — based on balance, contrast, and context.",
+      icon: <Wand2 className="w-6 h-6" />,
     },
     {
-      icon: <Sparkles className="w-8 h-8 text-[#f04e23]" />,
-      title: "4. Get Styled",
-      desc: "Visualize the look instantly on your avatar or preview in AR.",
+      title: "See it before you wear it",
+      description:
+        "Preview the look. Adjust freely. Commit with confidence.",
+      icon: <Sparkles className="w-6 h-6" />,
+      comingSoon: true,
     },
   ];
 
   return (
     <>
       <Header />
-      <div className=" w-full flex flex-col justify-center items-center gap-20 min-h-screen bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white px-6 py-28 sm:py-0">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            How Our AI <span className="text-[#f04e23]">Styles</span> You
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto mb-12">
-            Whether from your <span className="text-[#f04e23] font-medium">virtual wardrobe</span>
-            or fresh uploads, our AI scans everything and instantly curates
-            stylish outfit combinations just for you.
-          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
+      <section className="bg-gradient-to-br from-gray-900 via-[#A0552D] to-black text-white py-24 px-6 lg:px-20">
+        <div className="max-w-4xl mx-auto space-y-20">
+
+          {/* INTRO */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <p className="text-xs tracking-[0.35em] text-white/40 mb-6">
+              THE FLOW
+            </p>
+
+            <h2 className="text-4xl sm:text-5xl font-semibold leading-tight">
+              How <span className="text-[#f04e23]">style</span> comes together.
+            </h2>
+
+            <p className="mt-6 text-white/60 max-w-xl">
+              A quiet system working in the background — turning what you own
+              into something that feels intentional.
+            </p>
+          </motion.div>
+
+          {/* FLOW */}
+          <div className="space-y-16 grid sm:grid-cols-2 gap-10">
+            {flow.map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.05 }}
                 viewport={{ once: true }}
-                className="bg-gray-900/60 backdrop-blur-xl p-6 rounded-2xl shadow-lg hover:scale-105 transition"
+                className="flex items-start gap-6"
               >
-                <div className="flex justify-center mb-4">{step.icon}</div>
-                <h3 className="font-semibold text-lg mb-2">{step.title}</h3>
-                <p className="text-gray-400 text-sm mb-2">{step.desc}</p>
-                <span className="text-end text-lg font-bold">{index === 3 && "Coming soon..."}</span>
+                {/* ICON */}
+                <div className="mt-1 flex items-center justify-center w-10 h-10 rounded-full border border-white/15 text-[#f04e23]">
+                  {item.icon}
+                </div>
+
+                {/* TEXT */}
+                <div>
+                  <h3 className="text-xl font-medium">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-3 text-white/60 max-w-lg">
+                    {item.description}
+                  </p>
+
+                  {item.comingSoon && (
+                    <span className="inline-block mt-2 text-xs tracking-wide text-[#f04e23]">
+                      Coming soon
+                    </span>
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>
 
-        </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1 }}
-          viewport={{ once: true }}
-        >
-          <button onClick={() => navigate("/generator")}
-            className="relative group overflow-hidden px-10 py-3 rounded-full font-semibold text-white 
-               bg-gray-900/60 backdrop-blur-xl border border-[#f04e23]/50
-               shadow-lg shadow-black/30 transition-all duration-300"
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="pt-12"
           >
-            <span className="relative z-10">🚀 Begin Styling</span>
+            <button
+              onClick={() => navigate("/generator")}
+              className="group flex items-center gap-4 text-[#f04e23] text-xs tracking-[0.35em]"
+            >
+              EXPLORE THE SYSTEM
+              <span className="group-hover:translate-x-1 transition">→</span>
+            </button>
+          </motion.div>
 
-            {/* Animated gradient pulse */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#f04e23] via-[#A0552D] to-[#f04e23] 
-                    opacity-20 group-hover:opacity-40 animate-gradient"></div>
-          </button>
-        </motion.div>
+        </div>
+      </section>
 
 
-      </div>
       <Footer />
     </>
   );
