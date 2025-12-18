@@ -24,39 +24,57 @@ function OutfitDetails({ outfit }) {
     <motion.div
       initial={{ opacity: 0, y: 25 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-12 bg-black/40 backdrop-blur-xl rounded-3xl border border-white/10 p-8"
+      className="
+    mt-10 md:mt-12
+    bg-black/40 backdrop-blur-xl
+    rounded-2xl md:rounded-3xl
+    border border-white/10
+    p-5 sm:p-6 md:p-8
+  "
     >
       {/* WHY */}
-      <section className="mb-10">
-        <h4 className="text-xs tracking-widest uppercase text-[#f04e23] mb-2">
+      <section className="mb-8 md:mb-10">
+        <h4 className="text-[10px] sm:text-xs tracking-widest uppercase text-[#f04e23] mb-2">
           Why this outfit works
         </h4>
-        <p className="text-gray-300 leading-relaxed">
+        <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
           {outfit.reason ||
             "This look balances structure and texture while maintaining clean proportions. The contrast hierarchy guides attention naturally without overpowering the silhouette."}
         </p>
       </section>
 
       {/* PIECES */}
-      <section className="mb-10">
-        <h4 className="text-xs tracking-widest uppercase text-[#f04e23] mb-4">
+      <section className="mb-8 md:mb-10">
+        <h4 className="text-[10px] sm:text-xs tracking-widest uppercase text-[#f04e23] mb-4">
           Piece intelligence
         </h4>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {outfit.items.map((piece) => (
             <div
               key={piece.id}
-              className="flex items-center gap-4 bg-white/5 rounded-xl p-4 border border-white/10"
+              className="
+            flex items-center gap-3 sm:gap-4
+            bg-white/5 rounded-xl
+            p-3 sm:p-4
+            border border-white/10
+          "
             >
               <img
                 src={piece.image}
                 alt={piece.name}
-                className="w-14 h-16 object-cover rounded-lg"
+                className="
+              w-12 h-14
+              sm:w-14 sm:h-16
+              object-cover rounded-lg
+              flex-shrink-0
+            "
               />
-              <div>
-                <p className="font-semibold">{piece.name}</p>
-                <p className="text-xs text-gray-400">
+              <div className="min-w-0">
+                <p className="font-semibold text-sm sm:text-base truncate">
+                  {piece.name}
+                </p>
+                <p className="text-[11px] sm:text-xs text-gray-400 leading-snug">
                   {piece.role || "Balances silhouette and color temperature"}
                 </p>
               </div>
@@ -66,14 +84,14 @@ function OutfitDetails({ outfit }) {
       </section>
 
       {/* METRICS */}
-      <section className="mb-10">
-        <h4 className="text-xs tracking-widest uppercase text-[#f04e23] mb-4">
+      <section className="mb-8 md:mb-10">
+        <h4 className="text-[10px] sm:text-xs tracking-widest uppercase text-[#f04e23] mb-4">
           Style metrics
         </h4>
 
         {metrics.map(({ label, value }) => (
           <div key={label} className="mb-3">
-            <div className="flex justify-between text-xs text-gray-400 mb-1">
+            <div className="flex justify-between text-[11px] sm:text-xs text-gray-400 mb-1">
               <span>{label}</span>
               <span>{value}/5</span>
             </div>
@@ -89,14 +107,21 @@ function OutfitDetails({ outfit }) {
 
       {/* TAGS */}
       <section>
-        <h4 className="text-xs tracking-widest uppercase text-[#f04e23] mb-3">
+        <h4 className="text-[10px] sm:text-xs tracking-widest uppercase text-[#f04e23] mb-3">
           Best for
         </h4>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="px-4 py-1.5 rounded-full text-xs bg-white/10 border border-white/10"
+              className="
+            px-3 sm:px-4
+            py-1 sm:py-1.5
+            rounded-full
+            text-[11px] sm:text-xs
+            bg-white/10
+            border border-white/10
+          "
             >
               {tag}
             </span>
@@ -104,6 +129,7 @@ function OutfitDetails({ outfit }) {
         </div>
       </section>
     </motion.div>
+
   );
 }
 
@@ -113,9 +139,7 @@ function OutfitDetails({ outfit }) {
 export default function OutfitGenerator() {
   const { preferredStyle, setPreferredStyle } = useContext(MenuContext);
 
-  const [generationKey, setGenerationKey] = useState(0);
-  const outfits = useOutfits(preferredStyle, generationKey);
-
+  const outfits = useOutfits(preferredStyle);
   const [bestOutfits, setBestOutfits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [firstLoading, setFirstLoading] = useState(true);
@@ -129,12 +153,8 @@ export default function OutfitGenerator() {
   ];
 
   useEffect(() => {
-    if (!generationKey) return;
-    if (outfits?.length) {
-      setBestOutfits(outfits.slice(0, 3));
-    }
-  }, [generationKey, outfits]);
-
+    if (outfits?.length) setBestOutfits(outfits.slice(0, 3));
+  }, [outfits]);
 
   function regenerate() {
     const shuffled = [...outfits].sort(() => Math.random() - 0.5);
@@ -178,22 +198,27 @@ export default function OutfitGenerator() {
   }, [loading]);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-black via-[#A0552D] to-[#2C150C] text-white overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-black via-[#A0552D] py-10 to-[#2C150C] text-white overflow-hidden">
 
+      {/* Back */}
       {!loading && (
-        <Link to="/" className="absolute top-6 left-6 z-50 p-3 rounded-full bg-white/5">
-          <ArrowLeft />
+        <Link
+          to="/"
+          className="absolute top-4 left-4 md:top-6 md:left-6 z-50 p-3 rounded-full bg-white/5 hover:bg-white/10 transition"
+        >
+          <ArrowLeft className="w-5 h-5" />
         </Link>
       )}
 
-      <motion.div className="pt-24 text-center">
-        <h1 className="text-6xl font-extrabold">
+      {/* Header */}
+      <motion.div className="pt-20 md:pt-24 text-center px-4">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
           AI{" "}
           <span className="bg-gradient-to-r from-[#f04e23] to-[#A0552D] bg-clip-text text-transparent">
             Outfit Lab
           </span>
         </h1>
-        <p className="mt-4 text-gray-400">
+        <p className="mt-3 md:mt-4 text-sm sm:text-base text-gray-400">
           Curated. Scored. Styled for{" "}
           <span className="text-white">{preferredStyle}</span>
         </p>
@@ -201,22 +226,34 @@ export default function OutfitGenerator() {
 
       <AnimatePresence mode="wait">
         {loading ? (
-          <motion.div className="mt-40 flex flex-col items-center">
-            <Loader2 className="w-16 h-16 animate-spin text-[#f04e23]" />
-            <p className="mt-6 font-mono text-gray-400">
+          /* ================= LOADING ================= */
+          <motion.div className="mt-32 md:mt-40 flex flex-col items-center px-4">
+            <Loader2 className="w-14 h-14 md:w-16 md:h-16 animate-spin text-[#f04e23]" />
+            <p className="mt-6 font-mono text-sm md:text-base text-gray-400 text-center">
               {loadingText}
               <span className="animate-pulse">|</span>
             </p>
           </motion.div>
         ) : (
-          <motion.div className="mt-20 max-w-7xl mx-auto px-6">
-            <motion.div className="bg-white/5 rounded-[2.5rem] p-10 border border-white/10">
-              <div className="flex justify-center gap-6">
+          /* ================= RESULTS ================= */
+          <motion.div className="mt-16 md:mt-20 max-w-7xl mx-auto px-4 sm:px-6">
+
+            {/* ===== FEATURED OUTFIT ===== */}
+            <motion.div className="bg-white/5 rounded-3xl md:rounded-[2.5rem] p-3 sm:p-8 md:p-10 border border-white/10">
+
+              {/* Outfit images */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 {bestOutfits[0].items.map((p, i) => (
                   <motion.img
                     key={p.id}
                     src={p.image}
-                    className="w-44 h-60 object-cover rounded-2xl border border-white/10"
+                    alt={p.name}
+                    className="
+                  w-40 h-56
+                  sm:w-44 sm:h-60
+                  object-cover rounded-2xl
+                  border border-white/10
+                "
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.15 }}
@@ -228,26 +265,43 @@ export default function OutfitGenerator() {
               <OutfitDetails outfit={bestOutfits[0]} />
             </motion.div>
 
-            <StyleSelector
-              selected={preferredStyle}
-              onSelect={setPreferredStyle}
-            />
+            {/* ===== CONTROLS ===== */}
+            <div className="mt-12 md:mt-16">
+              <StyleSelector
+                selected={preferredStyle}
+                onSelect={setPreferredStyle}
+              />
+            </div>
 
-            <div className="flex justify-center">
+            {/* ===== CTA ===== */}
+            <div className="flex justify-center px-4">
               <button
                 onClick={() => {
                   setLoading(true);
-                  setGenerationKey((k) => k + 1);
+                  regenerate()
                 }}
-                className="mt-14 px-12 py-4 rounded-full text-lg bg-gradient-to-r from-[#f04e23] to-[#A0552D]"
+                className="
+              mt-10 md:mt-14
+              w-full sm:w-auto
+              px-10 md:px-12
+              py-4
+              rounded-full
+              text-base md:text-lg
+              font-semibold
+              bg-gradient-to-r from-[#f04e23] to-[#A0552D]
+              hover:scale-[1.03]
+              transition
+              shadow-xl
+            "
               >
                 ✨ Generate with VSA
               </button>
-
             </div>
+
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+
   );
 }
